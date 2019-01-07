@@ -9,8 +9,8 @@
     "license": "MIT",
     "repositories": [
         {
-            "type": "path",
-            "url": "../national-lottery-library"
+            "type": "vcs",
+            "url": "https://github.com/markheydon/national-lottery-library.git"
         }
     ],
     "require": {
@@ -19,7 +19,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "markheydon/national-lottery-library": "dev-develop"
+        "markheydon/national-lottery-library": "^0.01.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
