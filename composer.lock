@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eea04640cb6e00814b70327423a1fba0",
+    "content-hash": "d0b72e6e35f5857e7cccdf4dcf577c07",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1596,12 +1596,17 @@
         },
         {
             "name": "markheydon/national-lottery-library",
-            "version": "dev-develop",
+            "version": "v0.01",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/markheydon/national-lottery-library.git",
+                "reference": "e9d6092c1417d0dc94cfc99bfb3bd11d304cbd15"
+            },
             "dist": {
-                "type": "path",
-                "url": "../national-lottery-library",
-                "reference": "e3c67a396ac3600974533923e8521015ff30a34c",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/markheydon/national-lottery-library/zipball/e9d6092c1417d0dc94cfc99bfb3bd11d304cbd15",
+                "reference": "e9d6092c1417d0dc94cfc99bfb3bd11d304cbd15",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
@@ -1633,7 +1638,12 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic."
+            "description": "Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.",
+            "support": {
+                "source": "https://github.com/markheydon/national-lottery-library/tree/v0.01",
+                "issues": "https://github.com/markheydon/national-lottery-library/issues"
+            },
+            "time": "2019-01-07T21:48:45+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5606,9 +5616,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "markheydon/national-lottery-library": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
