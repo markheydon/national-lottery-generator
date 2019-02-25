@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no">
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -11,7 +12,7 @@
 <body>
 <div class="jumbotron" style="background-color: #4599ff">
     <h1 class="display-4">Lottery Generator</h1>
-    <p><i>Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.</i></p>
+    <p><em>Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.</em></p>
 </div>
 
 <div class="container">

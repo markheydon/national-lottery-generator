@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Game;
 use MarkHeydon\LotteryGenerator\EuromillionsDownload;
 use MarkHeydon\LotteryGenerator\EuromillionsGenerate;
+use MarkHeydon\LotteryGenerator\EuromillionsHotpicksGenerate;
 use MarkHeydon\LotteryGenerator\LottoDownload;
 use MarkHeydon\LotteryGenerator\LottoGenerate;
+use MarkHeydon\LotteryGenerator\LottoHotpicksGenerate;
+use MarkHeydon\LotteryGenerator\ThunderballDownload;
+use MarkHeydon\LotteryGenerator\ThunderballGenerate;
 
 class GameController extends Controller
 {
@@ -42,13 +46,25 @@ class GameController extends Controller
         $downloadRequired = self::isDownloadRequired($game->getLastHistoryDownload());
 
         // Rubbish way to check which generate to call, but will do for now.
+        $generate = [];
         switch (strtolower($game->getGameName())) {
             case 'euromillions':
                 $generate = self::generateEuroMillions($downloadRequired);
                 break;
-            default:
+            case 'lotto':
                 $generate = self::generateLotto($downloadRequired);
                 break;
+            case 'thunderball':
+                $generate = self::generateThunderball($downloadRequired);
+                break;
+            case 'lotto hotpicks':
+                $generate = self::generateLottoHotpicks($downloadRequired);
+                break;
+            case 'euromillions hotpicks':
+                $generate = self::generateEuroMillionsHotpicks($downloadRequired);
+                break;
+            default:
+                dd('Unsupported Game Name: ' . $game->getGameName());
         }
 
         // Private generate...() method will have downloaded, so update the last_history_download datetime.
@@ -116,6 +132,57 @@ class GameController extends Controller
     }
 
     /**
+     * Generate Thunderball numbers array.
+     *
+     * @param bool $downloadNeeded True if need to download new history file first.
+     *
+     * @return array
+     */
+    private static function generateThunderball(bool $downloadNeeded): array
+    {
+        if ($downloadNeeded) {
+            ThunderballDownload::download();
+        }
+        $generate = ThunderballGenerate::generate();
+
+        return $generate;
+    }
+
+    /**
+     * Generate Lotto Hotpicks numbers array.
+     *
+     * @param bool $downloadNeeded True if need to download new history file first.
+     *
+     * @return array
+     */
+    private static function generateLottoHotpicks(bool $downloadNeeded): array
+    {
+        if ($downloadNeeded) {
+            LottoDownload::download();
+        }
+        $generate = LottoHotpicksGenerate::generate();
+
+        return $generate;
+    }
+
+    /**
+     * Generate EuroMillions Hotpicks numbers array.
+     *
+     * @param bool $downloadNeeded True if need to download new history file first.
+     *
+     * @return array
+     */
+    private static function generateEuromillionsHotpicks(bool $downloadNeeded): array
+    {
+        if ($downloadNeeded) {
+            EuroMillionsDownload::download();
+        }
+        $generate = EuroMillionsHotpicksGenerate::generate();
+
+        return $generate;
+    }
+
+    /**
      * Build view data array.
      *
      * I.e. take the $generate array from the generate() method and make it output friendly.
@@ -158,7 +225,7 @@ class GameController extends Controller
         $result = [];
         foreach ($lines as $line) {
             $output = '';
-            if (isset($line['luckyStars'])) { // is EuroMillions
+            if (isset($line['mainNumbers'])) {
                 $aLine = $line['mainNumbers'];
                 while (($ball = array_shift($aLine)) !== null) {
                     $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
@@ -168,16 +235,31 @@ class GameController extends Controller
                 }
                 $output .= implode(' - ', $aLine);
 
-                $output .= ' ** ';
+                if (isset($line['luckyStars'])) {
+                    $output .= ' ** ';
 
-                $aLine = $line['luckyStars'];
-                while (($ball = array_shift($aLine)) !== null) {
-                    $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
-                    if (count($aLine) > 0) {
-                        $output .= ' - ';
+                    $aLine = $line['luckyStars'];
+                    while (($ball = array_shift($aLine)) !== null) {
+                        $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
+                        if (count($aLine) > 0) {
+                            $output .= ' - ';
+                        }
                     }
+                    $output .= implode(' - ', $aLine);
                 }
-                $output .= implode(' - ', $aLine);
+
+                if (isset($line['thunderball'])) {
+                    $output .= ' ** ';
+
+                    $aLine = $line['thunderball'];
+                    while (($ball = array_shift($aLine)) !== null) {
+                        $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
+                        if (count($aLine) > 0) {
+                            $output .= ' - ';
+                        }
+                    }
+                    $output .= implode(' - ', $aLine);
+                }
             } else {
                 $aLine = $line['lottoBalls'];
                 while (($ball = array_shift($aLine)) !== null) {
