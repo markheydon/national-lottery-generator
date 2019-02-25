@@ -3,6 +3,15 @@
 @section('title', $gameName)
 
 @section('content')
+    <div class="alert alert-danger" role="alert">
+        <p class="lead">
+            <em>
+                While the numbers generated using this just-for-fun tool are not random, they are highly unlikely to actually win you any money!  The National Lottery IS totally random!
+                Use at your own risk.  I am in no way affiliated with the National Lottery.
+            </em>
+        </p>
+    </div>
+
     <div class="row align-items-center">
         <div class="col-sm">
             <div class="card" style="width: 18rem; margin-bottom: 1em;">

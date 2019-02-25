@@ -3,8 +3,12 @@
 @section('title', 'Games')
 
 @section('content')
-    <div class="row"><!-- Lotto and EuroMillions top and bigger -->
+    <div class="row">
         @foreach($games as $game)
+            @if($game->id == 4)
+    </div>
+    <div class="row">
+            @endif
             <div class="col-md text-center">
                 <a href="/game/{{ $game->id }}/generate">
                     <div class="card mx-auto" style="width: 18rem; margin-bottom: 1em;">

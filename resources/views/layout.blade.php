@@ -11,7 +11,7 @@
 <body>
 <div class="jumbotron" style="background-color: #4599ff">
     <h1 class="display-4">Lottery Generator</h1>
-    <p><i>Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.</i></p>
+    <p><em>Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.</em></p>
 </div>
 
 <div class="container">
