@@ -213,9 +213,28 @@ class GameController extends Controller
     }
 
     /**
-     * Format the numbers from the array of passed in lines.
+     * Format a single line of numbers.
      *
-     * @todo Was originally written during testing to output to CLI, needs a serious refactoring
+     * Basically puts ' - ' inbetween the numbers.
+     *
+     * @param array $line Line to format.
+     * @return string Numbers formatted.
+     */
+    private static function formatNumbersLine(array $line): string
+    {
+        $output = '';
+        while (($ball = array_shift($line)) !== null) {
+            $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
+            if (count($line) > 0) {
+                $output .= ' - ';
+            }
+        }
+        $output .= implode(' - ', $line);
+        return $output;
+    }
+
+    /**
+     * Format the numbers from the array of passed in lines.
      *
      * @param array $lines Lines to output.
      * @return array Array of formatted lines.
@@ -227,48 +246,22 @@ class GameController extends Controller
             $output = '';
             if (isset($line['mainNumbers'])) {
                 $aLine = $line['mainNumbers'];
-                while (($ball = array_shift($aLine)) !== null) {
-                    $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
-                    if (count($aLine) > 0) {
-                        $output .= ' - ';
-                    }
-                }
-                $output .= implode(' - ', $aLine);
+                $output .= self::formatNumbersLine($aLine);
 
                 if (isset($line['luckyStars'])) {
                     $output .= ' ** ';
-
                     $aLine = $line['luckyStars'];
-                    while (($ball = array_shift($aLine)) !== null) {
-                        $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
-                        if (count($aLine) > 0) {
-                            $output .= ' - ';
-                        }
-                    }
-                    $output .= implode(' - ', $aLine);
+                    $output .= self::formatNumbersLine($aLine);
                 }
 
                 if (isset($line['thunderball'])) {
                     $output .= ' ** ';
-
                     $aLine = $line['thunderball'];
-                    while (($ball = array_shift($aLine)) !== null) {
-                        $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
-                        if (count($aLine) > 0) {
-                            $output .= ' - ';
-                        }
-                    }
-                    $output .= implode(' - ', $aLine);
+                    $output .= self::formatNumbersLine($aLine);
                 }
             } else {
                 $aLine = $line['lottoBalls'];
-                while (($ball = array_shift($aLine)) !== null) {
-                    $output .= str_pad($ball, 2, '0', STR_PAD_LEFT);
-                    if (count($aLine) > 0) {
-                        $output .= ' - ';
-                    }
-                }
-                $output .= implode(' - ', $aLine);
+                $output .= self::formatNumbersLine($aLine);
             }
             $result[] = $output;
         }
