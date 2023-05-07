@@ -54,6 +54,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
+          images: ''
           app-name: 'mheydon73-lottery-generator'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BFBC52346D9D4560915093276A3C9DC1 }}
