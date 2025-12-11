@@ -28,6 +28,11 @@ class Game
     private string $logo;
 
     /**
+     * @var \App\Services\Lottery\Downloader|null Cached downloader instance
+     */
+    private ?\App\Services\Lottery\Downloader $downloader = null;
+
+    /**
      * Game constructor.
      *
      * @param string $slug Game slug
@@ -116,16 +121,22 @@ class Game
     /**
      * Get the Downloader instance for this game's CSV data.
      *
+     * Returns a memoized instance to avoid creating multiple downloader objects.
+     *
      * @return \App\Services\Lottery\Downloader|null Downloader instance or null if game doesn't have one
      */
     public function getDownloader(): ?\App\Services\Lottery\Downloader
     {
-        return match (strtolower($this->name)) {
-            'lotto', 'lotto hotpicks' => new \App\Services\Lottery\Downloader(
+        if ($this->downloader !== null) {
+            return $this->downloader;
+        }
+
+        $this->downloader = match ($this->slug) {
+            'lotto', 'lotto-hotpicks' => new \App\Services\Lottery\Downloader(
                 \App\Services\Lottery\LottoDownload::HISTORY_DOWNLOAD_URL,
                 \App\Services\Lottery\LottoDownload::FILENAME
             ),
-            'euromillions', 'euromillions hotpicks' => new \App\Services\Lottery\Downloader(
+            'euromillions', 'euromillions-hotpicks' => new \App\Services\Lottery\Downloader(
                 \App\Services\Lottery\EuromillionsDownload::HISTORY_DOWNLOAD_URL,
                 \App\Services\Lottery\EuromillionsDownload::FILENAME
             ),
@@ -135,5 +146,7 @@ class Game
             ),
             default => null,
         };
+
+        return $this->downloader;
     }
 }

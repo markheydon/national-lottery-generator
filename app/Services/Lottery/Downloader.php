@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Services\Lottery;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -41,7 +42,7 @@ class Downloader
      */
     public function storagePath(): string
     {
-        return self::STORAGE_PATH . '/' . $this->filename . '.csv';
+        return self::STORAGE_PATH . DIRECTORY_SEPARATOR . $this->filename . '.csv';
     }
 
     /**
@@ -55,18 +56,28 @@ class Downloader
      */
     public function filePath(): string
     {
-        // For backward compatibility with tests, use legacy path if Storage facade is not available
         // Check if we're in a Laravel application context
         if (function_exists('app') && app()->bound('filesystem')) {
             try {
                 return Storage::disk('local')->path($this->storagePath());
             } catch (\RuntimeException $e) {
                 // Fallback to legacy path if Storage disk is not configured
+                Log::debug('Storage facade not available, falling back to legacy path', [
+                    'error' => $e->getMessage(),
+                    'is_testing' => app()->environment('testing'),
+                ]);
+            }
+        } else {
+            // Log when falling back in non-Laravel context (likely unit tests)
+            if (function_exists('app') && !app()->environment('testing')) {
+                Log::warning('Filesystem not bound in application container, using legacy path', [
+                    'environment' => app()->environment(),
+                ]);
             }
         }
 
         // Fallback to legacy path for unit tests or when Storage is not available
-        return self::LEGACY_DATA_PATH . '/' . $this->filename . '.csv';
+        return self::LEGACY_DATA_PATH . DIRECTORY_SEPARATOR . $this->filename . '.csv';
     }
 
     /**
@@ -102,11 +113,26 @@ class Downloader
             try {
                 return $this->downloadWithStorage($failDownload, $failRename);
             } catch (\RuntimeException $e) {
-                // Fallback to legacy file operations if Storage is not configured
+                // Log the fallback in non-testing environments
+                if (!app()->environment('testing')) {
+                    Log::warning('Storage facade failed, falling back to legacy download', [
+                        'error' => $e->getMessage(),
+                        'url' => $this->url,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Catch other exceptions that might occur during Storage operations
+                if (!app()->environment('testing')) {
+                    Log::error('Unexpected error during Storage download, falling back to legacy', [
+                        'error' => $e->getMessage(),
+                        'type' => get_class($e),
+                        'url' => $this->url,
+                    ]);
+                }
             }
         }
 
-        // Fallback to legacy file operations for unit tests
+        // Fallback to legacy file operations for unit tests or when Storage fails
         return $this->downloadLegacy($failDownload, $failRename);
     }
 
@@ -124,12 +150,19 @@ class Downloader
         // Create backup of existing file if it exists
         if (Storage::disk('local')->exists($storagePath)) {
             $timestamp = date('YmdHis', time());
-            $backupPath = self::STORAGE_PATH . '/' . $this->filename . '-' . $timestamp . '.csv';
+            $backupPath = self::STORAGE_PATH . DIRECTORY_SEPARATOR . $this->filename . '-' . $timestamp . '.csv';
 
             if (!$failRename) {
                 try {
                     Storage::disk('local')->copy($storagePath, $backupPath);
+                } catch (\Illuminate\Contracts\Filesystem\FileNotFoundException $e) {
+                    return 'Backup of old history file failed';
                 } catch (\Exception $e) {
+                    Log::error('Failed to backup old history file', [
+                        'error' => $e->getMessage(),
+                        'source' => $storagePath,
+                        'destination' => $backupPath,
+                    ]);
                     return 'Backup of old history file failed';
                 }
             } else {
@@ -143,7 +176,8 @@ class Downloader
         }
 
         try {
-            $response = Http::timeout(30)->get($this->url);
+            $timeout = (int) env('LOTTERY_DOWNLOAD_TIMEOUT', 30);
+            $response = Http::timeout($timeout)->get($this->url);
 
             if (!$response->successful()) {
                 return 'Download failed';
@@ -154,6 +188,10 @@ class Downloader
 
             return '';
         } catch (\Exception $e) {
+            Log::error('Failed to download lottery CSV', [
+                'error' => $e->getMessage(),
+                'url' => $this->url,
+            ]);
             return 'Download failed';
         }
     }
@@ -172,12 +210,12 @@ class Downloader
             mkdir(self::LEGACY_DATA_PATH, 0755, true);
         }
 
-        $filepath = self::LEGACY_DATA_PATH . '/' . $this->filename . '.csv';
+        $filepath = self::LEGACY_DATA_PATH . DIRECTORY_SEPARATOR . $this->filename . '.csv';
 
         // determine a filename to rename the current file to (if there is one)
         $timestamp = date('YmdHis', time());
         $renameFilepath = (file_exists($filepath))
-            ? self::LEGACY_DATA_PATH . '/' . $this->filename . '-' . $timestamp . '.csv' : '';
+            ? self::LEGACY_DATA_PATH . DIRECTORY_SEPARATOR . $this->filename . '-' . $timestamp . '.csv' : '';
 
         // download new file
         // if it worked, then rename existing and replace with new

@@ -5,7 +5,7 @@
 @section('content')
     <div class="row">
         @foreach($games as $index => $game)
-            @if($index == 3)
+            @if($index > 0 && $index % 3 == 0)
     </div>
     <div class="row">
             @endif

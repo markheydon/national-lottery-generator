@@ -62,10 +62,9 @@ class CsvDownloadService
         // Check file modification time
         $fileTime = filemtime($filepath);
         $currentTime = time();
-        $dayInSeconds = 86400; // 24 * 60 * 60
 
-        // Download if file is older than 1 day
-        return ($currentTime - $fileTime) > $dayInSeconds;
+        // Download if file is older than 1 day (24 * 60 * 60 seconds)
+        return ($currentTime - $fileTime) > (24 * 60 * 60);
     }
 
     /**
@@ -90,7 +89,12 @@ class CsvDownloadService
         $filepath = $downloader->filePath();
         $storagePath = $downloader->storagePath();
 
-        // Get latest draw date for cache key (or use 'none' if file doesn't exist)
+        // Check if download is needed and download if necessary
+        if (self::isDownloadRequired($filepath)) {
+            $downloader->download();
+        }
+
+        // Get latest draw date for cache key after potential download
         $drawId = 'none';
         if (file_exists($filepath)) {
             $latestDrawDate = self::getLatestDrawDate($filepath);
@@ -103,16 +107,10 @@ class CsvDownloadService
 
         // Try to get from cache first
         $data = Cache::remember($cacheKey, now()->addDays(7), function () use (
-            $downloader,
             $filepath,
             $storagePath,
             $parseCallback
         ) {
-            // Check if download is needed
-            if (self::isDownloadRequired($filepath)) {
-                $downloader->download();
-            }
-
             // Parse the CSV file
             $parsed = $parseCallback($filepath);
 
@@ -123,8 +121,16 @@ class CsvDownloadService
                     $jsonPath,
                     json_encode($parsed, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
                 );
+            } catch (\JsonException $e) {
+                \Log::warning('Failed to save parsed JSON for debugging', [
+                    'path' => $jsonPath,
+                    'error' => $e->getMessage(),
+                ]);
             } catch (\Exception $e) {
-                // Silently fail - JSON storage is optional
+                \Log::warning('Failed to save parsed JSON file', [
+                    'path' => $jsonPath,
+                    'error' => $e->getMessage(),
+                ]);
             }
 
             return $parsed;
