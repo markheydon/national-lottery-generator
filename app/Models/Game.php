@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Game
  *
- * @package App
+ * @package App\Models
  *
  * @property string $last_history_download
  * @property string $game_name

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Game;
+use App\Models\Game;
 use MarkHeydon\LotteryGenerator\EuromillionsDownload;
 use MarkHeydon\LotteryGenerator\EuromillionsGenerate;
 use MarkHeydon\LotteryGenerator\EuromillionsHotpicksGenerate;
