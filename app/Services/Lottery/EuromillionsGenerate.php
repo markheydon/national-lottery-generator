@@ -188,7 +188,7 @@ class EuromillionsGenerate
      * Generate Euro Million lines by iterating through most frequent day and balls within each day.
      *
      * Will run through however many history draws there are available and generate as many lines as possible
-     * depending on the site of the data.
+     * depending on the size of the data.
      *
      * @since 1.0.0
      *
