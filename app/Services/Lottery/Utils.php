@@ -176,7 +176,7 @@ class Utils
     public static function getLatestDrawDate(array $draws): \DateTime
     {
         if (count($draws) < 1) {
-            throw new \RuntimeException('Supplied draws empty cannot be empty');
+            throw new \RuntimeException('Supplied draws array cannot be empty');
         }
 
         // make array of just the drawDate values as DateTime objects
