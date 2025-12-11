@@ -1,4 +1,5 @@
 <?php
+
 /** Base Test Case for Download lottery unit tests. */
 
 declare(strict_types=1);

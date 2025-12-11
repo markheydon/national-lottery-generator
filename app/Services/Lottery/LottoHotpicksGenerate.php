@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper class to generate numbers for the Lotto game.
  */

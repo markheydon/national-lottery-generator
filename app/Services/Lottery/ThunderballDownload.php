@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper class to download Thunderball draw history file.
  */
@@ -16,9 +17,9 @@ namespace App\Services\Lottery;
 class ThunderballDownload
 {
     /** @var string URL of the draw history. */
-    const HISTORY_DOWNLOAD_URL = 'https://www.national-lottery.co.uk/results/thunderball/draw-history/csv';
+    public const HISTORY_DOWNLOAD_URL = 'https://www.national-lottery.co.uk/results/thunderball/draw-history/csv';
     /** @var string Filename to use for the local (data directory) file. */
-    const FILENAME = 'thunderball-draw-history';
+    public const FILENAME = 'thunderball-draw-history';
 
     /**
      * Download the Lotto draw history file.

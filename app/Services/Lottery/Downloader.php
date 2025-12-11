@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper class to download draw history files.
  */

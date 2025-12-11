@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper class to download Lotto draw history file.
  */
@@ -16,9 +17,9 @@ namespace App\Services\Lottery;
 class LottoDownload
 {
     /** @var string URL of the draw history. */
-    const HISTORY_DOWNLOAD_URL = 'https://www.national-lottery.co.uk/results/lotto/draw-history/csv';
+    public const HISTORY_DOWNLOAD_URL = 'https://www.national-lottery.co.uk/results/lotto/draw-history/csv';
     /** @var string Filename to use for the local (data directory) file. */
-    const FILENAME = 'lotto-draw-history';
+    public const FILENAME = 'lotto-draw-history';
 
     /**
      * Download the Lotto draw history file.

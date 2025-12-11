@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base Test Case for Generate lottery unit tests.
  */

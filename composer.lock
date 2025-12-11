@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8151b4dface10c277f4544c3d710bb73",
+    "content-hash": "c735f554521c1fd1f1f87b134fedc7ef",
     "packages": [
         {
             "name": "brick/math",
@@ -2074,53 +2074,6 @@
                 }
             ],
             "time": "2025-12-07T16:03:21+00:00"
-        },
-        {
-            "name": "markheydon/national-lottery-library",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/markheydon/national-lottery-library.git",
-                "reference": "1c1950e963d81d730b8f937726326b1a4595305c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/markheydon/national-lottery-library/zipball/1c1950e963d81d730b8f937726326b1a4595305c",
-                "reference": "1c1950e963d81d730b8f937726326b1a4595305c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.4"
-            },
-            "require-dev": {
-                "phpmd/phpmd": "^2.6",
-                "phpunit/phpunit": "^9",
-                "squizlabs/php_codesniffer": "^3.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MarkHeydon\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Mark Heydon",
-                    "email": "contact@mhcg.co.uk",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.",
-            "support": {
-                "issues": "https://github.com/markheydon/national-lottery-library/issues",
-                "source": "https://github.com/markheydon/national-lottery-library/tree/v1.1.0"
-            },
-            "abandoned": true,
-            "time": "2022-06-19T21:15:30+00:00"
         },
         {
             "name": "monolog/monolog",
