@@ -9,8 +9,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9",
-        "markheydon/national-lottery-library": "^1.1"
+        "laravel/tinker": "^2.9"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

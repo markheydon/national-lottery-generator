@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Helper class to generate numbers for the EuroMillions game.
+ */
+
+declare(strict_types=1);
+
+namespace App\Services\Lottery;
+
+/**
+ * Helper class to generate numbers for the EuroMillions Hotpicks game.
+ *
+ * @package App\Services\Lottery
+ * @since 1.0.0
+ */
+class EuromillionsHotpicksGenerate extends EuromillionsGenerate
+{
+    /**
+     * @inheritdoc
+     */
+    protected static function getNameOfGame(): string
+    {
+        return 'EuroMillions Hotpicks';
+    }
+
+}
