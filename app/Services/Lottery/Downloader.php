@@ -56,12 +56,17 @@ class Downloader
     public function filePath(): string
     {
         // For backward compatibility with tests, use legacy path if Storage facade is not available
-        try {
-            return Storage::disk('local')->path($this->storagePath());
-        } catch (\Throwable $e) {
-            // Fallback to legacy path for unit tests
-            return self::LEGACY_DATA_PATH . '/' . $this->filename . '.csv';
+        // Check if we're in a Laravel application context
+        if (function_exists('app') && app()->bound('filesystem')) {
+            try {
+                return Storage::disk('local')->path($this->storagePath());
+            } catch (\RuntimeException $e) {
+                // Fallback to legacy path if Storage disk is not configured
+            }
         }
+        
+        // Fallback to legacy path for unit tests or when Storage is not available
+        return self::LEGACY_DATA_PATH . '/' . $this->filename . '.csv';
     }
 
     /**
@@ -92,13 +97,17 @@ class Downloader
      */
     public function download(bool $failDownload = false, bool $failRename = false): string
     {
-        // Try to use Storage facade if available (Laravel app context)
-        try {
-            return $this->downloadWithStorage($failDownload, $failRename);
-        } catch (\Throwable $e) {
-            // Fallback to legacy file operations for unit tests
-            return $this->downloadLegacy($failDownload, $failRename);
+        // Use Storage facade if available (Laravel app context), otherwise fall back to legacy
+        if (function_exists('app') && app()->bound('filesystem')) {
+            try {
+                return $this->downloadWithStorage($failDownload, $failRename);
+            } catch (\RuntimeException $e) {
+                // Fallback to legacy file operations if Storage is not configured
+            }
         }
+        
+        // Fallback to legacy file operations for unit tests
+        return $this->downloadLegacy($failDownload, $failRename);
     }
 
     /**

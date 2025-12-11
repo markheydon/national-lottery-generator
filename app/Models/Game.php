@@ -112,4 +112,28 @@ class Game
     {
         return $this->logo;
     }
+
+    /**
+     * Get the Downloader instance for this game's CSV data.
+     *
+     * @return \App\Services\Lottery\Downloader|null Downloader instance or null if game doesn't have one
+     */
+    public function getDownloader(): ?\App\Services\Lottery\Downloader
+    {
+        return match (strtolower($this->name)) {
+            'lotto', 'lotto hotpicks' => new \App\Services\Lottery\Downloader(
+                \App\Services\Lottery\LottoDownload::HISTORY_DOWNLOAD_URL,
+                \App\Services\Lottery\LottoDownload::FILENAME
+            ),
+            'euromillions', 'euromillions hotpicks' => new \App\Services\Lottery\Downloader(
+                \App\Services\Lottery\EuromillionsDownload::HISTORY_DOWNLOAD_URL,
+                \App\Services\Lottery\EuromillionsDownload::FILENAME
+            ),
+            'thunderball' => new \App\Services\Lottery\Downloader(
+                \App\Services\Lottery\ThunderballDownload::HISTORY_DOWNLOAD_URL,
+                \App\Services\Lottery\ThunderballDownload::FILENAME
+            ),
+            default => null,
+        };
+    }
 }

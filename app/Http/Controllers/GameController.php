@@ -11,7 +11,6 @@ use App\Services\Lottery\LottoGenerate;
 use App\Services\Lottery\LottoHotpicksGenerate;
 use App\Services\Lottery\ThunderballDownload;
 use App\Services\Lottery\ThunderballGenerate;
-use App\Services\Lottery\Downloader;
 use App\Services\Lottery\CsvDownloadService;
 
 class GameController extends Controller
@@ -51,7 +50,7 @@ class GameController extends Controller
         }
 
         // Check if download is required for this game
-        $downloadRequired = $this->isDownloadRequiredForGame($game->getGameName());
+        $downloadRequired = $this->isDownloadRequiredForGame($game);
 
         // Rubbish way to check which generate to call, but will do for now.
         $generate = [];
@@ -86,26 +85,12 @@ class GameController extends Controller
     /**
      * Check if download is required for a game.
      *
-     * @param string $gameName Game name
+     * @param Game $game Game instance
      * @return bool True if download is needed
      */
-    private function isDownloadRequiredForGame(string $gameName): bool
+    private function isDownloadRequiredForGame(Game $game): bool
     {
-        $downloader = match (strtolower($gameName)) {
-            'lotto', 'lotto hotpicks' => new Downloader(
-                LottoDownload::HISTORY_DOWNLOAD_URL,
-                LottoDownload::FILENAME
-            ),
-            'euromillions', 'euromillions hotpicks' => new Downloader(
-                EuromillionsDownload::HISTORY_DOWNLOAD_URL,
-                EuromillionsDownload::FILENAME
-            ),
-            'thunderball' => new Downloader(
-                ThunderballDownload::HISTORY_DOWNLOAD_URL,
-                ThunderballDownload::FILENAME
-            ),
-            default => null,
-        };
+        $downloader = $game->getDownloader();
 
         if (!$downloader) {
             return true;
