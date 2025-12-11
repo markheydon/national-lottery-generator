@@ -44,7 +44,7 @@ class GameController extends Controller
     {
         // Find the game by slug
         $game = Game::findBySlug($slug);
-        
+
         if (!$game) {
             abort(404, 'Game not found');
         }

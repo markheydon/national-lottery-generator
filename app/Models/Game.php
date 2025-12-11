@@ -50,7 +50,7 @@ class Game
     {
         $gamesConfig = config('games.games', []);
         $games = [];
-        
+
         foreach ($gamesConfig as $gameConfig) {
             $games[] = new self(
                 $gameConfig['slug'],
@@ -58,7 +58,7 @@ class Game
                 $gameConfig['logo']
             );
         }
-        
+
         return $games;
     }
 
@@ -71,13 +71,13 @@ class Game
     public static function findBySlug(string $slug): ?Game
     {
         $games = self::all();
-        
+
         foreach ($games as $game) {
             if ($game->slug === $slug) {
                 return $game;
             }
         }
-        
+
         return null;
     }
 

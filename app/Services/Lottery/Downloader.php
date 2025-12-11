@@ -64,7 +64,7 @@ class Downloader
                 // Fallback to legacy path if Storage disk is not configured
             }
         }
-        
+
         // Fallback to legacy path for unit tests or when Storage is not available
         return self::LEGACY_DATA_PATH . '/' . $this->filename . '.csv';
     }
@@ -105,7 +105,7 @@ class Downloader
                 // Fallback to legacy file operations if Storage is not configured
             }
         }
-        
+
         // Fallback to legacy file operations for unit tests
         return $this->downloadLegacy($failDownload, $failRename);
     }
@@ -120,12 +120,12 @@ class Downloader
     private function downloadWithStorage(bool $failDownload, bool $failRename): string
     {
         $storagePath = $this->storagePath();
-        
+
         // Create backup of existing file if it exists
         if (Storage::disk('local')->exists($storagePath)) {
             $timestamp = date('YmdHis', time());
             $backupPath = self::STORAGE_PATH . '/' . $this->filename . '-' . $timestamp . '.csv';
-            
+
             if (!$failRename) {
                 try {
                     Storage::disk('local')->copy($storagePath, $backupPath);
@@ -144,14 +144,14 @@ class Downloader
 
         try {
             $response = Http::timeout(30)->get($this->url);
-            
+
             if (!$response->successful()) {
                 return 'Download failed';
             }
-            
+
             // Save to storage
             Storage::disk('local')->put($storagePath, $response->body());
-            
+
             return '';
         } catch (\Exception $e) {
             return 'Download failed';
