@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
-use MarkHeydon\LotteryGenerator\EuromillionsDownload;
-use MarkHeydon\LotteryGenerator\EuromillionsGenerate;
-use MarkHeydon\LotteryGenerator\EuromillionsHotpicksGenerate;
-use MarkHeydon\LotteryGenerator\LottoDownload;
-use MarkHeydon\LotteryGenerator\LottoGenerate;
-use MarkHeydon\LotteryGenerator\LottoHotpicksGenerate;
-use MarkHeydon\LotteryGenerator\ThunderballDownload;
-use MarkHeydon\LotteryGenerator\ThunderballGenerate;
+use App\Services\Lottery\EuromillionsDownload;
+use App\Services\Lottery\EuromillionsGenerate;
+use App\Services\Lottery\EuromillionsHotpicksGenerate;
+use App\Services\Lottery\LottoDownload;
+use App\Services\Lottery\LottoGenerate;
+use App\Services\Lottery\LottoHotpicksGenerate;
+use App\Services\Lottery\ThunderballDownload;
+use App\Services\Lottery\ThunderballGenerate;
 
 class GameController extends Controller
 {

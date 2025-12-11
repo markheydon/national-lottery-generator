@@ -17,6 +17,7 @@ public_html/storage
 public_html/hot
 
 storage/*.key
+storage/app/lottery-data/*.csv
 .env
 Homestead.yaml
 Homestead.json
