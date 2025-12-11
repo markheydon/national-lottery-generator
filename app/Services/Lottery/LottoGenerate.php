@@ -170,6 +170,9 @@ class LottoGenerate
         $lines = [];
         $machines = self::getMachineNames($draws);
         foreach ($machines as $machine) {
+            // Some madness going on where sometimes there's just a number for machine.
+            $machine = (string) $machine;
+            
             // Loop through ball sets (for single machine).
             $machineDraws = self::filterDrawsByMachine($draws, $machine);
             $ballSets = self::getBallSets($machineDraws);
