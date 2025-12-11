@@ -8,21 +8,39 @@ declare(strict_types=1);
 
 namespace App\Services\Lottery;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+
 /**
  * Helper class to download draw history files.
+ *
+ * Uses Laravel's Cache and Storage facades to implement cache-aside pattern.
  *
  * @package App\Services\Lottery
  * @since 1.0.0
  */
 class Downloader
 {
-    /** @var string The data folder path. */
-    private const DATA_PATH = __DIR__ . '/../../../storage/app/lottery-data';
+    /** @var string The storage subdirectory for lottery data. */
+    private const STORAGE_PATH = 'lottery';
 
     /** @var string Filename to use for successful download (excluding .csv). */
     private $filename;
     /** @var string URL to download from. */
     private $url;
+
+    /**
+     * Returns the storage path for the CSV file (without storage/app/).
+     *
+     * @since 1.0.0
+     *
+     * @return string Storage path of the download file.
+     */
+    public function storagePath(): string
+    {
+        return self::STORAGE_PATH . '/' . $this->filename . '.csv';
+    }
 
     /**
      * Returns the full filepath of the download file.
@@ -35,7 +53,7 @@ class Downloader
      */
     public function filePath(): string
     {
-        return self::DATA_PATH . '/' . $this->filename . '.csv';
+        return Storage::disk('local')->path($this->storagePath());
     }
 
     /**
@@ -53,7 +71,9 @@ class Downloader
     }
 
     /**
-     * Download the draw history file to the 'data' directory.
+     * Download the draw history file to storage.
+     *
+     * Uses Laravel's Storage facade to save files to storage/app/lottery/.
      *
      * @since 1.0.0
      *
@@ -63,31 +83,42 @@ class Downloader
      */
     public function download(bool $failDownload = false, bool $failRename = false): string
     {
-        // Ensure the data directory exists
-        if (!file_exists(self::DATA_PATH)) {
-            mkdir(self::DATA_PATH, 0755, true);
-        }
-
-        // determine a filename to rename the current file to (if there is one)
-        $timestamp = date('YmdHis', time());
-        $renameFilepath = (file_exists($this->filePath()))
-            ? self::DATA_PATH . '/' . $this->filename . '-' . $timestamp . '.csv' : '';
-
-        // download new file
-        // if it worked, then rename existing and replace with new
-        // otherwise report failure
-        $tempFilename = tempnam(sys_get_temp_dir(), 'lotto-draw-history');
-        $downloadResult = $failDownload ? false : file_put_contents($tempFilename, fopen($this->url, 'r'));
-        if (false === $downloadResult) {
-            return 'Download failed';
-        }
-        if (strlen($renameFilepath) > 0) {
-            $renameResult = $failRename ? false : rename($this->filePath(), $renameFilepath);
-            if (false === $renameResult) {
+        $storagePath = $this->storagePath();
+        
+        // Create backup of existing file if it exists
+        if (Storage::disk('local')->exists($storagePath)) {
+            $timestamp = date('YmdHis', time());
+            $backupPath = self::STORAGE_PATH . '/' . $this->filename . '-' . $timestamp . '.csv';
+            
+            if (!$failRename) {
+                try {
+                    Storage::disk('local')->copy($storagePath, $backupPath);
+                } catch (\Exception $e) {
+                    return 'Backup of old history file failed';
+                }
+            } else {
                 return 'Renaming of old history file failed';
             }
         }
-        $finalResult = rename($tempFilename, $this->filePath());
-        return $finalResult ? '' : 'Renaming of newly download history file failed';
+
+        // Download new file
+        if ($failDownload) {
+            return 'Download failed';
+        }
+
+        try {
+            $response = Http::timeout(30)->get($this->url);
+            
+            if (!$response->successful()) {
+                return 'Download failed';
+            }
+            
+            // Save to storage
+            Storage::disk('local')->put($storagePath, $response->body());
+            
+            return '';
+        } catch (\Exception $e) {
+            return 'Download failed';
+        }
     }
 }

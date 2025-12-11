@@ -2,19 +2,95 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * Class Game
  *
- * @package App\Models
+ * Represents a lottery game configuration.
+ * This is no longer a database model - games are now defined in config/games.php.
  *
- * @property string $last_history_download
- * @property string $game_name
- * @property string $game_logo
+ * @package App\Models
  */
-class Game extends Model
+class Game
 {
+    /**
+     * @var string The game slug (URL identifier)
+     */
+    private string $slug;
+
+    /**
+     * @var string The game name
+     */
+    private string $name;
+
+    /**
+     * @var string The game logo filename
+     */
+    private string $logo;
+
+    /**
+     * Game constructor.
+     *
+     * @param string $slug Game slug
+     * @param string $name Game name
+     * @param string $logo Game logo filename
+     */
+    public function __construct(string $slug, string $name, string $logo)
+    {
+        $this->slug = $slug;
+        $this->name = $name;
+        $this->logo = $logo;
+    }
+
+    /**
+     * Get all games from configuration.
+     *
+     * @return array<Game>
+     */
+    public static function all(): array
+    {
+        $gamesConfig = config('games.games', []);
+        $games = [];
+        
+        foreach ($gamesConfig as $gameConfig) {
+            $games[] = new self(
+                $gameConfig['slug'],
+                $gameConfig['name'],
+                $gameConfig['logo']
+            );
+        }
+        
+        return $games;
+    }
+
+    /**
+     * Find a game by slug.
+     *
+     * @param string $slug Game slug
+     * @return Game|null
+     */
+    public static function findBySlug(string $slug): ?Game
+    {
+        $games = self::all();
+        
+        foreach ($games as $game) {
+            if ($game->slug === $slug) {
+                return $game;
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get the game slug.
+     *
+     * @return string The game slug.
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
     /**
      * The game name.
      *
@@ -22,7 +98,7 @@ class Game extends Model
      */
     public function getGameName(): string
     {
-        return $this->game_name;
+        return $this->name;
     }
 
     /**
@@ -34,23 +110,6 @@ class Game extends Model
      */
     public function getGameLogo(): string
     {
-        return $this->game_logo;
-    }
-
-    /**
-     * The last history download datetime.
-     *
-     * Will return January 1st, 1970 as a default.
-     *
-     * @return \DateTime The last history download datetime.
-     * @throws \Exception new \DateTime could fail in theory but shouldn't.
-     */
-    public function getLastHistoryDownload(): \DateTime
-    {
-        $lastDownloaded = $this->last_history_download;
-        $result = (null === $lastDownloaded)
-            ? (new \DateTime())->setTimestamp(0)
-            : new \DateTime($lastDownloaded);
-        return $result;
+        return $this->logo;
     }
 }

@@ -13,9 +13,13 @@ return [
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
     |
+    | Note: This application no longer requires a database connection.
+    | Database functionality is optional and primarily for Laravel's
+    | internal features like sessions or cache (if configured to use DB).
+    |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------
