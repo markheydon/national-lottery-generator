@@ -158,7 +158,7 @@ class LottoGenerate
      * Generate lotto lines by iterating through most frequent machine, ball set and balls within that set.
      *
      * Will run through however many history draws there are available and generate as many lines as possible
-     * depending on the site of the data.
+     * depending on the size of the data.
      *
      * @since 1.0.0
      *
