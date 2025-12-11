@@ -98,10 +98,14 @@ class LottoDownload
             return [];
         }
         $split = explode(';', $raffles);
+        if (count($split) < 2) {
+            // No semicolon found, treat the whole string as a single raffle number (or comma-separated list)
+            return array_map('trim', explode(',', $raffles));
+        }
         $first = $split[0];
         $others = explode(',', $split[1]);
         $result = array_merge([$first], $others);
-        return $result;
+        return array_map('trim', $result);
     }
 
     /**
