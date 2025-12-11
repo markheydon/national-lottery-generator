@@ -68,7 +68,7 @@ class Downloader
             mkdir(self::DATA_PATH, 0755, true);
         }
 
-        // workout a filename to rename the current file to (if there is one)
+        // determine a filename to rename the current file to (if there is one)
         $timestamp = date('YmdHis', time());
         $renameFilepath = (file_exists($this->filePath()))
             ? self::DATA_PATH . '/' . $this->filename . '-' . $timestamp . '.csv' : '';
