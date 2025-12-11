@@ -73,12 +73,12 @@ This project follows [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standa
 
 Run Pint to check code style:
 ```bash
-./vendor/bin/sail exec laravel.test ./vendor/bin/pint --test
+./vendor/bin/sail pint --test
 ```
 
 Automatically fix code style issues:
 ```bash
-./vendor/bin/sail exec laravel.test ./vendor/bin/pint
+./vendor/bin/sail pint
 ```
 
 Or without Sail:
