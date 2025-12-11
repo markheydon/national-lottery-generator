@@ -4,6 +4,89 @@
 
 Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.
 
+## Requirements
+
+- **PHP**: 8.2 or higher
+- **Laravel**: 11.x (LTS)
+- **Docker** (optional, recommended for local development via Laravel Sail)
+
+## Local Development with Laravel Sail
+
+Laravel Sail provides a simple way to run the application locally with Docker. No need to install PHP, MySQL, or other dependencies on your machine.
+
+### First Time Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/markheydon/national-lottery-generator.git
+   cd national-lottery-generator
+   ```
+
+2. Install Composer dependencies (requires PHP 8.2+ on host, or use a Docker container):
+   ```bash
+   docker run --rm \
+       -u "$(id -u):$(id -g)" \
+       -v "$(pwd):/var/www/html" \
+       -w /var/www/html \
+       laravelsail/php83-composer:latest \
+       composer install --ignore-platform-reqs
+   ```
+
+3. Copy the environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Start Sail:
+   ```bash
+   ./vendor/bin/sail up -d
+   ```
+
+5. Generate application key:
+   ```bash
+   ./vendor/bin/sail artisan key:generate
+   ```
+
+6. Run migrations and seed the database:
+   ```bash
+   ./vendor/bin/sail artisan migrate:fresh --seed
+   ```
+
+7. Access the application at [http://localhost](http://localhost)
+
+### Daily Development
+
+```bash
+# Start the development environment
+./vendor/bin/sail up -d
+
+# Run tests
+./vendor/bin/sail artisan test
+
+# Stop the environment
+./vendor/bin/sail down
+```
+
+### Code Style
+
+This project follows [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standards. Laravel Pint is configured to enforce these standards.
+
+Run Pint to check code style:
+```bash
+./vendor/bin/sail exec laravel.test ./vendor/bin/pint --test
+```
+
+Automatically fix code style issues:
+```bash
+./vendor/bin/sail exec laravel.test ./vendor/bin/pint
+```
+
+Or without Sail:
+```bash
+./vendor/bin/pint --test  # Check only
+./vendor/bin/pint         # Fix issues
+```
+
 ## Deployment on Azure App Services
 
 I have this web app deployed on Azure App Services. The following sections describe the configuration required to get it working.
