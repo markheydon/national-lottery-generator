@@ -66,8 +66,8 @@ class Downloader
             // Silently catch any errors
         }
 
-        // In unit tests without full Laravel app, assume testing
-        return true;
+        // If unable to determine, assume not testing to avoid suppressing logs
+        return false;
     }
 
     /**
