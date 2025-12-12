@@ -62,14 +62,29 @@ class ThunderballGenerate
         $latestDrawDate = Utils::getLatestDrawDate($allDraws);
 
         // Build some generated lines of 'random' numbers and return
-        $linesMethod1 = self::generateMostFrequentTogether($allDraws);
-        $linesMethod2 = self::generateMostFrequent($allDraws);
-        $linesMethod3 = self::generateFullIteration($allDraws);
+        $linesFrequentTogether = self::generateMostFrequentTogether($allDraws);
+        $linesFullIteration = self::generateFullIteration($allDraws);
 
+        // Find the most popular Thunderball number across all generated lines
+        $mostPopularThunderball = self::findMostPopularThunderball($linesFrequentTogether, $linesFullIteration);
+
+        // Find first line from full-iteration with the most popular Thunderball and its index
+        $firstLineIndex = self::findFirstLineIndexWithThunderball($linesFullIteration, $mostPopularThunderball);
+        $firstLineWithPopularThunderball = ($firstLineIndex !== null) ? $linesFullIteration[$firstLineIndex] : $linesFullIteration[0];
+
+        // Remove this line from full-iteration to avoid duplication
+        $remainingFullIterationLines = $linesFullIteration;
+        if ($firstLineIndex !== null) {
+            array_splice($remainingFullIterationLines, $firstLineIndex, 1);
+        }
+
+        // Build lines array structure. GameController.buildViewDataArray will take the first
+        // line from each method as 'suggested' lines, resulting in:
+        // Line 1: most-popular-thunderball, Line 2: most-freq-together, Line 3+: full-iteration
         $lines = [
-            'most-freq' => $linesMethod2,
-            'most-freq-together' => $linesMethod1,
-            'full-iteration' => $linesMethod3,
+            'most-popular-thunderball' => [$firstLineWithPopularThunderball],
+            'most-freq-together' => $linesFrequentTogether,
+            'full-iteration' => $remainingFullIterationLines,
         ];
         $lineBalls = [
             'mainNumbers' => static::getNumOfMainBalls(),
@@ -91,6 +106,68 @@ class ThunderballGenerate
     }
 
     /**
+     * Find the most popular Thunderball number across all generated lines.
+     *
+     * Counts the frequency of each Thunderball number across all provided lines
+     * and returns the most frequently occurring one. If no valid Thunderball data
+     * exists in the lines, returns 1 as a safe default (Thunderball range is 1-14).
+     *
+     * @param array $lines1 First set of lines to analyze.
+     * @param array $lines2 Second set of lines to analyze.
+     * @return int The most popular Thunderball number, or 1 if no valid data exists.
+     */
+    protected static function findMostPopularThunderball(array $lines1, array $lines2): int
+    {
+        $thunderballCounts = [];
+
+        // Count occurrences from all lines
+        $allLines = array_merge($lines1, $lines2);
+        foreach ($allLines as $line) {
+            if (isset($line['thunderball']) && is_array($line['thunderball']) && count($line['thunderball']) > 0) {
+                $thunderball = $line['thunderball'][0];
+                if (!isset($thunderballCounts[$thunderball])) {
+                    $thunderballCounts[$thunderball] = 0;
+                }
+                $thunderballCounts[$thunderball]++;
+            }
+        }
+
+        // Find the most popular one
+        if (empty($thunderballCounts)) {
+            return 1; // Default fallback
+        }
+
+        arsort($thunderballCounts);
+        reset($thunderballCounts);
+        return key($thunderballCounts);
+    }
+
+    /**
+     * Find the index of the first line with the specified Thunderball number.
+     *
+     * Searches through the provided lines and returns the array index of the first
+     * line that contains the specified Thunderball number. Returns null if no matching
+     * line is found.
+     *
+     * @param array $lines Lines to search through.
+     * @param int $thunderball The Thunderball number to find.
+     * @return int|null The index of the first line with the specified Thunderball, or null if not found.
+     */
+    protected static function findFirstLineIndexWithThunderball(array $lines, int $thunderball): ?int
+    {
+        foreach ($lines as $index => $line) {
+            if (isset($line['thunderball']) && is_array($line['thunderball']) && count($line['thunderball']) > 0) {
+                if ($line['thunderball'][0] === $thunderball) {
+                    return $index;
+                }
+            }
+        }
+
+        // Return null if not found
+        return null;
+    }
+
+    /**
      * Generate a line by finding balls that occurs most frequently across all data together.
      *
      * I.e. looks for numbers that occur within the same lines together, not across the whole data set.
@@ -105,22 +182,6 @@ class ThunderballGenerate
         // return as array to keep consistence with other generate method(s)
         $lines = [];
         $lines[] = self::getFrequentlyOccurringBalls($draws, true);
-        return $lines;
-    }
-
-    /**
-     * Generate a lotto line by finding balls that occurs most frequently across all data.
-     *
-     * @since 1.0.0
-     *
-     * @param array $draws The draws array to use.
-     * @return array Array of lines generated.
-     */
-    protected static function generateMostFrequent(array $draws): array
-    {
-        // return as array to keep consistence with other generate method(s)
-        $lines = [];
-        $lines[] = self::getFrequentlyOccurringBalls($draws, false);
         return $lines;
     }
 
