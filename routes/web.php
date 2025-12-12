@@ -5,4 +5,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [GameController::class, 'index']);
 
-Route::get('/game/{game}/generate', [GameController::class, 'generate']);
+Route::get('/game/{slug}/generate', [GameController::class, 'generate']);
