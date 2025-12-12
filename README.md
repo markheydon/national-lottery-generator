@@ -10,9 +10,11 @@ Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arse
 - **Laravel**: 11.x (LTS)
 - **Docker** (optional, recommended for local development via Laravel Sail)
 
+**Note**: This application no longer requires a database. All data is stored using Laravel's file cache and filesystem storage.
+
 ## Local Development with Laravel Sail
 
-Laravel Sail provides a simple way to run the application locally with Docker. No need to install PHP, MySQL, or other dependencies on your machine.
+Laravel Sail provides a simple way to run the application locally with Docker. No need to install PHP or other dependencies on your machine.
 
 ### First Time Setup
 
@@ -47,12 +49,7 @@ Laravel Sail provides a simple way to run the application locally with Docker. N
    ./vendor/bin/sail artisan key:generate
    ```
 
-6. Run migrations and seed the database:
-   ```bash
-   ./vendor/bin/sail artisan migrate:fresh --seed
-   ```
-
-7. Access the application at [http://localhost](http://localhost)
+6. Access the application at [http://localhost](http://localhost)
 
 ### Daily Development
 
@@ -87,6 +84,21 @@ Or without Sail:
 ./vendor/bin/pint         # Fix issues
 ```
 
+## How It Works
+
+The application uses Laravel's **file cache** and **filesystem storage** to manage lottery data:
+
+- **CSV Downloads**: Lottery draw history CSV files are downloaded from the National Lottery website and stored in `storage/app/lottery/`
+- **Caching**: Parsed draw data is cached using Laravel's file cache driver to avoid re-downloading and re-parsing between requests
+- **Auto-Refresh**: Downloads are automatically refreshed when files are older than 1 day
+- **File Storage**: All data is persisted to disk - no database required
+
+### Storage Locations
+
+- CSV files: `storage/app/lottery/*.csv`
+- Parsed JSON: `storage/app/lottery/*.json` (optional, for debugging)
+- Cache data: `storage/framework/cache/data/`
+
 ## Deployment on Azure App Services
 
 I have this web app deployed on Azure App Services. The following sections describe the configuration required to get it working.
@@ -99,35 +111,23 @@ Supplied [`nginx-default`](nginx-default) file can be used by setting the follow
 cp /home/site/wwwroot/nginx-default /etc/nginx/sites-available/default && service nginx reload
 ```
 
-### Database Configuration (Azure MySQL)
-
-The following environment variables need to be set in the Configuration->Application settings section to use Azure MySQL:
-
-```
-[
-    {
-        "name": "DB_CONNECTION",
-        "value": "azure-mysql",
-        "slotSetting": false
-    },
-    {
-        "name": "MYSQL_ATTR_SSL_CA",
-        "value": "/home/site/wwwroot/ssl/DigiCertGlobalRootCA.crt.pem",
-        "slotSetting": false
-    }
-]
-```
-
-The `DB_CONNECTION` value is used in the `config/database.php` file to determine which database connection to use, in this case, the `azure-mysql` connection. The `azure-mysql` connection is defined in the `config/database.php` file to use the various AZURE_MYSQL_* environment variables that get created when using the Azure Marketplace Web App + Database offer.
-
-The SSL certificate is required to connect to Azure MySQL. The certificate is in the `ssl` folder in the root of the application.
-
 ### Laravel Configuration
 
 As with all Laravel apps, the `APP_KEY` environment variable needs to be set in the Configuration->Application settings section.
 
-Additionally, once the database is setup, the following command need to be run from SSH in the `wwwroot` folder of the application to create the tables and seed the database with the pre-set list of games.
+The following cache and filesystem settings should be configured:
 
-```
-php artisan migrate:fresh --seed
+```json
+[
+    {
+        "name": "CACHE_DRIVER",
+        "value": "file",
+        "slotSetting": false
+    },
+    {
+        "name": "FILESYSTEM_DISK",
+        "value": "local",
+        "slotSetting": false
+    }
+]
 ```

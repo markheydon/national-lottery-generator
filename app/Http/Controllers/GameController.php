@@ -11,6 +11,7 @@ use App\Services\Lottery\LottoGenerate;
 use App\Services\Lottery\LottoHotpicksGenerate;
 use App\Services\Lottery\ThunderballDownload;
 use App\Services\Lottery\ThunderballGenerate;
+use App\Services\Lottery\CsvDownloadService;
 
 class GameController extends Controller
 {
@@ -35,15 +36,21 @@ class GameController extends Controller
     /**
      * Displays generated number for the specified Game.
      *
-     * @param Game $game Game to generate numbers for.
+     * @param string $slug Game slug to generate numbers for.
      *
      * @return \Illuminate\Http\Response
-     * @throws \Exception new \DateTime could fail in theory but shouldn't.
      */
-    public function generate(Game $game)
+    public function generate(string $slug)
     {
-        // Deal with history download required (or not).
-        $downloadRequired = self::isDownloadRequired($game->getLastHistoryDownload());
+        // Find the game by slug
+        $game = Game::findBySlug($slug);
+
+        if (!$game) {
+            abort(404, 'Game not found');
+        }
+
+        // Check if download is required for this game
+        $downloadRequired = $this->isDownloadRequiredForGame($game);
 
         // Rubbish way to check which generate to call, but will do for now.
         $generate = [];
@@ -64,13 +71,7 @@ class GameController extends Controller
                 $generate = self::generateEuroMillionsHotpicks($downloadRequired);
                 break;
             default:
-                dd('Unsupported Game Name: ' . $game->getGameName());
-        }
-
-        // Private generate...() method will have downloaded, so update the last_history_download datetime.
-        if ($downloadRequired) {
-            $game->last_history_download = new \DateTime();
-            $game->save();
+                abort(500, 'Unsupported Game Name: ' . $game->getGameName());
         }
 
         // Build the stuff we are interested in for the view.
@@ -82,19 +83,20 @@ class GameController extends Controller
     }
 
     /**
-     * Decide if new download required based on game history download date.
+     * Check if download is required for a game.
      *
-     * @param \DateTime $lastDownloaded of last history download.
-     *
-     * @return bool True is download needed; false otherwise.
-     * @throws \Exception new \DateTime could fail in theory but shouldn't.
+     * @param Game $game Game instance
+     * @return bool True if download is needed
      */
-    private static function isDownloadRequired(\DateTime $lastDownloaded): bool
+    private function isDownloadRequiredForGame(Game $game): bool
     {
-        $dateDiff = $lastDownloaded->diff(new \DateTime());
-        $result = ($dateDiff->d > 0);
+        $downloader = $game->getDownloader();
 
-        return $result;
+        if (!$downloader) {
+            return true;
+        }
+
+        return CsvDownloadService::isDownloadRequired($downloader->filePath());
     }
 
     /**
