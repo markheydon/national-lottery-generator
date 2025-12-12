@@ -63,7 +63,11 @@ class Downloader
                 return $app->environment('testing');
             }
         } catch (\Throwable $e) {
-            // Silently catch any errors
+            // Log the error instead of silently catching it
+            Log::warning('Exception during environment check in Downloader::isTestingEnvironment', [
+                'error' => $e->getMessage(),
+                'exception' => $e,
+            ]);
         }
 
         // If unable to determine, assume not testing to avoid suppressing logs
