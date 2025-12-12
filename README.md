@@ -114,7 +114,7 @@ The repository includes sample CSV files in `storage/app/lottery-data/` director
 - They contain a small subset of historical draw data for testing purposes only
 - During runtime, the application downloads fresh data from the National Lottery website
 - Downloaded files are stored in `storage/app/lottery/` (not `lottery-data/`)
-- Backup files with timestamps (e.g., `lotto-draw-history-20241211120000.csv`) are created automatically when downloads occur and should not be committed to the repository
+- Backup files with timestamps (e.g., `lotto-draw-history-YYYYMMDDHHMMSS.csv`) are created automatically when downloads occur and should not be committed to the repository
 
 ## Deployment on Azure App Services
 
