@@ -138,21 +138,17 @@ class Downloader
                 return $this->downloadWithStorage($failDownload, $failRename);
             } catch (\RuntimeException $e) {
                 // Log the fallback in non-testing environments
-                if (!$this->isTestingEnvironment()) {
-                    Log::warning('Storage facade failed, falling back to legacy download', [
-                        'error' => $e->getMessage(),
-                        'url' => $this->url,
-                    ]);
-                }
+                Log::warning('Storage facade failed, falling back to legacy download', [
+                    'error' => $e->getMessage(),
+                    'url' => $this->url,
+                ]);
             } catch (\Exception $e) {
                 // Catch other exceptions that might occur during Storage operations
-                if (!$this->isTestingEnvironment()) {
-                    Log::error('Unexpected error during Storage download, falling back to legacy', [
-                        'error' => $e->getMessage(),
-                        'type' => get_class($e),
-                        'url' => $this->url,
-                    ]);
-                }
+                Log::error('Unexpected error during Storage download, falling back to legacy', [
+                    'error' => $e->getMessage(),
+                    'type' => get_class($e),
+                    'url' => $this->url,
+                ]);
             }
         }
 
