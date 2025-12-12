@@ -187,7 +187,7 @@ tests/              # PHPUnit tests
 
 ## Getting Help
 
-- Review the main [README.md](../README.md) for setup instructions
+- Review the main README.md in the repository root for setup instructions
 - Check Laravel 11 documentation: https://laravel.com/docs/11.x
 - Review existing code for patterns and conventions
 - Ask questions if requirements are unclear
