@@ -99,6 +99,23 @@ The application uses Laravel's **file cache** and **filesystem storage** to mana
 - Parsed JSON: `storage/app/lottery/*.json` (optional, for debugging)
 - Cache data: `storage/framework/cache/data/`
 
+### Sample CSV Files for Testing
+
+The repository includes sample CSV files in `storage/app/lottery-data/` directory:
+
+- `lotto-draw-history.csv` - Sample Lotto draw history data
+- `euromillions-draw-history.csv` - Sample EuroMillions draw history data
+- `thunderball-draw-history.csv` - Sample Thunderball draw history data
+
+**Purpose**: These sample files are included in the repository to enable unit tests to run without requiring a network connection to download live data. The unit tests use these files through the "legacy data path" fallback mechanism in the `Downloader` class.
+
+**Important Notes**:
+- These are static sample files and not updated automatically
+- They contain a small subset of historical draw data for testing purposes only
+- During runtime, the application downloads fresh data from the National Lottery website
+- Downloaded files are stored in `storage/app/lottery/` (not `lottery-data/`)
+- Backup files with timestamps (e.g., `lotto-draw-history-YYYYMMDDHHMMSS.csv`) are created automatically when downloads occur and should not be committed to the repository
+
 ## Deployment on Azure App Services
 
 I have this web app deployed on Azure App Services. The following sections describe the configuration required to get it working.
