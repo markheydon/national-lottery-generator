@@ -26,11 +26,25 @@ This is a Laravel 11 application that generates National Lottery numbers using a
 ### General Conventions
 
 - Follow Laravel best practices and conventions
-- Use meaningful variable and function names
+- Use meaningful variable and function names (avoid generic names like `$var`, `$method1`, `$method2`)
 - Write clear, self-documenting code
 - Keep controllers thin, use services for business logic
 - Follow RESTful principles for API endpoints
 - Use Laravel's built-in features (validation, eloquent, etc.)
+
+### Code Quality Best Practices
+
+- **Variable Naming**: Use descriptive names that clearly indicate purpose (e.g., `$linesFrequentTogether` instead of `$linesMethod1`)
+- **Method Visibility**: Use `protected` instead of `private` for helper methods that may need testing
+- **Documentation**: Include comprehensive PHPDoc comments explaining:
+  - What the method does
+  - Edge cases and fallback behavior
+  - Return types and what they mean in different scenarios
+- **Testing**: Write unit tests for new helper methods, especially for edge cases like:
+  - Empty inputs
+  - Missing or invalid data
+  - Boundary conditions (e.g., index 0 vs null)
+- **Comments**: Clarify non-obvious behavior in comments (e.g., how data structures flow between methods)
 
 ## Project Structure
 

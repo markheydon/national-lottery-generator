@@ -62,26 +62,28 @@ class ThunderballGenerate
         $latestDrawDate = Utils::getLatestDrawDate($allDraws);
 
         // Build some generated lines of 'random' numbers and return
-        $linesMethod1 = self::generateMostFrequentTogether($allDraws);
-        $linesMethod3 = self::generateFullIteration($allDraws);
+        $linesFrequentTogether = self::generateMostFrequentTogether($allDraws);
+        $linesFullIteration = self::generateFullIteration($allDraws);
 
         // Find the most popular Thunderball number across all generated lines
-        $mostPopularThunderball = self::findMostPopularThunderball($linesMethod1, $linesMethod3);
+        $mostPopularThunderball = self::findMostPopularThunderball($linesFrequentTogether, $linesFullIteration);
 
         // Find first line from full-iteration with the most popular Thunderball and its index
-        $firstLineIndex = self::findFirstLineIndexWithThunderball($linesMethod3, $mostPopularThunderball);
-        $firstLineWithPopularThunderball = ($firstLineIndex !== null) ? $linesMethod3[$firstLineIndex] : $linesMethod3[0];
+        $firstLineIndex = self::findFirstLineIndexWithThunderball($linesFullIteration, $mostPopularThunderball);
+        $firstLineWithPopularThunderball = ($firstLineIndex !== null) ? $linesFullIteration[$firstLineIndex] : $linesFullIteration[0];
 
         // Remove this line from full-iteration to avoid duplication
-        $remainingFullIterationLines = $linesMethod3;
+        $remainingFullIterationLines = $linesFullIteration;
         if ($firstLineIndex !== null) {
             array_splice($remainingFullIterationLines, $firstLineIndex, 1);
         }
 
-        // Reorder lines: new line 1 (popular thunderball), line 2 (most-freq-together), rest (full-iteration)
+        // Build lines array structure. GameController.buildViewDataArray will take the first
+        // line from each method as 'suggested' lines, resulting in:
+        // Line 1: most-popular-thunderball, Line 2: most-freq-together, Line 3+: full-iteration
         $lines = [
             'most-popular-thunderball' => [$firstLineWithPopularThunderball],
-            'most-freq-together' => $linesMethod1,
+            'most-freq-together' => $linesFrequentTogether,
             'full-iteration' => $remainingFullIterationLines,
         ];
         $lineBalls = [
@@ -106,11 +108,15 @@ class ThunderballGenerate
     /**
      * Find the most popular Thunderball number across all generated lines.
      *
+     * Counts the frequency of each Thunderball number across all provided lines
+     * and returns the most frequently occurring one. If no valid Thunderball data
+     * exists in the lines, returns 1 as a safe default (Thunderball range is 1-14).
+     *
      * @param array $lines1 First set of lines to analyze.
      * @param array $lines2 Second set of lines to analyze.
-     * @return int The most popular Thunderball number.
+     * @return int The most popular Thunderball number, or 1 if no valid data exists.
      */
-    private static function findMostPopularThunderball(array $lines1, array $lines2): int
+    protected static function findMostPopularThunderball(array $lines1, array $lines2): int
     {
         $thunderballCounts = [];
 
@@ -139,11 +145,15 @@ class ThunderballGenerate
     /**
      * Find the index of the first line with the specified Thunderball number.
      *
+     * Searches through the provided lines and returns the array index of the first
+     * line that contains the specified Thunderball number. Returns null if no matching
+     * line is found.
+     *
      * @param array $lines Lines to search through.
      * @param int $thunderball The Thunderball number to find.
      * @return int|null The index of the first line with the specified Thunderball, or null if not found.
      */
-    private static function findFirstLineIndexWithThunderball(array $lines, int $thunderball): ?int
+    protected static function findFirstLineIndexWithThunderball(array $lines, int $thunderball): ?int
     {
         foreach ($lines as $index => $line) {
             if (isset($line['thunderball']) && is_array($line['thunderball']) && count($line['thunderball']) > 0) {
