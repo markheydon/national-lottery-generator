@@ -46,6 +46,31 @@ class Downloader
     }
 
     /**
+     * Check if running in testing environment.
+     *
+     * @return bool
+     */
+    private function isTestingEnvironment(): bool
+    {
+        if (!function_exists('app')) {
+            return false;
+        }
+
+        try {
+            $app = app();
+            // Check if it's a full Application instance (not just Container)
+            if (method_exists($app, 'environment')) {
+                return $app->environment('testing');
+            }
+        } catch (\Throwable $e) {
+            // Silently catch any errors
+        }
+
+        // In unit tests without full Laravel app, assume testing
+        return true;
+    }
+
+    /**
      * Returns the full filepath of the download file.
      *
      * Including the .csv suffix.
@@ -62,17 +87,16 @@ class Downloader
                 return Storage::disk('local')->path($this->storagePath());
             } catch (\RuntimeException $e) {
                 // Fallback to legacy path if Storage disk is not configured
-                Log::debug('Storage facade not available, falling back to legacy path', [
-                    'error' => $e->getMessage(),
-                    'is_testing' => app()->environment('testing'),
-                ]);
+                if (!$this->isTestingEnvironment()) {
+                    Log::debug('Storage facade not available, falling back to legacy path', [
+                        'error' => $e->getMessage(),
+                    ]);
+                }
             }
         } else {
             // Log when falling back in non-Laravel context (likely unit tests)
-            if (function_exists('app') && !app()->environment('testing')) {
-                Log::warning('Filesystem not bound in application container, using legacy path', [
-                    'environment' => app()->environment(),
-                ]);
+            if (!$this->isTestingEnvironment()) {
+                Log::warning('Filesystem not bound in application container, using legacy path');
             }
         }
 
@@ -114,7 +138,7 @@ class Downloader
                 return $this->downloadWithStorage($failDownload, $failRename);
             } catch (\RuntimeException $e) {
                 // Log the fallback in non-testing environments
-                if (!app()->environment('testing')) {
+                if (!$this->isTestingEnvironment()) {
                     Log::warning('Storage facade failed, falling back to legacy download', [
                         'error' => $e->getMessage(),
                         'url' => $this->url,
@@ -122,7 +146,7 @@ class Downloader
                 }
             } catch (\Exception $e) {
                 // Catch other exceptions that might occur during Storage operations
-                if (!app()->environment('testing')) {
+                if (!$this->isTestingEnvironment()) {
                     Log::error('Unexpected error during Storage download, falling back to legacy', [
                         'error' => $e->getMessage(),
                         'type' => get_class($e),
