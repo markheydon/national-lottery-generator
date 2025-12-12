@@ -33,6 +33,11 @@ class Game
     private ?\App\Services\Lottery\Downloader $downloader = null;
 
     /**
+     * @var array<string, Game> Static cache of Game instances by slug
+     */
+    private static array $instances = [];
+
+    /**
      * Game constructor.
      *
      * @param string $slug Game slug
@@ -57,11 +62,18 @@ class Game
         $games = [];
 
         foreach ($gamesConfig as $gameConfig) {
-            $games[] = new self(
-                $gameConfig['slug'],
-                $gameConfig['name'],
-                $gameConfig['logo']
-            );
+            $slug = $gameConfig['slug'];
+
+            // Use cached instance if available
+            if (!isset(self::$instances[$slug])) {
+                self::$instances[$slug] = new self(
+                    $slug,
+                    $gameConfig['name'],
+                    $gameConfig['logo']
+                );
+            }
+
+            $games[] = self::$instances[$slug];
         }
 
         return $games;
@@ -75,15 +87,16 @@ class Game
      */
     public static function findBySlug(string $slug): ?Game
     {
-        $games = self::all();
-
-        foreach ($games as $game) {
-            if ($game->slug === $slug) {
-                return $game;
-            }
+        // Check cache first
+        if (isset(self::$instances[$slug])) {
+            return self::$instances[$slug];
         }
 
-        return null;
+        // Load all games to populate cache
+        $games = self::all();
+
+        // Return from cache if found
+        return self::$instances[$slug] ?? null;
     }
 
     /**
