@@ -6,7 +6,7 @@ Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arse
 
 ## Requirements
 
-- **PHP**: 8.2 or higher (8.5 recommended)
+- **PHP**: 8.2 or higher (8.4 recommended for Azure)
 - **Laravel**: 12.x (LTS)
 - **Docker** (optional, recommended for local development via Laravel Sail)
 
@@ -30,7 +30,7 @@ Laravel Sail provides a simple way to run the application locally with Docker. N
        -u "$(id -u):$(id -g)" \
        -v "$(pwd):/var/www/html" \
        -w /var/www/html \
-       laravelsail/php85-composer:latest \
+       laravelsail/php84-composer:latest \
        composer install --ignore-platform-reqs
    ```
 
@@ -151,21 +151,23 @@ The following cache and filesystem settings should be configured:
 
 ### PHP Runtime Configuration
 
-This application requires **PHP 8.2 or higher** (PHP 8.5 recommended). Azure App Service for Linux supports PHP 8.5 as of December 2024.
+This application requires **PHP 8.2 or higher** (PHP 8.4 recommended for Azure). Azure App Service for Linux supports PHP 8.4 in most regions.
+
+**Note**: PHP version availability varies by Azure region. Use the CLI command below to check which PHP versions are available in your region.
 
 To set the PHP runtime version for your Azure Web App:
 
 #### Option 1: Using Azure CLI
 
 ```bash
-# List available PHP runtimes
+# List available PHP runtimes in your region
 az webapp list-runtimes --os linux | grep PHP
 
-# Set PHP 8.5 runtime (replace with your resource group and app name)
+# Set PHP 8.4 runtime (replace with your resource group and app name)
 az webapp config set \
   --resource-group <your-resource-group> \
   --name <your-app-name> \
-  --linux-fx-version "PHP|8.5"
+  --linux-fx-version "PHP|8.4"
 
 # Verify the configuration
 az webapp config show \
@@ -179,7 +181,7 @@ az webapp config show \
 1. Navigate to your App Service in the Azure Portal
 2. Go to **Configuration** → **General settings**
 3. Set **Stack** to "PHP"
-4. Set **Major version** to "8.5" (or latest available)
+4. Set **Major version** to "8.4" (or highest available in your region)
 5. Click **Save**
 
 #### References
