@@ -180,7 +180,6 @@ The application uses Laravel's file cache and filesystem storage (no database re
 ./vendor/bin/sail artisan tinker
 
 # Clear cache
-./vendor/bin/sail artisan cache:clear
 ./vendor/bin/sail artisan config:clear
 ./vendor/bin/sail artisan view:clear
 ```
