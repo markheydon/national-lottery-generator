@@ -70,7 +70,7 @@ class ThunderballGenerate
 
         // Find first line from full-iteration with the most popular Thunderball and its index
         $firstLineIndex = self::findFirstLineIndexWithThunderball($linesMethod3, $mostPopularThunderball);
-        $firstLineWithPopularThunderball = $linesMethod3[$firstLineIndex] ?? $linesMethod3[0];
+        $firstLineWithPopularThunderball = ($firstLineIndex !== null) ? $linesMethod3[$firstLineIndex] : $linesMethod3[0];
 
         // Remove this line from full-iteration to avoid duplication
         $remainingFullIterationLines = $linesMethod3;
@@ -153,8 +153,8 @@ class ThunderballGenerate
             }
         }
 
-        // Return 0 (first line index) if not found
-        return 0;
+        // Return null if not found
+        return null;
     }
 
     /**
