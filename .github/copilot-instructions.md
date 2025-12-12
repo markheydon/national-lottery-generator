@@ -2,16 +2,16 @@
 
 ## Project Overview
 
-This is a Laravel 11 application that generates National Lottery numbers using a custom algorithm. The application is deployed on Azure App Services and uses file-based storage (no database required).
+This is a Laravel 12 application that generates National Lottery numbers using a custom algorithm. The application is deployed on Azure App Services and uses file-based storage (no database required).
 
 ## Technology Stack
 
-- **Framework**: Laravel 11.x (LTS)
-- **PHP Version**: 8.2 or higher
+- **Framework**: Laravel 12.x (LTS)
+- **PHP Version**: 8.4 or higher (8.4 recommended for Azure)
 - **Storage**: File cache and filesystem storage (no database required)
 - **Development Environment**: Laravel Sail (Docker-based)
 - **Frontend**: Blade templates with webpack mix
-- **Package Manager**: Composer (PHP), npm/yarn (JavaScript)
+- **Package Manager**: Composer (PHP), Yarn (JavaScript)
 
 ## Coding Standards
 
@@ -155,8 +155,22 @@ The application uses Laravel's file cache and filesystem storage (no database re
 ### Adding Dependencies
 
 - PHP packages: `./vendor/bin/sail composer require <package>`
-- JavaScript packages: `./vendor/bin/sail npm install <package>`
-- Always commit `composer.lock` and `package-lock.json`/`yarn.lock`
+- JavaScript packages: `./vendor/bin/sail yarn add <package>`
+- Always commit `composer.lock` and `yarn.lock`
+
+### Updating PHP Version
+
+When updating the PHP version in the project:
+
+1. Update `composer.json` with the new PHP version requirement
+2. Update `docker-compose.yml` to use the new PHP runtime in Laravel Sail
+3. Update `README.md` to reflect the new version requirements
+4. **Update GitHub workflow files** in `.github/workflows/`:
+   - `laravel.yml` - Update `php-version` in setup-php step
+   - `deploy-azure-webapp.yml` - Update `php-version` in setup-php step
+   - `phpmd.yml` - Update `php-version` in setup-php step
+5. Update this file (`.github/copilot-instructions.md`) to document the new version
+6. Run tests to ensure compatibility
 
 ## Important Notes
 
@@ -201,6 +215,6 @@ The application uses Laravel's file cache and filesystem storage (no database re
 ## Getting Help
 
 - Review the main README.md in the repository root for setup instructions
-- Check Laravel 11 documentation: https://laravel.com/docs/11.x
+- Check Laravel 12 documentation: https://laravel.com/docs/12.x
 - Review existing code for patterns and conventions
 - Ask questions if requirements are unclear
