@@ -97,13 +97,13 @@ The application uses Laravel's file cache and filesystem storage (no database re
 - **Storage Locations**:
   - CSV files: `storage/app/lottery/*.csv`
   - Parsed JSON: `storage/app/lottery/*.json` (optional, for debugging)
-  - Cache data: `storage/framework/cache/data/`
+  - Cache data: `storage/framework/cache/data/` (file cache driver)
 
 ### Configuration
 
 - Cache driver: `CACHE_DRIVER=file`
 - Filesystem disk: `FILESYSTEM_DISK=local`
-- Download timeout: `LOTTERY_DOWNLOAD_TIMEOUT=30` (optional, defaults to 30 seconds)
+- Download timeout: `LOTTERY_DOWNLOAD_TIMEOUT=30` (timeout in seconds for CSV downloads, defaults to 30)
 
 ## Deployment
 
