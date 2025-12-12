@@ -17,12 +17,6 @@ updates:
       interval: "weekly"
     versioning-strategy: increase-if-necessary
 
-  - package-ecosystem: "yarn"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    versioning-strategy: increase-if-necessary
-
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
