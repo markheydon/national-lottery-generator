@@ -179,8 +179,6 @@ class Downloader
             if (!$failRename) {
                 try {
                     Storage::disk('local')->copy($storagePath, $backupPath);
-                } catch (\Illuminate\Contracts\Filesystem\FileNotFoundException $e) {
-                    return 'Backup of old history file failed';
                 } catch (\Exception $e) {
                     Log::error('Failed to backup old history file', [
                         'error' => $e->getMessage(),
