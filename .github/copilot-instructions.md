@@ -2,13 +2,13 @@
 
 ## Project Overview
 
-This is a Laravel 11 application that generates National Lottery numbers using a custom algorithm. The application is deployed on Azure App Services and uses MySQL for data storage.
+This is a Laravel 11 application that generates National Lottery numbers using a custom algorithm. The application is deployed on Azure App Services and uses file-based storage (no database required).
 
 ## Technology Stack
 
 - **Framework**: Laravel 11.x (LTS)
 - **PHP Version**: 8.2 or higher
-- **Database**: MySQL (Azure MySQL in production)
+- **Storage**: File cache and filesystem storage (no database required)
 - **Development Environment**: Laravel Sail (Docker-based)
 - **Frontend**: Blade templates with webpack mix
 - **Package Manager**: Composer (PHP), npm/yarn (JavaScript)
@@ -61,7 +61,7 @@ tests/              # PHPUnit tests
 3. Copy `.env.example` to `.env`
 4. Start Sail: `./vendor/bin/sail up -d`
 5. Generate app key: `./vendor/bin/sail artisan key:generate`
-6. Run migrations: `./vendor/bin/sail artisan migrate:fresh --seed`
+6. Access the application at http://localhost
 
 ### Before Making Changes
 
@@ -83,23 +83,27 @@ tests/              # PHPUnit tests
 - Write unit tests for services and business logic
 - Run tests: `./vendor/bin/sail artisan test`
 - Test files should mirror the app structure
-- Follow Laravel testing conventions (RefreshDatabase, etc.)
+- Follow Laravel testing conventions
 
-## Database
+## Storage
 
-### Local Development
+### File-Based Storage
 
-- Uses MySQL via Laravel Sail
-- Database seeding is configured (see `database/seeders/`)
-- Run migrations: `./vendor/bin/sail artisan migrate`
-- Fresh start: `./vendor/bin/sail artisan migrate:fresh --seed`
+The application uses Laravel's file cache and filesystem storage (no database required):
 
-### Azure Production
+- **CSV Downloads**: Lottery draw history CSV files are downloaded from the National Lottery website and stored in `storage/app/lottery/`
+- **Caching**: Parsed draw data is cached using Laravel's file cache driver to avoid re-downloading and re-parsing between requests
+- **Auto-Refresh**: Downloads are automatically refreshed when files are older than 1 day
+- **Storage Locations**:
+  - CSV files: `storage/app/lottery/*.csv`
+  - Parsed JSON: `storage/app/lottery/*.json` (optional, for debugging)
+  - Cache data: `storage/framework/cache/data/`
 
-- Uses Azure MySQL with SSL connection
-- Custom connection: `azure-mysql` (see `config/database.php`)
-- SSL certificate location: `/home/site/wwwroot/ssl/DigiCertGlobalRootCA.crt.pem`
-- Environment variables: `DB_CONNECTION=azure-mysql`, `MYSQL_ATTR_SSL_CA`
+### Configuration
+
+- Cache driver: `CACHE_DRIVER=file`
+- Filesystem disk: `FILESYSTEM_DISK=local`
+- Download timeout: `LOTTERY_DOWNLOAD_TIMEOUT=30` (optional, defaults to 30 seconds)
 
 ## Deployment
 
@@ -108,13 +112,13 @@ tests/              # PHPUnit tests
 - Application is deployed to Azure App Services
 - Nginx configuration: Custom `nginx-default` file in root
 - Startup command copies nginx config and reloads service
-- SSL certificates in `ssl/` directory for Azure MySQL
-- Post-deployment: Run `php artisan migrate:fresh --seed` from SSH
+- Ensure write permissions for `storage/` directory
 
 ### Environment Configuration
 
 - Set `APP_KEY` in Azure Configuration->Application settings
-- Database connection uses `azure-mysql` configuration
+- Set `CACHE_DRIVER=file` for file-based caching
+- Set `FILESYSTEM_DISK=local` for local filesystem storage
 - All sensitive values should be in environment variables, not code
 
 ## Common Tasks
@@ -128,12 +132,11 @@ tests/              # PHPUnit tests
 5. Add tests in `tests/Feature/` or `tests/Unit/`
 6. Run `./vendor/bin/sail pint` before committing
 
-### Database Changes
+### Configuration Changes
 
-1. Create migration: `./vendor/bin/sail artisan make:migration`
-2. Modify migration file in `database/migrations/`
-3. Run migration: `./vendor/bin/sail artisan migrate`
-4. Update seeders if needed in `database/seeders/`
+1. Game configurations are stored in `config/games.php`
+2. Modify the configuration file to add or update lottery games
+3. No database migrations are needed as the app uses file-based storage
 
 ### Adding Dependencies
 
@@ -149,7 +152,7 @@ tests/              # PHPUnit tests
 - **Follow PSR-12** - run Pint before committing
 - **Write tests** for new functionality
 - **Document** complex logic with clear comments when necessary
-- **Use migrations** for all database schema changes
+- **Update config files** for game configurations (see `config/games.php`)
 - **Respect existing** architectural patterns and conventions
 
 ## Useful Commands
@@ -167,11 +170,8 @@ tests/              # PHPUnit tests
 # Fix code style
 ./vendor/bin/sail pint
 
-# Run migrations
-./vendor/bin/sail artisan migrate
-
-# Fresh database with seeding
-./vendor/bin/sail artisan migrate:fresh --seed
+# Clear cache
+./vendor/bin/sail artisan cache:clear
 
 # Stop environment
 ./vendor/bin/sail down
