@@ -14,6 +14,12 @@
   --text-secondary: #{$text-secondary-light};
   --border-color: #{$border-color-light};
   --jumbotron-bg: #{$jumbotron-bg-light};
+  --jumbotron-bg-end: #{$jumbotron-bg-end-light};
+  --primary-color: #{$primary-light};
+  --primary-hover: #{$primary-hover-light};
+  --danger-color: #{$danger-light};
+  --alert-danger-bg: #{$alert-danger-bg-light};
+  --alert-danger-border: #{$alert-danger-border-light};
   --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
@@ -27,6 +33,12 @@
     --text-secondary: #{$text-secondary-dark};
     --border-color: #{$border-color-dark};
     --jumbotron-bg: #{$jumbotron-bg-dark};
+    --jumbotron-bg-end: #{$jumbotron-bg-end-dark};
+    --primary-color: #{$primary-dark};
+    --primary-hover: #{$primary-hover-dark};
+    --danger-color: #{$danger-dark};
+    --alert-danger-bg: #{$alert-danger-bg-dark};
+    --alert-danger-border: #{$alert-danger-border-dark};
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
   }
@@ -41,7 +53,7 @@ body {
 
 // Jumbotron header
 .jumbotron {
-  background: linear-gradient(135deg, var(--jumbotron-bg) 0%, darken($jumbotron-bg-light, 10%) 100%);
+  background: linear-gradient(135deg, var(--jumbotron-bg) 0%, var(--jumbotron-bg-end) 100%);
   border-radius: 0;
   color: white;
   padding: 2rem 1rem;
@@ -106,9 +118,9 @@ body {
   box-shadow: var(--shadow);
   
   &.alert-danger {
-    background-color: rgba($danger, 0.1);
+    background-color: var(--alert-danger-bg);
     color: var(--text-primary);
-    border-left: 4px solid $danger;
+    border-left: 4px solid var(--alert-danger-border);
   }
 }
 
@@ -144,10 +156,10 @@ body {
   border: none;
   
   &.btn-primary {
-    background-color: $primary;
+    background-color: var(--primary-color);
     
     &:hover {
-      background-color: darken($primary, 10%);
+      background-color: var(--primary-hover);
       transform: scale(1.02);
     }
   }
