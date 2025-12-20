@@ -121,9 +121,15 @@ body {
       transition: background-color 0.2s ease;
       
       &:hover {
-        background-color: rgba(var(--primary-color), 0.1);
+        background-color: #f3f4f6;
       }
     }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .game-nav .dropdown-menu .dropdown-item:hover {
+    background-color: #374151;
   }
 }
 
