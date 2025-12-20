@@ -1,7 +1,7 @@
 /**
  * Bootstrap application dependencies
- * Simple, lightweight approach without Vue
+ * Loads jQuery, lodash, axios, and Bootstrap
  */
 
-// Load Bootstrap's JavaScript components
+// Load application dependencies
 require('./bootstrap');

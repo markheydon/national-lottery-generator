@@ -40149,10 +40149,10 @@ process.umask = function() { return 0; };
 
 /**
  * Bootstrap application dependencies
- * Simple, lightweight approach without Vue
+ * Loads jQuery, lodash, axios, and Bootstrap
  */
 
-// Load Bootstrap's JavaScript components
+// Load application dependencies
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 /***/ },
