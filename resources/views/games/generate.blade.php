@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="alert alert-danger" role="alert">
-        <p class="lead">
+        <p class="lead mb-0">
             <em>
                 While the numbers generated using this just-for-fun tool are not random, they are highly unlikely to actually win you any money!  The National Lottery IS totally random!
                 Use at your own risk.  I am in no way affiliated with the National Lottery.
@@ -13,20 +13,20 @@
     </div>
 
     <div class="row align-items-center">
-        <div class="col-sm">
-            <div class="card" style="width: 18rem; margin-bottom: 1em;">
+        <div class="col-sm-12 col-md-4 mb-4">
+            <div class="card mx-auto" style="max-width: 18rem;">
                 <img class="card-img-top"
-                     src="{{ asset('img/' . $gameLogo) }}" class="img-card"
+                     src="{{ asset('img/' . $gameLogo) }}"
                      alt="{{ $gameName }}"/>
                 <div class="card-body">
-                    <p class="card-text"><strong>Latest Draw</strong>: {{ $latestDrawDate }}</p>
+                    <p class="card-text mb-0"><strong>Latest Draw</strong>: {{ $latestDrawDate }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg">
-            <h3>Suggested Lines</h3>
+        <div class="col-lg-8">
+            <h3 class="mb-3">Suggested Lines</h3>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-12 col-lg-10">
                     <table class="table table-bordered table-sm">
                         <thead>
                         <tr>
@@ -49,9 +49,9 @@
     </div>
 
     <hr/>
-    <h3>Other Suggestions</h3>
+    <h3 class="mb-3">Other Suggestions</h3>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-12 col-lg-6">
             <table class="table table-bordered table-sm">
                 <thead>
                 <tr>

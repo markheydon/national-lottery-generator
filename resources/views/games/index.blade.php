@@ -11,12 +11,12 @@
             @endif
             <div class="col-md text-center">
                 <a href="/game/{{ $game->getSlug() }}/generate">
-                    <div class="card mx-auto" style="width: 18rem; margin-bottom: 1em;">
+                    <div class="card mx-auto mb-4" style="max-width: 18rem;">
                         <img class="card-img-top"
-                             src="{{ asset('img/' . $game->getGameLogo()) }}" class="img-card"
+                             src="{{ asset('img/' . $game->getGameLogo()) }}"
                              alt="{{ $game->getGameName() }}"/>
                         <div class="card-body">
-                            <p class="btn btn-primary">Generate Numbers</p>
+                            <p class="btn btn-primary mb-0">Generate Numbers</p>
                         </div>
                     </div>
                 </a>
