@@ -34,7 +34,7 @@ jobs:
         run: composer validate --no-check-publish && composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: php-app
           path: .
