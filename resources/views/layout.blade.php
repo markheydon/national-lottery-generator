@@ -13,8 +13,15 @@
 <body>
 <div class="jumbotron">
     <div class="container">
-        <h1 class="display-4">Lottery Generator</h1>
-        <p><em>Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.</em></p>
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="jumbotron-content">
+                <h1 class="display-4">
+                    <a href="/" class="text-white text-decoration-none">Lottery Generator</a>
+                </h1>
+                <p class="mb-0"><em>Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.</em></p>
+            </div>
+            @yield('navigation')
+        </div>
     </div>
 </div>
 

@@ -64,6 +64,10 @@ body {
     padding: 3rem 2rem;
   }
   
+  .jumbotron-content {
+    flex: 1;
+  }
+  
   h1 {
     font-weight: 700;
     font-size: 2rem;
@@ -71,6 +75,17 @@ body {
     
     @media (min-width: 768px) {
       font-size: 3rem;
+    }
+    
+    a {
+      color: white;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      
+      &:hover {
+        opacity: 0.9;
+        text-decoration: none;
+      }
     }
   }
   
@@ -81,6 +96,33 @@ body {
     
     @media (min-width: 768px) {
       font-size: 1.125rem;
+    }
+  }
+}
+
+// Game navigation in jumbotron
+.game-nav {
+  .dropdown-toggle {
+    background-color: rgba(255, 255, 255, 0.95);
+    border: none;
+    font-weight: 500;
+    
+    &:hover, &:focus {
+      background-color: white;
+    }
+  }
+  
+  .dropdown-menu {
+    border: none;
+    box-shadow: var(--shadow-lg);
+    border-radius: 0.5rem;
+    
+    .dropdown-item {
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: rgba(var(--primary-color), 0.1);
+      }
     }
   }
 }

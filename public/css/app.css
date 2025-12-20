@@ -9302,6 +9302,9 @@ body {
     padding: 3rem 2rem;
   }
 }
+.jumbotron .jumbotron-content {
+  flex: 1;
+}
 .jumbotron h1 {
   font-weight: 700;
   font-size: 2rem;
@@ -9312,6 +9315,15 @@ body {
     font-size: 3rem;
   }
 }
+.jumbotron h1 a {
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.jumbotron h1 a:hover {
+  opacity: 0.9;
+  text-decoration: none;
+}
 .jumbotron p {
   font-size: 1rem;
   opacity: 0.95;
@@ -9321,6 +9333,26 @@ body {
   .jumbotron p {
     font-size: 1.125rem;
   }
+}
+
+.game-nav .dropdown-toggle {
+  background-color: rgba(255, 255, 255, 0.95);
+  border: none;
+  font-weight: 500;
+}
+.game-nav .dropdown-toggle:hover, .game-nav .dropdown-toggle:focus {
+  background-color: white;
+}
+.game-nav .dropdown-menu {
+  border: none;
+  box-shadow: var(--shadow-lg);
+  border-radius: 0.5rem;
+}
+.game-nav .dropdown-menu .dropdown-item {
+  transition: background-color 0.2s ease;
+}
+.game-nav .dropdown-menu .dropdown-item:hover {
+  background-color: rgba(var(--primary-color), 0.1);
 }
 
 .card {

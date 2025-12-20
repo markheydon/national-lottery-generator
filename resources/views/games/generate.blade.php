@@ -2,6 +2,28 @@
 
 @section('title', $gameName)
 
+@section('navigation')
+<nav class="game-nav mt-3 mt-md-0">
+    <div class="dropdown">
+        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="gameMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16" style="margin-right: 4px; margin-top: -2px;">
+              <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"/>
+            </svg>
+            Other Games
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gameMenuDropdown">
+            <a class="dropdown-item" href="/">← All Games</a>
+            <div class="dropdown-divider"></div>
+            @foreach($allGames as $game)
+                @if($game->getSlug() !== $currentSlug)
+                    <a class="dropdown-item" href="/game/{{ $game->getSlug() }}/generate">{{ $game->getGameName() }}</a>
+                @endif
+            @endforeach
+        </div>
+    </div>
+</nav>
+@endsection
+
 @section('content')
     <div class="alert alert-danger" role="alert">
         <p class="lead mb-0">
