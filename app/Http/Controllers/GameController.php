@@ -78,7 +78,11 @@ class GameController extends Controller
         $viewData = self::buildViewDataArray($generate);
         return view(
             'games.generate',
-            array_merge($viewData, ['gameLogo' => $game->getGameLogo()])
+            array_merge($viewData, [
+                'gameLogo' => $game->getGameLogo(),
+                'currentSlug' => $slug,
+                'allGames' => Game::all(),
+            ])
         );
     }
 
