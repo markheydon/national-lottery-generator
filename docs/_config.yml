@@ -1,0 +1,11 @@
+# Site settings
+title: "National Lottery Number Generator"
+description: "Generate random lottery numbers quickly and easily."
+author: "Mark Heydon"
+url: "https://lottery.markheydon.me.uk"
+
+# Language (UK English)
+lang: en-GB
+
+# Theme
+theme: jekyll-theme-cayman
