@@ -29,7 +29,7 @@ The app analyses past draw results and uses a playful algorithm to suggest numbe
 
 **Ready to generate some numbers?**
 
-1. Visit the app at [mheydon73-lottery-generator.azurewebsites.net](https://mheydon73-lottery-generator.azurewebsites.net/)
+1. Visit the app: [Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)
 2. Choose your game from the home page
 3. Click "Generate Numbers"
 4. View your suggested numbers
