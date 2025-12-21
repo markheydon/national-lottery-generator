@@ -9,3 +9,7 @@ lang: en-GB
 
 # Theme
 theme: jekyll-theme-cayman
+
+# Exclude developer reference from Jekyll build
+exclude:
+  - developer-reference.md
