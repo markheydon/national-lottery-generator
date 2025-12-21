@@ -1,8 +1,50 @@
 # National Lottery Generator App
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com/docs/12.x)
+[![PHP](https://img.shields.io/badge/PHP-8.2%2B-purple.svg)](https://www.php.net/)
+
 ## Overview
 
 Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.
+
+This is a Laravel-based web application that analyses historical UK National Lottery draw data and generates number predictions. While the algorithm is playful rather than statistical, it demonstrates file-based data caching, CSV parsing, and Laravel best practices.
+
+## Features
+
+- 🎲 **Number Generation**: Analyses historical lottery draw data to generate predictions
+- 📊 **Multiple Games**: Supports Lotto, EuroMillions, and Thunderball
+- 💾 **No Database**: Uses file-based caching and storage for simplicity
+- 🔄 **Auto-Update**: Automatically downloads latest draw data from the National Lottery website
+- 🐳 **Docker Ready**: Includes Laravel Sail for easy local development
+- ☁️ **Azure Deployment**: Pre-configured for Azure App Services deployment
+
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Requirements](#requirements)
+- [Local Development with Laravel Sail](#local-development-with-laravel-sail)
+  - [First Time Setup](#first-time-setup)
+  - [Daily Development](#daily-development)
+  - [Code Style](#code-style)
+- [How It Works](#how-it-works)
+  - [Storage Locations](#storage-locations)
+  - [Sample CSV Files for Testing](#sample-csv-files-for-testing)
+- [Deployment on Azure App Services](#deployment-on-azure-app-services)
+  - [Nginx Configuration](#nginx-configuration)
+  - [Laravel Configuration](#laravel-configuration)
+  - [PHP Runtime Configuration](#php-runtime-configuration)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
+## Quick Start
+
+⚡ **Want to get started quickly?** See [QUICKSTART.md](QUICKSTART.md) for a simplified 5-step installation guide.
+
+For detailed setup instructions, continue reading below.
 
 ## Requirements
 
@@ -190,3 +232,126 @@ az webapp config show \
 - [Laravel 12 Upgrade Guide](https://laravel.com/docs/12.x/upgrade)
 - [Azure App Service PHP Support](https://learn.microsoft.com/en-us/azure/app-service/configure-language-php)
 - [Azure Language Support Policy](https://learn.microsoft.com/en-us/azure/app-service/language-support-policy)
+
+## Troubleshooting
+
+### Common Issues
+
+#### Port 80 Already in Use
+
+If you see "port 80 is already in use" when starting Sail:
+
+```bash
+# Stop any conflicting services
+sudo service apache2 stop  # If Apache is running
+sudo service nginx stop    # If Nginx is running
+
+# Or change the port in docker-compose.yml
+# Then restart Sail
+./vendor/bin/sail down
+./vendor/bin/sail up -d
+```
+
+#### Permission Issues with Storage Directory
+
+If you encounter permission errors:
+
+```bash
+# Fix storage permissions
+sudo chmod -R 775 storage
+sudo chown -R $USER:$USER storage
+
+# Or with Sail
+./vendor/bin/sail exec laravel.test chmod -R 775 storage
+```
+
+#### Tests Failing
+
+If tests fail on fresh install:
+
+```bash
+# Clear all caches
+./vendor/bin/sail artisan cache:clear
+./vendor/bin/sail artisan config:clear
+./vendor/bin/sail artisan view:clear
+
+# Run tests again
+./vendor/bin/sail artisan test
+```
+
+#### CSV Download Timeout
+
+If lottery data downloads are timing out:
+
+```bash
+# Increase timeout in .env
+LOTTERY_DOWNLOAD_TIMEOUT=60
+
+# Then restart
+./vendor/bin/sail down
+./vendor/bin/sail up -d
+```
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on:
+
+- Setting up your development environment
+- Coding standards and style guide
+- Testing requirements
+- Pull request process
+- Reporting issues
+
+### Quick Contribution Guidelines
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes following PSR-12 standards
+4. Run tests and Pint: `./vendor/bin/sail artisan test && ./vendor/bin/sail pint`
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to your branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## Support
+
+### Getting Help
+
+- **Documentation**: Check the [docs/](docs/) folder for detailed guides
+- **Issues**: Search [existing issues](https://github.com/markheydon/national-lottery-generator/issues) or create a new one
+- **Laravel Docs**: Consult the [Laravel 12 documentation](https://laravel.com/docs/12.x)
+
+### Reporting Security Vulnerabilities
+
+If you discover a security vulnerability, please email the maintainer directly rather than opening a public issue.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+This means you are free to:
+- Use the software for any purpose
+- Change the software to suit your needs
+- Share the software with others
+- Share the changes you make
+
+Under the conditions that:
+- You must share your changes under the same license
+- You must include the license and copyright notice
+- You must state significant changes made to the software
+
+## Acknowledgments
+
+- **Laravel Framework**: Built with [Laravel](https://laravel.com/), the elegant PHP framework
+- **National Lottery**: Data sourced from the [UK National Lottery website](https://www.national-lottery.co.uk/)
+- **Community**: Thanks to all contributors who have helped improve this project
+
+## Disclaimer
+
+This application is for entertainment purposes only. The lottery is a game of chance, and past results do not predict future outcomes. Please gamble responsibly.
+
+- **UK Gambling Help**: https://www.gambleaware.org/
+- **BeGambleAware**: 0808 8020 133
+
+---
+
+**Note**: This is a hobby project and not affiliated with or endorsed by the National Lottery.
