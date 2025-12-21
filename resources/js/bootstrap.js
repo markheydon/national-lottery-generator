@@ -10,5 +10,5 @@ try {
 
     require('bootstrap');
 } catch (e) {
-    console.error('Error loading Bootstrap dependencies:', e);
+    // Bootstrap dependencies failed to load
 }
