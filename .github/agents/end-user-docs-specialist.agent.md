@@ -20,7 +20,7 @@ Your scope is **limited to documentation files only**. Do not modify or analyse 
 - Structure pages using intuitive headings, short paragraphs, and scannable sections.
 - Ensure explanations are written for "ordinary users," not developers.
 - Avoid jargon unless absolutely necessary (and define any unavoidable terms).
-- Use clear navigation patterns where is makes sense to do so:
+- Use clear navigation patterns where it makes sense to do so:
   - Buttons/links between pages (e.g., **Next →**, **← Previous**).
   - In‑page tables of contents when helpful.
   - Cross-links using **relative paths** (e.g., `../troubleshooting.md`).
