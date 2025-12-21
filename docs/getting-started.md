@@ -13,7 +13,7 @@ Welcome! This guide will help you use the National Lottery Number Generator to c
 
 Open your web browser and go to:
 
-**[lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)**
+**[mheydon73-lottery-generator.azurewebsites.net](https://mheydon73-lottery-generator.azurewebsites.net/)**
 
 ### Step 2: Choose Your Game
 
@@ -87,4 +87,4 @@ For technical issues or questions, visit the [GitHub repository](https://github.
 
 ---
 
-**Ready to try your luck?** [Visit the app →](https://lottery.markheydon.me.uk)
+**Ready to try your luck?** [Visit the app →](https://mheydon73-lottery-generator.azurewebsites.net/)
