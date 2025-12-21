@@ -1,6 +1,6 @@
 /**
  * Bootstrap application dependencies
- * Loads jQuery, lodash, axios, and Bootstrap
+ * Loads jQuery, Popper.js, and Bootstrap for dropdown functionality
  */
 
 // Load application dependencies
