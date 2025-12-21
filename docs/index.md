@@ -7,6 +7,12 @@ title: Home
 
 Generate lottery numbers for your favourite UK National Lottery games – just for fun!
 
+## 🎲 Try the App Now
+
+**[Launch the Number Generator →](https://mheydon73-lottery-generator.azurewebsites.net/)**
+
+Get started in seconds – no sign-up required!
+
 ## What is This?
 
 The National Lottery Number Generator is a free web app that creates lottery number suggestions for popular UK games including:
@@ -23,7 +29,7 @@ The app analyses past draw results and uses a playful algorithm to suggest numbe
 
 **Ready to generate some numbers?**
 
-1. Visit the app at [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)
+1. Visit the app: [Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)
 2. Choose your game from the home page
 3. Click "Generate Numbers"
 4. View your suggested numbers

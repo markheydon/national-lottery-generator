@@ -8,6 +8,8 @@ For information on using the app, please visit the main documentation site:
 
 **[lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)**
 
+This documentation site explains how to use the app and provides helpful guides.
+
 Or browse the documentation pages directly:
 
 - [Home](index.md) - Introduction and overview
@@ -25,6 +27,7 @@ For technical information about the project, see:
 
 ## Quick Links
 
-- **Live App**: [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)
+- **Live App**: [Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)
+- **Documentation Site**: [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)
 - **GitHub Repository**: [markheydon/national-lottery-generator](https://github.com/markheydon/national-lottery-generator)
 - **Report Issues**: [GitHub Issues](https://github.com/markheydon/national-lottery-generator/issues)
