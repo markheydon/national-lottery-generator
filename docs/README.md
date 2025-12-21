@@ -1,61 +1,30 @@
-# Documentation
+# National Lottery Number Generator Documentation
 
-This directory contains public-facing documentation for the National Lottery Generator application.
+Welcome to the documentation for the National Lottery Number Generator!
 
-## Purpose
+## User Documentation
 
-The `docs/` folder is intended to house comprehensive documentation that helps users, developers, and contributors understand and work with this project. This includes:
+For information on using the app, please visit the main documentation site:
 
-- **User Guides**: Instructions on how to use the application and its features
-- **API Documentation**: Details about available APIs and endpoints
-- **Architecture Documentation**: Technical details about the system design and algorithms
-- **Deployment Guides**: Advanced deployment scenarios and configurations
-- **Tutorials**: Step-by-step guides for common tasks and use cases
-- **Reference Materials**: Additional resources and external links
+**[lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)**
 
-## Planned Documentation
+Or browse the documentation pages directly:
 
-The following documentation is planned for future additions:
+- [Home](index.md) - Introduction and overview
+- [Getting Started](getting-started.md) - How to use the app
+- [How It Works](how-it-works.md) - Understanding the algorithm
+- [FAQ](faq.md) - Frequently asked questions
 
-- **Algorithm Explanation**: Detailed explanation of how the lottery number generation algorithm works
-- **API Reference**: Complete API endpoint documentation
-- **Advanced Deployment**: Guides for different cloud platforms and configurations
-- **Performance Tuning**: Tips for optimizing the application
-- **Troubleshooting Guide**: Common issues and their solutions
-- **Configuration Reference**: Detailed explanation of all configuration options
+## Developer Documentation
 
-## Organisation
+For technical information about the project, see:
 
-Documentation in this folder will be organised by topic and use case:
-
-```
-docs/
-├── README.md              (this file)
-├── user-guide/           (end-user documentation)
-├── developer-guide/      (developer documentation)
-├── deployment/           (deployment guides)
-├── api/                  (API documentation)
-└── architecture/         (technical architecture docs)
-```
-
-## Contributing to Documentation
-
-Documentation contributions are welcome! When adding documentation:
-
-1. Use clear, concise language
-2. Include code examples where applicable
-3. Keep formatting consistent with existing docs
-4. Add a table of contents for longer documents
-5. Link to related documentation
-6. Update this README to reference new documentation
+- [Main Project README](../README.md) - Setup, development, and deployment
+- [Developer Reference](developer-reference.md) - Documentation organisation and structure
+- [Contributing Guidelines](../CONTRIBUTING.md) - How to contribute to the project
 
 ## Quick Links
 
-- [Main README](../README.md) - Project overview and quick start
-- [Contributing Guidelines](../CONTRIBUTING.md) - How to contribute to the project
-- [License](../LICENSE) - Project license information
-
-## Questions or Feedback?
-
-If you have questions about the documentation or suggestions for improvements, please open an issue on the GitHub repository.
-
+- **Live App**: [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)
+- **GitHub Repository**: [markheydon/national-lottery-generator](https://github.com/markheydon/national-lottery-generator)
+- **Report Issues**: [GitHub Issues](https://github.com/markheydon/national-lottery-generator/issues)
