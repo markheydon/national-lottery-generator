@@ -1,17 +1,3 @@
-# Documentation Folder Content
-
-**Note**: This file contains the content for `docs/README.md` that should be created once the `docs/` directory is established.
-
-Since the directory creation requires system-level commands beyond my available tools, please create the `docs/` directory manually using:
-
-```bash
-mkdir -p docs
-```
-
-Then create the file `docs/README.md` with the following content:
-
----
-
 # Documentation
 
 This directory contains public-facing documentation for the National Lottery Generator application.
@@ -73,31 +59,3 @@ Documentation contributions are welcome! When adding documentation:
 
 If you have questions about the documentation or suggestions for improvements, please open an issue on the GitHub repository.
 
----
-
-## Instructions for Setting Up the docs/ Folder
-
-To complete the documentation structure setup:
-
-1. Create the docs directory:
-   ```bash
-   mkdir -p docs
-   ```
-
-2. Create the README.md file in the docs directory with the content above (excluding this "Instructions" section)
-
-3. Optionally, create subdirectories for organized documentation:
-   ```bash
-   mkdir -p docs/user-guide
-   mkdir -p docs/developer-guide
-   mkdir -p docs/deployment
-   mkdir -p docs/api
-   mkdir -p docs/architecture
-   ```
-
-4. Commit the changes:
-   ```bash
-   git add docs/
-   git commit -m "Add docs/ folder with README"
-   git push
-   ```
