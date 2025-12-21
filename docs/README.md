@@ -27,7 +27,7 @@ For technical information about the project, see:
 
 ## Quick Links
 
-- **Live App**: [mheydon73-lottery-generator.azurewebsites.net](https://mheydon73-lottery-generator.azurewebsites.net/)
+- **Live App**: [Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)
 - **Documentation Site**: [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)
 - **GitHub Repository**: [markheydon/national-lottery-generator](https://github.com/markheydon/national-lottery-generator)
 - **Report Issues**: [GitHub Issues](https://github.com/markheydon/national-lottery-generator/issues)
