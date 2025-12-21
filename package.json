@@ -1,4 +1,7 @@
 {
+    "name": "national-lottery-generator",
+    "version": "1.0.0",
+    "description": "A Laravel application that analyzes UK National Lottery historical data and generates number predictions",
     "private": true,
     "scripts": {
         "dev": "npm run development",

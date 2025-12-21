@@ -21,6 +21,7 @@ This is a Laravel-based web application that analyzes historical UK National Lot
 
 ## Table of Contents
 
+- [Quick Start](#quick-start)
 - [Requirements](#requirements)
 - [Local Development with Laravel Sail](#local-development-with-laravel-sail)
   - [First Time Setup](#first-time-setup)
@@ -38,6 +39,12 @@ This is a Laravel-based web application that analyzes historical UK National Lot
 - [Support](#support)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
+
+## Quick Start
+
+⚡ **Want to get started quickly?** See [QUICKSTART.md](QUICKSTART.md) for a simplified 5-step installation guide.
+
+For detailed setup instructions, continue reading below.
 
 ## Requirements
 
