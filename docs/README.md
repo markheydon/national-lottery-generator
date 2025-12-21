@@ -24,9 +24,9 @@ The following documentation is planned for future additions:
 - **Troubleshooting Guide**: Common issues and their solutions
 - **Configuration Reference**: Detailed explanation of all configuration options
 
-## Organization
+## Organisation
 
-Documentation in this folder will be organized by topic and use case:
+Documentation in this folder will be organised by topic and use case:
 
 ```
 docs/

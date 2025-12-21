@@ -17,7 +17,7 @@ This guide explains all the documentation files in the repository and their purp
 
 | File | Purpose | Audience |
 |------|---------|----------|
-| **DOCS_FOLDER_CONTENT.md** | Prepared content for docs/README.md | Maintainers |
+| **docs/README.md** | Documentation folder overview and structure | Maintainers, Contributors |
 | **DOCUMENTATION_SUMMARY.md** | Summary of documentation improvements | Maintainers |
 | **FINAL_REPORT.md** | Comprehensive completion report | Maintainers |
 | **DOCUMENTATION_FILES_REFERENCE.md** | This file - quick reference | Maintainers |
@@ -99,20 +99,22 @@ This guide explains all the documentation files in the repository and their purp
 
 ---
 
-### DOCS_FOLDER_CONTENT.md (Prepared Content)
+### docs/README.md (Documentation Structure)
 - **Size:** ~3,500 characters
-- **Purpose:** Contains ready-to-use content for docs/README.md
-- **Action Required:** Create docs/ directory and copy content
+- **Purpose:** Explains the purpose and organisation of the docs/ folder
+- **Content:**
+  - Purpose statement
+  - Planned documentation roadmap
+  - Organisation structure
+  - Contributing to documentation guidelines
+  - Quick links
 
-**Instructions:**
-```bash
-mkdir -p docs
-# Copy lines 9-102 from DOCS_FOLDER_CONTENT.md to docs/README.md
-git add docs/
-git commit -m "Add docs/ folder with README"
-```
+**Target Audience:** Contributors, maintainers
 
-**After Creation:** This file can be deleted or kept for reference
+**Maintenance:** Update when:
+- Adding new documentation sections
+- Changing documentation structure
+- Adding new documentation types
 
 ---
 
@@ -155,14 +157,13 @@ national-lottery-generator/
 ├── QUICKSTART.md                      # Quick start guide
 ├── CONTRIBUTING.md                    # Contribution guidelines
 ├── LICENSE                            # GPL-3.0 license
-├── DOCS_FOLDER_CONTENT.md            # Prepared docs/ content
 ├── DOCUMENTATION_SUMMARY.md          # Change summary
 ├── FINAL_REPORT.md                   # Completion report
 ├── DOCUMENTATION_FILES_REFERENCE.md  # This file
 ├── .env.example                      # Config template
 ├── composer.json                     # PHP metadata
 ├── package.json                      # JS metadata
-└── docs/                             # (To be created)
+└── docs/                             # Documentation folder
     └── README.md                     # Docs folder overview
 ```
 
@@ -222,11 +223,10 @@ docs/
 
 ## Quick Actions
 
-### To create docs/ folder:
+### To update docs/ folder:
 ```bash
-mkdir -p docs
-# Copy content from DOCS_FOLDER_CONTENT.md
-git add docs/ && git commit -m "Add docs folder" && git push
+# Edit docs/README.md or add new files to docs/
+git add docs/ && git commit -m "Update documentation" && git push
 ```
 
 ### To add a new troubleshooting item:

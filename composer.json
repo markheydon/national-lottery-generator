@@ -1,7 +1,7 @@
 {
     "name": "markheydon/national-lottery-generator",
     "type": "project",
-    "description": "A Laravel application that analyzes UK National Lottery historical data and generates number predictions using file-based storage.",
+    "description": "A Laravel application that analyses UK National Lottery historical data and generates number predictions using file-based storage.",
     "keywords": ["laravel", "lottery", "national-lottery", "number-generator", "uk-lottery"],
     "license": "GPL-3.0-or-later",
     "require": {

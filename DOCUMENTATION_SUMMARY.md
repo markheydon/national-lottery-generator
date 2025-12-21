@@ -35,7 +35,7 @@ The main README.md file has been significantly improved with the following addit
 - **Disclaimer**: Responsible gambling information and project disclaimer
 
 #### Improvements to Existing Content:
-- Better organization and flow
+- Better organisation and flow
 - Clearer section headings
 - More comprehensive explanations
 
@@ -75,42 +75,18 @@ A comprehensive contribution guide including:
 
 ### 3. Prepared docs/ Folder Content
 
-Created DOCS_FOLDER_CONTENT.md containing:
+Created docs/README.md containing:
 
 - Complete README.md content for the docs/ folder
 - Purpose statement
 - Planned documentation roadmap
-- Organization structure
+- Organisation structure
 - Contributing to documentation guidelines
 - Quick links section
-- Setup instructions
 
-## Remaining Tasks
+## Documentation Structure Complete
 
-### Manual Directory Creation Required
-
-Due to tool limitations, the `docs/` directory needs to be created manually:
-
-```bash
-# Create the docs directory
-mkdir -p docs
-
-# Create the README.md file
-# Copy content from DOCS_FOLDER_CONTENT.md (excluding the instructions section)
-# to docs/README.md
-
-# Optionally create subdirectories for organized documentation
-mkdir -p docs/user-guide
-mkdir -p docs/developer-guide
-mkdir -p docs/deployment
-mkdir -p docs/api
-mkdir -p docs/architecture
-
-# Commit the changes
-git add docs/
-git commit -m "Add docs/ folder with README and structure"
-git push
-```
+The `docs/` directory has been created with its README.md file. The documentation structure is now in place for future expansion.
 
 ### Future Documentation to Consider
 
@@ -133,7 +109,7 @@ Based on the review, the following documentation could be added in the future:
    - Game-specific guides
 
 4. **docs/developer-guide/**
-   - Code organization guide
+   - Code organisation guide
    - Adding new lottery games
    - Extending the algorithm
    - Testing strategy

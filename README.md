@@ -8,11 +8,11 @@
 
 Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.
 
-This is a Laravel-based web application that analyzes historical UK National Lottery draw data and generates number predictions. While the algorithm is playful rather than statistical, it demonstrates file-based data caching, CSV parsing, and Laravel best practices.
+This is a Laravel-based web application that analyses historical UK National Lottery draw data and generates number predictions. While the algorithm is playful rather than statistical, it demonstrates file-based data caching, CSV parsing, and Laravel best practices.
 
 ## Features
 
-- 🎲 **Number Generation**: Analyzes historical lottery draw data to generate predictions
+- 🎲 **Number Generation**: Analyses historical lottery draw data to generate predictions
 - 📊 **Multiple Games**: Supports Lotto, EuroMillions, and Thunderball
 - 💾 **No Database**: Uses file-based caching and storage for simplicity
 - 🔄 **Auto-Update**: Automatically downloads latest draw data from the National Lottery website
