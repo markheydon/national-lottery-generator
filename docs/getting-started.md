@@ -13,7 +13,7 @@ Welcome! This guide will help you use the National Lottery Number Generator to c
 
 Open your web browser and go to:
 
-**[mheydon73-lottery-generator.azurewebsites.net](https://mheydon73-lottery-generator.azurewebsites.net/)**
+**[Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)**
 
 ### Step 2: Choose Your Game
 
