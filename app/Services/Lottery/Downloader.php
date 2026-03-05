@@ -51,6 +51,16 @@ class Downloader
      */
     private function safeLog(string $level, string $message, array $context = []): void
     {
+        // Avoid noisy and non-deterministic logging during automated tests.
+        if (\function_exists('app')) {
+            try {
+                if (app()->environment('testing')) {
+                    return;
+                }
+            } catch (\Throwable $e) {
+                // If the application container is not available, fall through and attempt logging.
+            }
+        }
         try {
             if (class_exists('\Illuminate\Support\Facades\Log')) {
                 Log::$level($message, $context);
