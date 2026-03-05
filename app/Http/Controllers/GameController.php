@@ -9,6 +9,8 @@ use App\Services\Lottery\EuromillionsHotpicksGenerate;
 use App\Services\Lottery\LottoDownload;
 use App\Services\Lottery\LottoGenerate;
 use App\Services\Lottery\LottoHotpicksGenerate;
+use App\Services\Lottery\SetForLifeDownload;
+use App\Services\Lottery\SetForLifeGenerate;
 use App\Services\Lottery\ThunderballDownload;
 use App\Services\Lottery\ThunderballGenerate;
 use App\Services\Lottery\CsvDownloadService;
@@ -69,6 +71,9 @@ class GameController extends Controller
                 break;
             case 'euromillions hotpicks':
                 $generate = self::generateEuroMillionsHotpicks($downloadRequired);
+                break;
+            case 'set for life':
+                $generate = self::generateSetForLife($downloadRequired);
                 break;
             default:
                 abort(500, 'Unsupported Game Name: ' . $game->getGameName());
@@ -181,9 +186,26 @@ class GameController extends Controller
     private static function generateEuromillionsHotpicks(bool $downloadNeeded): array
     {
         if ($downloadNeeded) {
-            EuroMillionsDownload::download();
+            EuromillionsDownload::download();
         }
-        $generate = EuroMillionsHotpicksGenerate::generate();
+        $generate = EuromillionsHotpicksGenerate::generate();
+
+        return $generate;
+    }
+
+    /**
+     * Generate Set For Life numbers array.
+     *
+     * @param bool $downloadNeeded True if need to download new history file first.
+     *
+     * @return array
+     */
+    private static function generateSetForLife(bool $downloadNeeded): array
+    {
+        if ($downloadNeeded) {
+            SetForLifeDownload::download();
+        }
+        $generate = SetForLifeGenerate::generate();
 
         return $generate;
     }
@@ -263,6 +285,12 @@ class GameController extends Controller
                 if (isset($line['thunderball'])) {
                     $output .= ' ** ';
                     $aLine = $line['thunderball'];
+                    $output .= self::formatNumbersLine($aLine);
+                }
+
+                if (isset($line['lifeBall'])) {
+                    $output .= ' ** ';
+                    $aLine = $line['lifeBall'];
                     $output .= self::formatNumbersLine($aLine);
                 }
             } else {

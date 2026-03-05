@@ -157,6 +157,10 @@ class Game
                 \App\Services\Lottery\ThunderballDownload::HISTORY_DOWNLOAD_URL,
                 \App\Services\Lottery\ThunderballDownload::FILENAME
             ),
+            'set-for-life' => new \App\Services\Lottery\Downloader(
+                \App\Services\Lottery\SetForLifeDownload::HISTORY_DOWNLOAD_URL,
+                \App\Services\Lottery\SetForLifeDownload::FILENAME
+            ),
             default => null,
         };
 
