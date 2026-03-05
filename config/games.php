@@ -28,6 +28,11 @@ return [
             'logo' => 'thunderball_retina_text_below.png',
         ],
         [
+            'slug' => 'set-for-life',
+            'name' => 'Set For Life',
+            'logo' => 'set-for-life_retina_text_below.png',
+        ],
+        [
             'slug' => 'lotto-hotpicks',
             'name' => 'Lotto Hotpicks',
             'logo' => 'lotto-hotpicks_retina_text_below.png',

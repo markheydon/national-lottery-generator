@@ -17,9 +17,20 @@ namespace App\Services\Lottery;
 class ThunderballDownload
 {
     /** @var string URL of the draw history. */
-    public const HISTORY_DOWNLOAD_URL = 'https://www.national-lottery.co.uk/results/thunderball/draw-history/csv';
+    public const HISTORY_DOWNLOAD_URL = 'https://api-dfe.national-lottery.co.uk/draw-game/results/4/download?interval=ONE_EIGHTY';
     /** @var string Filename to use for the local (data directory) file. */
     public const FILENAME = 'thunderball-draw-history';
+
+    /**
+     * Resolved download URL, allowing deterministic test overrides.
+     *
+     * @return string
+     */
+    private static function getHistoryDownloadUrl(): string
+    {
+        $override = getenv('LOTTERY_DOWNLOAD_URL_THUNDERBALL');
+        return ($override !== false && $override !== '') ? $override : self::HISTORY_DOWNLOAD_URL;
+    }
 
     /**
      * Download the Lotto draw history file.
@@ -31,7 +42,7 @@ class ThunderballDownload
      */
     public static function download($failDownload = false, $failRename = false): string
     {
-        $downloader = new Downloader(self::HISTORY_DOWNLOAD_URL, self::FILENAME);
+        $downloader = new Downloader(self::getHistoryDownloadUrl(), self::FILENAME);
         return $downloader->download($failDownload, $failRename);
     }
 
@@ -85,7 +96,7 @@ class ThunderballDownload
      */
     private static function filePath(): string
     {
-        $downloader = new Downloader(self::HISTORY_DOWNLOAD_URL, self::FILENAME);
+        $downloader = new Downloader(self::getHistoryDownloadUrl(), self::FILENAME);
         return $downloader->filePath();
     }
 }

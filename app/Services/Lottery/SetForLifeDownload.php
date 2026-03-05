@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Helper class to download Lotto draw history file.
+ * Helper class to download Set For Life draw history file.
  */
 
 declare(strict_types=1);
@@ -9,17 +9,17 @@ declare(strict_types=1);
 namespace App\Services\Lottery;
 
 /**
- * Helper class to download Lotto draw history file.
+ * Helper class to download Set For Life draw history file.
  *
  * @package App\Services\Lottery
  * @since 1.0.0
  */
-class LottoDownload
+class SetForLifeDownload
 {
     /** @var string URL of the draw history. */
-    public const HISTORY_DOWNLOAD_URL = 'https://api-dfe.national-lottery.co.uk/draw-game/results/1/download?interval=ONE_EIGHTY';
+    public const HISTORY_DOWNLOAD_URL = 'https://api-dfe.national-lottery.co.uk/draw-game/results/3/download?interval=ONE_EIGHTY';
     /** @var string Filename to use for the local (data directory) file. */
-    public const FILENAME = 'lotto-draw-history';
+    public const FILENAME = 'set-for-life-draw-history';
 
     /**
      * Resolved download URL, allowing deterministic test overrides.
@@ -28,12 +28,12 @@ class LottoDownload
      */
     private static function getHistoryDownloadUrl(): string
     {
-        $override = getenv('LOTTERY_DOWNLOAD_URL_LOTTO');
+        $override = getenv('LOTTERY_DOWNLOAD_URL_SET_FOR_LIFE');
         return ($override !== false && $override !== '') ? $override : self::HISTORY_DOWNLOAD_URL;
     }
 
     /**
-     * Download the Lotto draw history file.
+     * Download the Set For Life draw history file.
      *
      * @since 1.0.0
      * @param bool $failDownload Simulate failed download (for testing).
@@ -47,13 +47,13 @@ class LottoDownload
     }
 
     /**
-     * Uses the Lotto draw history to return a draws array.
+     * Uses the Set For Life draw history to return a draws array.
      *
      * @since 1.0.0
      *
      * @return array The draws array.
      */
-    public static function readLottoDrawHistory(): array
+    public static function readSetForLifeDrawHistory(): array
     {
         $results = Utils::csvToArray(self::filePath());
 
@@ -65,11 +65,9 @@ class LottoDownload
             $ball3 = $draw['Ball 3'];
             $ball4 = $draw['Ball 4'];
             $ball5 = $draw['Ball 5'];
-            $ball6 = $draw['Ball 6'];
-            $bonusBall = $draw['Bonus Ball'];
+            $lifeBall = $draw['Life Ball'] ?? $draw['LifeBall'] ?? '';
             $ballSet = $draw['Ball Set'];
             $machine = $draw['Machine'];
-            $raffles = isset($draw['Raffles']) ? self::parseRafflesString($draw['Raffles']) : '';
             $drawNumber = $draw['DrawNumber'];
             $dayOfDraw = date('l', strtotime($drawDate));
 
@@ -82,41 +80,13 @@ class LottoDownload
                 'ball3' => $ball3,
                 'ball4' => $ball4,
                 'ball5' => $ball5,
-                'ball6' => $ball6,
-                'bonusBall' => $bonusBall,
+                'lifeBall' => $lifeBall,
                 'ballSet' => $ballSet,
                 'machine' => $machine,
-                'raffles' => $raffles,
             ];
         }
 
         return $allDraws;
-    }
-
-    /**
-     * Returns array of raffle numbers from the specified string.
-     *
-     * CSV history file seems to be in the format 'RAF;RAF,RAF,RAF'.
-     *
-     * @since 1.0.0
-     *
-     * @param string $raffles String from CSV history file for field 'Raffles'.
-     * @return array Array of strings of all the raffles numbers from the specified string.
-     */
-    private static function parseRafflesString(string $raffles): array
-    {
-        if (empty($raffles)) {
-            return [];
-        }
-        $split = explode(';', $raffles);
-        if (count($split) < 2) {
-            // No semicolon found, treat the whole string as a single raffle number (or comma-separated list)
-            return array_map('trim', explode(',', $raffles));
-        }
-        $first = $split[0];
-        $others = explode(',', $split[1]);
-        $result = array_merge([$first], $others);
-        return array_map('trim', $result);
     }
 
     /**

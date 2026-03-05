@@ -238,10 +238,10 @@ class LottoGenerate
      * @since 1.0.0
      *
      * @param array $draws Array of draws.
-     * @param int $ballSet Ball set to filter by.
+     * @param int|string $ballSet Ball set to filter by.
      * @return array Filtered array of draws.
      */
-    private static function filterDrawsByBallSet(array $draws, int $ballSet): array
+    private static function filterDrawsByBallSet(array $draws, int|string $ballSet): array
     {
         $filteredDraws = Utils::filterDrawsBy(['ballSet'], $draws, $ballSet);
         return $filteredDraws;

@@ -61,7 +61,7 @@ class Utils
         array $draws,
         array $elements,
         array $except = []
-    ): int {
+    ): int|string {
         $count = Utils::getCount($draws, $elements, $except);
         arsort($count);
         reset($count);
