@@ -8,15 +8,40 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Lottery;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase as LaravelTestCase;
 
 /**
  * Unit tests for Generate classes.
  *
  * @package Tests\Unit\Lottery
  */
-abstract class GenerateTestCase extends TestCase
+abstract class GenerateTestCase extends LaravelTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Keep generator fixtures isolated from real local storage.
+        Storage::fake('local');
+
+        $fixtures = [
+            'lotto-draw-history.csv' => "DrawNumber,DrawDate,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Ball 6,Bonus Ball,Ball Set,Machine,Raffles\n"
+                . "1,2026-01-03,1,2,3,4,5,6,7,1,L15,ABC123\n"
+                . "2,2026-01-10,8,9,10,11,12,13,14,2,L16,DEF456\n",
+            'euromillions-draw-history.csv' => "DrawNumber,DrawDate,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Lucky Star 1,Lucky Star 2,UK Millionaire Maker\n"
+                . "1,2026-01-06,1,2,3,4,5,1,2,UKMK001\n"
+                . "2,2026-01-09,6,7,8,9,10,3,4,UKMK002\n",
+            'thunderball-draw-history.csv' => "DrawNumber,DrawDate,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Thunderball,Ball Set,Machine\n"
+                . "1,2026-01-07,1,2,3,4,5,1,1,TB-A\n"
+                . "2,2026-01-14,6,7,8,9,10,2,2,TB-B\n",
+        ];
+
+        foreach ($fixtures as $filename => $content) {
+            Storage::disk('local')->put('lottery/' . $filename, $content);
+        }
+    }
+
     /**
      * Generated results to use in tests.
      *

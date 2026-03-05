@@ -6,10 +6,27 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Lottery;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase as LaravelTestCase;
 
-abstract class DownloaderTestCase extends TestCase
+abstract class DownloaderTestCase extends LaravelTestCase
 {
+    /**
+     * Configure deterministic HTTP response for download tests.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Keep downloader writes isolated from real local storage.
+        Storage::fake('local');
+
+        Http::fake([
+            '*' => Http::response("DrawNumber,DrawDate\n1,2026-01-01\n", 200),
+        ]);
+    }
+
     /**
      * Generated download output for use tests.
      *
@@ -46,6 +63,9 @@ abstract class DownloaderTestCase extends TestCase
      */
     public function testDownloadRenameFailed()
     {
+        // Create current file first so rename branch is exercised deterministically.
+        $this->assertEmpty($this->download());
+
         $result = $this->download(false, true);
         $this->assertStringContainsString('failed', $result);
     }

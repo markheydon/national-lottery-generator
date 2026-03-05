@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Helper class to generate numbers for the Thunderball game.
+ * Helper class to generate numbers for the Set For Life game.
  */
 
 declare(strict_types=1);
@@ -9,37 +9,27 @@ declare(strict_types=1);
 namespace App\Services\Lottery;
 
 /**
- * Helper class to generate numbers for the Thunderball game.
+ * Helper class to generate numbers for the Set For Life game.
  *
  * @package App\Services\Lottery
  * @since 1.0.0
  */
-class ThunderballGenerate
+class SetForLifeGenerate
 {
     /**
-     * The name of the Lotto game.
+     * The name of the Set For Life game.
      *
-     * @return string Name of the Lotto game.
+     * @return string Name of the Set For Life game.
      */
     protected static function getNameOfGame(): string
     {
-        return 'Thunderball';
+        return 'Set For Life';
     }
 
     /**
-     * Should results include Lucky Stars?
+     * The number of main balls to return in the results.
      *
-     * @return bool True if results should include Lucky Stars.
-     */
-    private static function hasThunderball(): bool
-    {
-        return (static::getNameOfGame() === self::getNameOfGame());
-    }
-
-    /**
-     * The number of Lotto balls to return in the results.
-     *
-     * @return int Num of Lotto balls in results.
+     * @return int Number of main balls in results.
      */
     protected static function getNumOfMainBalls(): int
     {
@@ -47,7 +37,7 @@ class ThunderballGenerate
     }
 
     /**
-     * Generate 'random' Lotto numbers.
+     * Generate Set For Life numbers.
      *
      * @since 1.0.0
      *
@@ -55,22 +45,22 @@ class ThunderballGenerate
      */
     public static function generate(): array
     {
-        $allDraws = ThunderballDownload::readThunderballDrawHistory();
+        $allDraws = SetForLifeDownload::readSetForLifeDrawHistory();
 
         // Build the results array header
         $gameName = static::getNameOfGame();
         $latestDrawDate = Utils::getLatestDrawDate($allDraws);
 
-        // Build some generated lines of 'random' numbers and return
+        // Build generated lines
         $linesFrequentTogether = self::generateMostFrequentTogether($allDraws);
         $linesFullIteration = self::generateFullIteration($allDraws);
 
-        // Find the most popular Thunderball number across all generated lines
-        $mostPopularThunderball = self::findMostPopularThunderball($linesFrequentTogether, $linesFullIteration);
+        // Find the most popular Life Ball number across generated lines
+        $mostPopularLifeBall = self::findMostPopularLifeBall($linesFrequentTogether, $linesFullIteration);
 
-        // Find first line from full-iteration with the most popular Thunderball and its index
-        $firstLineIndex = self::findFirstLineIndexWithThunderball($linesFullIteration, $mostPopularThunderball);
-        $firstLineWithPopularThunderball = ($firstLineIndex !== null) ? $linesFullIteration[$firstLineIndex] : $linesFullIteration[0];
+        // Find first line from full-iteration with the most popular Life Ball and its index
+        $firstLineIndex = self::findFirstLineIndexWithLifeBall($linesFullIteration, $mostPopularLifeBall);
+        $firstLineWithPopularLifeBall = ($firstLineIndex !== null) ? $linesFullIteration[$firstLineIndex] : $linesFullIteration[0];
 
         // Remove this line from full-iteration to avoid duplication
         $remainingFullIterationLines = $linesFullIteration;
@@ -78,21 +68,16 @@ class ThunderballGenerate
             array_splice($remainingFullIterationLines, $firstLineIndex, 1);
         }
 
-        // Build lines array structure. GameController.buildViewDataArray will take the first
-        // line from each method as 'suggested' lines, resulting in:
-        // Line 1: most-popular-thunderball, Line 2: most-freq-together, Line 3+: full-iteration
         $lines = [
-            'most-popular-thunderball' => [$firstLineWithPopularThunderball],
+            'most-popular-life-ball' => [$firstLineWithPopularLifeBall],
             'most-freq-together' => $linesFrequentTogether,
             'full-iteration' => $remainingFullIterationLines,
         ];
+
         $lineBalls = [
             'mainNumbers' => static::getNumOfMainBalls(),
+            'lifeBall' => 1,
         ];
-        if (static::hasThunderball()) {
-            $lineBalls['thunderball'] = 1;
-        }
-
 
         // Build the results array and return
         $results = [
@@ -102,84 +87,69 @@ class ThunderballGenerate
             'lineBalls' => $lineBalls,
             'lines' => $lines,
         ];
+
         return $results;
     }
 
     /**
-     * Find the most popular Thunderball number across all generated lines.
-     *
-     * Counts the frequency of each Thunderball number across all provided lines
-     * and returns the most frequently occurring one. If no valid Thunderball data
-     * exists in the lines, returns 1 as a safe default (Thunderball range is 1-14).
+     * Find the most popular Life Ball number across all generated lines.
      *
      * @param array $lines1 First set of lines to analyze.
      * @param array $lines2 Second set of lines to analyze.
-     * @return int The most popular Thunderball number, or 1 if no valid data exists.
+     * @return int The most popular Life Ball number, or 1 if no valid data exists.
      */
-    protected static function findMostPopularThunderball(array $lines1, array $lines2): int
+    protected static function findMostPopularLifeBall(array $lines1, array $lines2): int
     {
-        $thunderballCounts = [];
+        $lifeBallCounts = [];
 
-        // Count occurrences from all lines
         $allLines = array_merge($lines1, $lines2);
         foreach ($allLines as $line) {
-            if (isset($line['thunderball']) && is_array($line['thunderball']) && count($line['thunderball']) > 0) {
-                $thunderball = $line['thunderball'][0];
-                if (!isset($thunderballCounts[$thunderball])) {
-                    $thunderballCounts[$thunderball] = 0;
+            if (isset($line['lifeBall']) && is_array($line['lifeBall']) && count($line['lifeBall']) > 0) {
+                $lifeBall = $line['lifeBall'][0];
+                if (!isset($lifeBallCounts[$lifeBall])) {
+                    $lifeBallCounts[$lifeBall] = 0;
                 }
-                $thunderballCounts[$thunderball]++;
+                $lifeBallCounts[$lifeBall]++;
             }
         }
 
-        // Find the most popular one
-        if (empty($thunderballCounts)) {
-            return 1; // Default fallback
+        if (empty($lifeBallCounts)) {
+            return 1;
         }
 
-        arsort($thunderballCounts);
-        reset($thunderballCounts);
-        return (int) key($thunderballCounts);
+        arsort($lifeBallCounts);
+        reset($lifeBallCounts);
+        return (int) key($lifeBallCounts);
     }
 
     /**
-     * Find the index of the first line with the specified Thunderball number.
-     *
-     * Searches through the provided lines and returns the array index of the first
-     * line that contains the specified Thunderball number. Returns null if no matching
-     * line is found.
+     * Find the index of the first line with the specified Life Ball number.
      *
      * @param array $lines Lines to search through.
-     * @param int $thunderball The Thunderball number to find.
-     * @return int|null The index of the first line with the specified Thunderball, or null if not found.
+     * @param int $lifeBall The Life Ball number to find.
+     * @return int|null The index of the first line with the specified Life Ball, or null if not found.
      */
-    protected static function findFirstLineIndexWithThunderball(array $lines, int $thunderball): ?int
+    protected static function findFirstLineIndexWithLifeBall(array $lines, int $lifeBall): ?int
     {
         foreach ($lines as $index => $line) {
-            if (isset($line['thunderball']) && is_array($line['thunderball']) && count($line['thunderball']) > 0) {
-                if ($line['thunderball'][0] === $thunderball) {
+            if (isset($line['lifeBall']) && is_array($line['lifeBall']) && count($line['lifeBall']) > 0) {
+                if ($line['lifeBall'][0] === $lifeBall) {
                     return $index;
                 }
             }
         }
 
-        // Return null if not found
         return null;
     }
 
     /**
-     * Generate a line by finding balls that occurs most frequently across all data together.
-     *
-     * I.e. looks for numbers that occur within the same lines together, not across the whole data set.
-     *
-     * @since 1.0.0
+     * Generate a line by finding balls that occur most frequently together.
      *
      * @param array $draws The draws array to use.
      * @return array Array of lines generated.
      */
     protected static function generateMostFrequentTogether(array $draws): array
     {
-        // return as array to keep consistence with other generate method(s)
         $lines = [];
         $lines[] = self::getFrequentlyOccurringBalls($draws, true);
         return $lines;
@@ -190,7 +160,7 @@ class ThunderballGenerate
      *
      * @param array $draws The draws array to use.
      * @param bool $together Balls that occur together?
-     * @return array Array of balls 'normal' => (5), 'luckyStars' => (2).
+     * @return array
      */
     private static function getFrequentlyOccurringBalls(array $draws, bool $together): array
     {
@@ -202,17 +172,15 @@ class ThunderballGenerate
             $together
         );
         $results['mainNumbers'] = $normalBalls;
-        if (static::hasThunderball()) {
-            $thunderball = Utils::getFrequentlyOccurringBalls(
-                $draws,
-                ['thunderball'],
-                1,
-                $together
-            );
-            $results['thunderball'] = $thunderball;
-        }
 
-        // Return results array
+        $lifeBall = Utils::getFrequentlyOccurringBalls(
+            $draws,
+            ['lifeBall'],
+            1,
+            $together
+        );
+        $results['lifeBall'] = $lifeBall;
+
         return $results;
     }
 
@@ -228,16 +196,12 @@ class ThunderballGenerate
             $ballNumber = 'ball' . $b;
             $ballNames[] = $ballNumber;
         }
+
         return $ballNames;
     }
 
     /**
-     * Generate lotto lines by iterating through most frequent machine, ball set and balls within that set.
-     *
-     * Will run through however many history draws there are available and generate as many lines as possible
-     * depending on the size of the data.
-     *
-     * @since 1.0.0
+     * Generate lines by iterating through most frequent machine, ball set and balls within that set.
      *
      * @param array $draws The draws array to use.
      * @return array Array of lines generated.
@@ -247,7 +211,6 @@ class ThunderballGenerate
         $lines = [];
         $machines = self::getMachineNames($draws);
         foreach ($machines as $machine) {
-            // Loop through ball sets (for single machine).
             $machineDraws = self::filterDrawsByMachine($draws, $machine);
             $ballSets = self::getBallSets($machineDraws);
             foreach ($ballSets as $ballSet) {
@@ -261,8 +224,6 @@ class ThunderballGenerate
 
     /**
      * Returns a list of machine names sorted by most frequent first.
-     *
-     * @since 1.0.0
      *
      * @param array $draws Array of draws.
      * @return array Array of machine names with most frequent first.
@@ -278,8 +239,6 @@ class ThunderballGenerate
     /**
      * Returns a list of ball sets sorted by most frequent first.
      *
-     * @since 1.0.0
-     *
      * @param array $draws Array of draws.
      * @return array Array of ball sets with most frequent first.
      */
@@ -294,8 +253,6 @@ class ThunderballGenerate
     /**
      * Filter the specified array by the specified machine name.
      *
-     * @since 1.0.0
-     *
      * @param array $draws Array of draws.
      * @param string $machine Machine name to filter by.
      * @return array Filtered array of draws.
@@ -308,8 +265,6 @@ class ThunderballGenerate
 
     /**
      * Filter the specified array by the specified ball set.
-     *
-     * @since 1.0.0
      *
      * @param array $draws Array of draws.
      * @param int|string $ballSet Ball set to filter by.
