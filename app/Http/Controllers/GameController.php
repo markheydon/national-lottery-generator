@@ -188,7 +188,7 @@ class GameController extends Controller
         if ($downloadNeeded) {
             EuromillionsDownload::download();
         }
-        $generate = EuroMillionsHotpicksGenerate::generate();
+        $generate = EuromillionsHotpicksGenerate::generate();
 
         return $generate;
     }
