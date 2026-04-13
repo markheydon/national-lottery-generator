@@ -81,7 +81,11 @@ class Downloader
      */
     public function filePath(): string
     {
-        return Storage::disk('local')->path($this->storagePath());
+        if ($this->canUseLaravelStorage()) {
+            return Storage::disk('local')->path($this->storagePath());
+        }
+
+        return $this->toAbsoluteLocalPath($this->storagePath());
     }
 
     /**
@@ -127,13 +131,13 @@ class Downloader
         $storagePath = $this->storagePath();
 
         // Create backup of existing file if it exists
-        if (Storage::disk('local')->exists($storagePath)) {
+        if ($this->localFileExists($storagePath)) {
             $timestamp = date('YmdHis', time());
             $backupPath = self::STORAGE_PATH . DIRECTORY_SEPARATOR . $this->filename . '-' . $timestamp . '.csv';
 
             if (!$failRename) {
                 try {
-                    Storage::disk('local')->copy($storagePath, $backupPath);
+                    $this->copyLocalFile($storagePath, $backupPath);
                 } catch (\Exception $e) {
                     $this->safeLog('error', 'Failed to backup old history file', [
                         'error' => $e->getMessage(),
@@ -161,7 +165,7 @@ class Downloader
             }
 
             // Save to storage
-            Storage::disk('local')->put($storagePath, $response->body());
+            $this->writeLocalFile($storagePath, $response->body());
 
             return '';
         } catch (\Exception $e) {
@@ -170,6 +174,100 @@ class Downloader
                 'url' => $this->url,
             ]);
             return 'Download failed';
+        }
+    }
+
+    /**
+     * Determine whether the Laravel storage binding can be safely used.
+     */
+    private function canUseLaravelStorage(): bool
+    {
+        if (!\function_exists('app')) {
+            return false;
+        }
+
+        try {
+            return app()->bound('filesystem');
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Convert local disk relative path to absolute storage/app path.
+     */
+    private function toAbsoluteLocalPath(string $relativePath): string
+    {
+        $normalizedPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $relativePath);
+        $projectRoot = dirname(__DIR__, 3);
+
+        return $projectRoot . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . $normalizedPath;
+    }
+
+    /**
+     * Check if file exists on the local disk.
+     */
+    private function localFileExists(string $relativePath): bool
+    {
+        if ($this->canUseLaravelStorage()) {
+            return Storage::disk('local')->exists($relativePath);
+        }
+
+        return file_exists($this->toAbsoluteLocalPath($relativePath));
+    }
+
+    /**
+     * Copy a local file, supporting Laravel Storage and native filesystem fallback.
+     *
+     * @throws \RuntimeException
+     */
+    private function copyLocalFile(string $fromRelativePath, string $toRelativePath): void
+    {
+        if ($this->canUseLaravelStorage()) {
+            if (!Storage::disk('local')->copy($fromRelativePath, $toRelativePath)) {
+                throw new \RuntimeException('Copy failed');
+            }
+
+            return;
+        }
+
+        $sourcePath = $this->toAbsoluteLocalPath($fromRelativePath);
+        $destinationPath = $this->toAbsoluteLocalPath($toRelativePath);
+
+        $destinationDir = dirname($destinationPath);
+        if (!is_dir($destinationDir) && !mkdir($destinationDir, 0755, true) && !is_dir($destinationDir)) {
+            throw new \RuntimeException('Failed to create destination directory');
+        }
+
+        if (!copy($sourcePath, $destinationPath)) {
+            throw new \RuntimeException('Copy failed');
+        }
+    }
+
+    /**
+     * Write a local file, supporting Laravel Storage and native filesystem fallback.
+     *
+     * @throws \RuntimeException
+     */
+    private function writeLocalFile(string $relativePath, string $contents): void
+    {
+        if ($this->canUseLaravelStorage()) {
+            if (!Storage::disk('local')->put($relativePath, $contents)) {
+                throw new \RuntimeException('Write failed');
+            }
+
+            return;
+        }
+
+        $absolutePath = $this->toAbsoluteLocalPath($relativePath);
+        $targetDir = dirname($absolutePath);
+
+        if (!is_dir($targetDir) && !mkdir($targetDir, 0755, true) && !is_dir($targetDir)) {
+            throw new \RuntimeException('Failed to create target directory');
+        }
+
+        if (file_put_contents($absolutePath, $contents) === false) {
+            throw new \RuntimeException('Write failed');
         }
     }
 

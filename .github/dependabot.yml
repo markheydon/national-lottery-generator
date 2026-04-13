@@ -10,12 +10,28 @@ updates:
     schedule:
       interval: "weekly"
     versioning-strategy: increase-if-necessary
+    groups:
+      laravel:
+        patterns:
+          - "laravel/*"
+          - "barryvdh/*"
+      phpunit:
+        patterns:
+          - "phpunit/*"
+          - "sebastianbergmann/*"
+      composer-all:
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
     versioning-strategy: increase-if-necessary
+    groups:
+      npm-all:
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker"
     directory: "/"
@@ -26,3 +42,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      github-actions-all:
+        patterns:
+          - "*"
