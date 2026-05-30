@@ -6,14 +6,14 @@
 
 ## Overview
 
-Just for fun, makes an attempt at 'guessing' the Lotto numbers using a half-arsed bit of logic.
+Just for fun, this app makes an attempt at suggesting National Lottery numbers using a playful bit of logic.
 
 This is a Laravel-based web application that analyses historical UK National Lottery draw data and generates number predictions. While the algorithm is playful rather than statistical, it demonstrates file-based data caching, CSV parsing, and Laravel best practices.
 
 ## Features
 
-- 🎲 **Number Generation**: Analyses historical lottery draw data to generate predictions
-- 📊 **Multiple Games**: Supports Lotto, EuroMillions, and Thunderball
+- 🎲 **Number Generation**: Analyses historical lottery draw data to generate suggestions
+- 📊 **Multiple Games**: Supports Lotto, EuroMillions, Thunderball, Set For Life, Lotto HotPicks, and EuroMillions HotPicks
 - 💾 **No Database**: Uses file-based caching and storage for simplicity
 - 🔄 **Auto-Update**: Automatically downloads latest draw data from the National Lottery website
 - 🐳 **Docker Ready**: Includes Laravel Sail for easy local development
@@ -58,14 +58,14 @@ Laravel's official guidance for devcontainers is to keep using Sail and add a li
 1. Open the repository in GitHub Codespaces.
 2. Wait for the devcontainer to finish building.
 3. The post-create bootstrap will:
-  - copy `.env.example` to `.env` if needed
-  - install Composer dependencies
-  - install JavaScript dependencies
-  - generate `APP_KEY` when it is missing
+   - copy `.env.example` to `.env` if needed
+   - install Composer dependencies
+   - install JavaScript dependencies
+   - generate `APP_KEY` when it is missing
 4. Start the application:
-  ```bash
-  ./vendor/bin/sail up -d
-  ```
+   ```bash
+   ./vendor/bin/sail up -d
+   ```
 5. Open the forwarded app port when prompted, or browse to the forwarded URL in the Ports panel.
 
 ### Codespaces Daily Workflow
@@ -92,7 +92,7 @@ Laravel's official guidance for devcontainers is to keep using Sail and add a li
 
 ## Requirements
 
-- **PHP**: 8.2 or higher (8.4 recommended for Azure)
+- **PHP**: 8.2 to 8.5 (8.4 recommended for Azure)
 - **Laravel**: 12.x (LTS)
 - **Docker** (optional, recommended for local development via Laravel Sail)
 
@@ -180,6 +180,7 @@ The application uses Laravel's **file cache** and **filesystem storage** to mana
 - **Caching**: Parsed draw data is cached using Laravel's file cache driver to avoid re-downloading and re-parsing between requests
 - **Auto-Refresh**: Downloads are automatically refreshed when files are older than 1 day
 - **File Storage**: All data is persisted to disk - no database required
+- **Shared Sources**: HotPicks games reuse their parent game draw history (Lotto or EuroMillions)
 
 ### Storage Locations
 

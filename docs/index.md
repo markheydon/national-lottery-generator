@@ -5,7 +5,9 @@ title: Home
 
 # Welcome to the National Lottery Number Generator
 
-Generate lottery numbers for your favourite UK National Lottery games – just for fun!
+Generate lottery numbers for your favourite UK National Lottery games, just for fun.
+
+This page is your start-here guide for using the app quickly.
 
 ## 🎲 Try the App Now
 
@@ -15,15 +17,16 @@ Get started in seconds – no sign-up required!
 
 ## What is This?
 
-The National Lottery Number Generator is a free web app that creates lottery number suggestions for popular UK games including:
+The National Lottery Number Generator is a free web app that creates lottery number suggestions for UK games including:
 
 - **Lotto** – the classic Saturday night draw
 - **EuroMillions** – the big European jackpot game
 - **Thunderball** – better odds, great prizes
+- **Set For Life** – top prize paid over time
 - **Lotto HotPicks** – pick your own way to play
 - **EuroMillions HotPicks** – EuroMillions with a twist
 
-The app analyses past draw results and uses a playful algorithm to suggest numbers. It's designed to be a bit of fun – not a serious prediction tool!
+The app analyses past draw results and uses a playful algorithm to suggest numbers. It is designed to be a bit of fun, not a serious prediction tool.
 
 ## Quick Start
 
@@ -32,14 +35,14 @@ The app analyses past draw results and uses a playful algorithm to suggest numbe
 1. Visit the app: [Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)
 2. Choose your game from the home page
 3. Click "Generate Numbers"
-4. View your suggested numbers
+4. View your suggested numbers and latest draw date
 
 That's it! You'll see a set of suggested numbers based on historical draw data.
 
 ## Features
 
 ✅ **No sign-up required** – just visit and use  
-✅ **Multiple games supported** – all major UK National Lottery games  
+✅ **Multiple games supported** – Lotto, EuroMillions, Thunderball, Set For Life, Lotto HotPicks, and EuroMillions HotPicks  
 ✅ **Free to use** – no hidden costs or subscriptions  
 ✅ **Always up to date** – the app automatically downloads the latest draw results  
 ✅ **Simple and fast** – get your numbers in seconds
@@ -66,4 +69,4 @@ This is a hobby project created for fun. It's open source and not affiliated wit
 
 ---
 
-**Good luck!** 🍀
+Good luck.

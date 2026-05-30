@@ -1,7 +1,7 @@
 ---
 layout: default
 title: How It Works
----
+This page explains how the National Lottery Number Generator creates its suggestions.
 
 # How It Works
 
@@ -11,18 +11,11 @@ Curious about what happens behind the scenes? This page explains how the Nationa
 
 The app analyses **historical draw data** from the UK National Lottery and uses that information to generate number suggestions. It downloads the latest results automatically and looks for patterns in the data.
 
-## What Data Does It Use?
-
-The app downloads official draw history files from the National Lottery website for each game:
-
+- **Set For Life** – All past Set For Life draws
 - **Lotto** – All past Lotto draws
 - **EuroMillions** – All past EuroMillions draws  
-- **Thunderball** – All past Thunderball draws
-- **HotPicks games** – Based on their parent draws (Lotto or EuroMillions)
-
-This data includes:
 - Draw dates
-- Numbers drawn
+The data is refreshed automatically when cached files are older than 24 hours.
 - Bonus balls (where applicable)
 - Lucky Stars (for EuroMillions)
 
@@ -66,10 +59,6 @@ The app checks for new draw data every time someone uses it. If the cached data 
 
 You don't need to do anything – it all happens automatically in the background.
 
-## Technical Details (Optional)
-
-For those interested in the technical side:
-
 - **Built with Laravel** – A popular PHP web framework
 - **File-based storage** – No database required; everything is cached to disk
 - **Hosted on Azure** – Runs on Microsoft's cloud platform
@@ -77,9 +66,6 @@ For those interested in the technical side:
 
 Developers can explore the code to see exactly how the algorithm works.
 
-## Why This Approach?
-
-The creator designed this app as:
 
 - A **learning project** to experiment with Laravel and data processing
 - A **fun alternative** to random number generators
@@ -91,11 +77,7 @@ It was never intended to be a serious prediction system – just a playful way t
 
 The National Lottery is, and always will be, completely random. This app doesn't change those odds – it just makes generating numbers a bit more fun!
 
-If you're playing the lottery, do it for entertainment. The real value in this app is having a bit of fun with the process, not winning the jackpot.
 
-## Learn More
-
-- [Getting Started](getting-started.md) – How to use the app
 - [FAQ](faq.md) – Common questions and answers
 - [← Back to Home](index.md)
 
