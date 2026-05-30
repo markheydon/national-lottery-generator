@@ -25,7 +25,7 @@
             "onAutoForward": "openPreview"
         },
         "5173": {
-            "label": "Vite / asset dev server",
+            "label": "Asset dev server (Laravel Mix/webpack)",
             "onAutoForward": "silent"
         },
         "9003": {

@@ -29,6 +29,11 @@ fi
 
 corepack enable >/dev/null 2>&1 || true
 
+if [[ -f yarn.lock ]] && grep -q '^# yarn lockfile v1' yarn.lock; then
+    # Ensure Yarn Classic is used with v1 lockfiles for deterministic installs.
+    corepack prepare yarn@1.22.22 --activate >/dev/null 2>&1
+fi
+
 if [[ ! -f .env ]]; then
     cp .env.example .env
     echo "[devcontainer] Created .env from .env.example"
@@ -65,9 +70,11 @@ if [[ -f package.json ]]; then
     fi
 fi
 
-if [[ -f artisan ]] && grep -Eq '^APP_KEY=$' .env; then
-    echo "[devcontainer] Generating APP_KEY..."
-    php artisan key:generate --force
+if [[ -f artisan ]]; then
+    if ! grep -Eq '^APP_KEY=' .env || grep -Eq '^APP_KEY=$' .env; then
+        echo "[devcontainer] Generating APP_KEY..."
+        php artisan key:generate --force
+    fi
 fi
 
 cat <<'EOF'
