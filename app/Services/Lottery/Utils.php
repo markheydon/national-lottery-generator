@@ -121,7 +121,8 @@ class Utils
             }
             return $result;
         });
-        return $filteredDraws;
+
+        return array_values($filteredDraws);
     }
 
     /**
@@ -162,7 +163,8 @@ class Utils
         if ($sorted) {
             asort($results);
         }
-        return $results;
+
+        return array_values($results);
     }
 
     /**

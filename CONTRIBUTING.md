@@ -24,11 +24,14 @@ This project follows a simple code of conduct:
 
 ### Prerequisites
 
-- PHP 8.2 or higher (8.4 recommended)
+- PHP 8.3 to 8.5 (Laravel 13 supported range; 8.5 is the default runtime target)
 - Docker (for Laravel Sail)
 - Git
 - Composer
 - Basic understanding of Laravel framework
+
+Internal maintainer policy for supported versions and dependency update guardrails
+is documented in `docs-internal/supported-versions.md`.
 
 ### Setting Up Your Development Environment
 
@@ -44,7 +47,7 @@ This project follows a simple code of conduct:
        -u "$(id -u):$(id -g)" \
        -v "$(pwd):/var/www/html" \
        -w /var/www/html \
-       laravelsail/php84-composer:latest \
+      laravelsail/php85-composer:latest \
        composer install --ignore-platform-reqs
    ```
 
@@ -272,8 +275,8 @@ What should happen
 What actually happens
 
 ## Environment
-- PHP Version: 8.4
-- Laravel Version: 12.x
+- PHP Version: 8.5
+- Laravel Version: 13.x
 - Browser: Chrome 120
 - OS: Ubuntu 22.04
 ```
