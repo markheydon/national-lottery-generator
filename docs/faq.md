@@ -7,6 +7,8 @@ title: FAQ
 
 Got questions? Here are answers to the most common queries about the National Lottery Number Generator.
 
+This page is a reference and troubleshooting guide.
+
 ## General Questions
 
 ### What is this app?
@@ -27,6 +29,7 @@ The app supports all major UK National Lottery games:
 - Lotto
 - EuroMillions
 - Thunderball
+- Set For Life
 - Lotto HotPicks
 - EuroMillions HotPicks
 
@@ -64,7 +67,7 @@ Yes, you can use any numbers the app generates when purchasing lottery tickets. 
 
 ### How often does the data update?
 
-The app checks for new draw data automatically. If the cached information is older than 24 hours, it downloads the latest results from the National Lottery website.
+The app checks for new draw data automatically. If cached information is older than 24 hours, it downloads the latest results from the National Lottery website.
 
 You don't need to do anything – it updates itself.
 
@@ -84,7 +87,7 @@ No, the app needs an internet connection to download the latest draw data and ge
 
 ### Is my data safe?
 
-The app doesn't collect, store, or track any personal information about users. It simply generates numbers and displays them in your browser.
+The app does not collect, store, or track personal information about users. It simply generates numbers and displays them in your browser.
 
 ## Problems and Support
 
@@ -113,7 +116,7 @@ Absolutely! Feature suggestions are welcome. Open an issue on [GitHub](https://g
 
 ### How can I contribute to the project?
 
-The project is open source, and contributions are welcome! See the [developer reference documentation](https://github.com/markheydon/national-lottery-generator) for technical details about setting up a development environment.
+The project is open source, and contributions are welcome. See the [main README](../README.md) for development setup and [Contributing](../CONTRIBUTING.md) for contribution guidelines.
 
 ## Responsible Gambling
 
@@ -149,7 +152,7 @@ Yes! The entire project is open source under the GPL v3 licence. You can view an
 
 ### Can I host my own version?
 
-Yes, the open-source licence allows you to run your own instance. See the [developer documentation](https://github.com/markheydon/national-lottery-generator/blob/main/README.md) for setup instructions.
+Yes, the open-source licence allows you to run your own instance. See the [main README](../README.md) for setup instructions.
 
 ## Still Have Questions?
 

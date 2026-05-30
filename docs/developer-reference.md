@@ -1,57 +1,51 @@
 # Developer Reference
 
-This directory contains public-facing documentation for the National Lottery Generator application.
+This page is a reference for maintaining public documentation in this repository.
 
 ## Purpose
 
-The `docs/` folder is intended to house comprehensive documentation that helps users, developers, and contributors understand and work with this project. This includes:
+The `docs/` folder contains GitHub Pages content aimed at end users. Keep pages concise and focused on one purpose.
 
-- **User Guides**: Instructions on how to use the application and its features
-- **API Documentation**: Details about available APIs and endpoints
-- **Architecture Documentation**: Technical details about the system design and algorithms
-- **Deployment Guides**: Advanced deployment scenarios and configurations
-- **Tutorials**: Step-by-step guides for common tasks and use cases
-- **Reference Materials**: Additional resources and external links
+- **Tutorial/start page**: [index.md](index.md)
+- **How-to task guide**: [getting-started.md](getting-started.md)
+- **Explanation**: [how-it-works.md](how-it-works.md)
+- **FAQ/troubleshooting**: [faq.md](faq.md)
 
-## Planned Documentation
+## Source of Truth Files
 
-The following documentation is planned for future additions:
+When updating public docs, align wording with:
 
-- **Algorithm Explanation**: Detailed explanation of how the lottery number generation algorithm works
-- **API Reference**: Complete API endpoint documentation
-- **Advanced Deployment**: Guides for different cloud platforms and configurations
-- **Performance Tuning**: Tips for optimising the application
-- **Troubleshooting Guide**: Common issues and their solutions
-- **Configuration Reference**: Detailed explanation of all configuration options
+- [composer.json](../composer.json)
+- [config/games.php](../config/games.php)
+- [routes/web.php](../routes/web.php)
+- [app/Http/Controllers/GameController.php](../app/Http/Controllers/GameController.php)
+- [resources/views/games/index.blade.php](../resources/views/games/index.blade.php)
+- [resources/views/games/generate.blade.php](../resources/views/games/generate.blade.php)
+- [README.md](../README.md)
+- [CONTRIBUTING.md](../CONTRIBUTING.md)
 
 ## Organisation
 
-Documentation in this folder will be organised by topic and use case:
+Current public docs structure:
 
 ```
 docs/
-├── index.md              (end-user landing page)
-├── getting-started.md    (user guide)
-├── how-it-works.md       (algorithm explanation)
-├── faq.md                (frequently asked questions)
-├── developer-reference.md (this file - for developers)
-├── user-guide/           (end-user documentation)
-├── developer-guide/      (developer documentation)
-├── deployment/           (deployment guides)
-├── api/                  (API documentation)
-└── architecture/         (technical architecture docs)
+├── index.md               (start-here page)
+├── getting-started.md     (how-to)
+├── how-it-works.md        (explanation)
+├── faq.md                 (reference/FAQ)
+└── developer-reference.md (this file)
 ```
 
 ## Contributing to Documentation
 
-Documentation contributions are welcome! When adding documentation:
+Documentation contributions are welcome. When editing docs:
 
-1. Use clear, concise language
-2. Include code examples where applicable
-3. Keep formatting consistent with existing docs
-4. Add a table of contents for longer documents
-5. Link to related documentation
-6. Update this file to reference new documentation
+1. Use UK English and plain language.
+2. Keep claims evidence-based and repository-native.
+3. Use relative links for in-repository pages.
+4. Keep one clear purpose per page.
+5. Avoid mixing developer setup into end-user pages.
 
 ## Quick Links
 

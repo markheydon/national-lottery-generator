@@ -1,6 +1,48 @@
 # Quick Start Guide
 
-This is a simplified quick start guide for getting the National Lottery Generator running on your local machine in under 5 minutes.
+This is a simplified quick start guide for getting the National Lottery Generator running either in GitHub Codespaces or on your local machine.
+
+## Fastest Option: GitHub Codespaces
+
+If you want to avoid installing PHP, Composer, Node.js, or Docker locally, use Codespaces.
+
+### 1. Open in Codespaces
+
+- Create a new GitHub Codespace for this repository.
+- Wait for the devcontainer to finish building.
+
+### 2. Let Bootstrap Finish
+
+The devcontainer setup will automatically:
+
+- copy `.env.example` to `.env` when needed
+- install Composer dependencies
+- install JavaScript dependencies
+- generate an application key if needed
+
+### 3. Start the Application
+
+```bash
+./vendor/bin/sail up -d
+```
+
+### 4. Open the Forwarded Port
+
+Open the forwarded app URL from the Codespaces **Ports** panel.
+
+### 5. Start Coding
+
+Useful commands:
+
+```bash
+./vendor/bin/sail artisan test
+./vendor/bin/sail pint --test
+./vendor/bin/sail down
+```
+
+## Local Docker + Sail Option
+
+If you would rather run the project on your own machine, follow the local Sail flow below.
 
 ## Prerequisites
 

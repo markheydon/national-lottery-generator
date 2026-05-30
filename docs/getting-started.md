@@ -5,7 +5,7 @@ title: Getting Started
 
 # Getting Started
 
-Welcome! This guide will help you use the National Lottery Number Generator to create lottery number suggestions for your favourite UK games.
+This page is a how-to guide for generating numbers in the app.
 
 ## Using the App
 
@@ -22,6 +22,7 @@ You'll see a home page displaying all the available lottery games:
 - **Lotto** – Choose 6 numbers from 1 to 59
 - **EuroMillions** – Choose 5 main numbers and 2 Lucky Stars
 - **Thunderball** – Choose 5 main numbers and 1 Thunderball
+- **Set For Life** – Choose 5 main numbers and 1 Life Ball
 - **Lotto HotPicks** – Pick 1 to 5 numbers from Lotto draws
 - **EuroMillions HotPicks** – Pick 1 to 5 numbers from EuroMillions draws
 
@@ -63,7 +64,7 @@ The app shows you when the most recent draw data was collected. This helps you k
 
 💡 **Compare games** – Try generating numbers for different games to see which ones appeal to you.
 
-💡 **Don't take it too seriously** – Remember, this is just for fun! The lottery is random, and no algorithm can predict the results.
+💡 **Do not take it too seriously** – This is just for fun. The lottery is random, and no algorithm can predict results.
 
 ## Important Reminders
 
@@ -77,7 +78,7 @@ The app shows you when the most recent draw data was collected. This helps you k
 
 If something doesn't seem right, check out the [FAQ](faq.md) page for common questions and solutions.
 
-For technical issues or questions, visit the [GitHub repository](https://github.com/markheydon/national-lottery-generator/issues).
+For technical issues or questions, open an issue on [GitHub](https://github.com/markheydon/national-lottery-generator/issues).
 
 ## What's Next?
 
