@@ -25,7 +25,8 @@ class UtilsTest extends TestCase
      */
     public function testCsvToArrayNoFile()
     {
-        set_error_handler(function () { });
+        set_error_handler(function () {
+        });
         $result = Utils::csvToArray('FILE_NOT_FOUND');
         restore_error_handler();
         $this->assertEmpty($result);
