@@ -1,0 +1,51 @@
+{
+    "name": "National Lottery Generator",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+        "ghcr.io/devcontainers/features/node:2": {
+            "version": "22"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "containerEnv": {
+        "COMPOSER_MEMORY_LIMIT": "-1",
+        "XDEBUG_MODE": "off"
+    },
+    "forwardPorts": [
+        80,
+        5173,
+        9003
+    ],
+    "portsAttributes": {
+        "80": {
+            "label": "Laravel Sail app",
+            "onAutoForward": "openPreview"
+        },
+        "5173": {
+            "label": "Vite / asset dev server",
+            "onAutoForward": "silent"
+        },
+        "9003": {
+            "label": "Xdebug",
+            "onAutoForward": "silent"
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/setup.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "php.debug.port": 9003,
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    },
+    "remoteUser": "vscode"
+}
