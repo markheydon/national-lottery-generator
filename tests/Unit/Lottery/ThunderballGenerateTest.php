@@ -42,7 +42,6 @@ class ThunderballGenerateTest extends GenerateTestCase
 
         $reflection = new \ReflectionClass(ThunderballGenerate::class);
         $method = $reflection->getMethod('findMostPopularThunderball');
-        $method->setAccessible(true);
 
         $result = $method->invokeArgs(null, [$lines1, $lines2]);
         $this->assertEquals(1, $result, 'Should return Thunderball 1 as it appears 3 times');
@@ -58,7 +57,6 @@ class ThunderballGenerateTest extends GenerateTestCase
 
         $reflection = new \ReflectionClass(ThunderballGenerate::class);
         $method = $reflection->getMethod('findMostPopularThunderball');
-        $method->setAccessible(true);
 
         $result = $method->invokeArgs(null, [$lines1, $lines2]);
         $this->assertEquals(1, $result, 'Should return default value 1 when no data');
@@ -79,7 +77,6 @@ class ThunderballGenerateTest extends GenerateTestCase
 
         $reflection = new \ReflectionClass(ThunderballGenerate::class);
         $method = $reflection->getMethod('findMostPopularThunderball');
-        $method->setAccessible(true);
 
         $result = $method->invokeArgs(null, [$lines1, $lines2]);
         $this->assertEquals(5, $result, 'Should return Thunderball 5 as it\'s the only valid one');
@@ -99,7 +96,6 @@ class ThunderballGenerateTest extends GenerateTestCase
 
         $reflection = new \ReflectionClass(ThunderballGenerate::class);
         $method = $reflection->getMethod('findFirstLineIndexWithThunderball');
-        $method->setAccessible(true);
 
         $result = $method->invokeArgs(null, [$lines, 5]);
         $this->assertEquals(1, $result, 'Should return index 1 for first line with Thunderball 5');
@@ -117,7 +113,6 @@ class ThunderballGenerateTest extends GenerateTestCase
 
         $reflection = new \ReflectionClass(ThunderballGenerate::class);
         $method = $reflection->getMethod('findFirstLineIndexWithThunderball');
-        $method->setAccessible(true);
 
         $result = $method->invokeArgs(null, [$lines, 10]);
         $this->assertNull($result, 'Should return null when Thunderball 10 not found');
@@ -135,7 +130,6 @@ class ThunderballGenerateTest extends GenerateTestCase
 
         $reflection = new \ReflectionClass(ThunderballGenerate::class);
         $method = $reflection->getMethod('findFirstLineIndexWithThunderball');
-        $method->setAccessible(true);
 
         $result = $method->invokeArgs(null, [$lines, 7]);
         $this->assertEquals(0, $result, 'Should return 0 when first line matches (not null)');
