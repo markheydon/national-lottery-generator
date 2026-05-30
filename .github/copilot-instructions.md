@@ -2,12 +2,13 @@
 
 ## Project Overview
 
-This is a Laravel 12 application that generates National Lottery numbers using a custom algorithm. The application is deployed on Azure App Services and uses file-based storage (no database required).
+This is a Laravel 13 application that generates National Lottery numbers using a custom algorithm. The application is deployed on Azure App Services and uses file-based storage (no database required).
 
 ## Technology Stack
 
-- **Framework**: Laravel 12.x (LTS)
-- **PHP Version**: 8.4 or higher (8.4 recommended for Azure)
+- **Framework**: Laravel 13.x
+- **PHP Version (supported range)**: 8.3 to 8.5 (aligned with Laravel 13)
+- **PHP Version (default runtime/deployment target)**: 8.5
 - **Storage**: File cache and filesystem storage (no database required)
 - **Development Environment**: Laravel Sail (Docker-based)
 - **Frontend**: Blade templates with webpack mix
@@ -162,6 +163,7 @@ The application uses Laravel's file cache and filesystem storage (no database re
 
 When updating the PHP version in the project:
 
+0. Check and update `docs-internal/supported-versions.md` first to keep policy and implementation aligned
 1. Update `composer.json` with the new PHP version requirement
 2. Update `docker-compose.yml` to use the new PHP runtime in Laravel Sail
 3. Update `README.md` to reflect the new version requirements
@@ -171,6 +173,13 @@ When updating the PHP version in the project:
    - `phpmd.yml` - Update `php-version` in setup-php step
 5. Update this file (`.github/copilot-instructions.md`) to document the new version
 6. Run tests to ensure compatibility
+
+### Supported Versions Policy
+
+- Repository compatibility follows the current Laravel major version and its published PHP support range.
+- CI testing must cover the full supported PHP range.
+- Development and deployment defaults should use the newest supported PHP version when practical.
+- Dependency updates must not narrow compatibility below policy without an explicit policy update.
 
 ## Important Notes
 
@@ -215,6 +224,6 @@ When updating the PHP version in the project:
 ## Getting Help
 
 - Review the main README.md in the repository root for setup instructions
-- Check Laravel 12 documentation: https://laravel.com/docs/12.x
+- Check Laravel 13 documentation: https://laravel.com/docs/13.x
 - Review existing code for patterns and conventions
 - Ask questions if requirements are unclear

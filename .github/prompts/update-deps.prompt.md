@@ -37,6 +37,7 @@ Read these files before making changes:
 - `README.md`
 - `CONTRIBUTING.md`
 - `.github/copilot-instructions.md`
+- `docs-internal/supported-versions.md`
 
 ## Required outcomes
 

@@ -5,7 +5,7 @@
     "keywords": ["laravel", "lottery", "national-lottery", "number-generator", "uk-lottery"],
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "^8.2|^8.3|^8.4|^8.5",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
@@ -18,7 +18,7 @@
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
-        "phpunit/phpunit": "^13.0"
+        "phpunit/phpunit": "^12.5.12"
     },
     "autoload": {
         "psr-4": {
@@ -53,6 +53,9 @@
         }
     },
     "config": {
+        "platform": {
+            "php": "8.3.0"
+        },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true

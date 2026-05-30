@@ -1,8 +1,8 @@
 # National Lottery Generator App
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com/docs/12.x)
-[![PHP](https://img.shields.io/badge/PHP-8.2%2B-purple.svg)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-13.x-red.svg)](https://laravel.com/docs/13.x)
+[![PHP](https://img.shields.io/badge/PHP-8.3--8.5-purple.svg)](https://www.php.net/)
 
 ## Overview
 
@@ -92,9 +92,13 @@ Laravel's official guidance for devcontainers is to keep using Sail and add a li
 
 ## Requirements
 
-- **PHP**: 8.2 to 8.5 (8.4 recommended for Azure)
-- **Laravel**: 12.x (LTS)
+- **PHP (supported range)**: 8.3 to 8.5 (aligned with Laravel 13)
+- **PHP (default for development and deployment)**: 8.5
+- **Laravel**: 13.x
 - **Docker** (optional, recommended for local development via Laravel Sail)
+
+Maintainer policy for version support and dependency update guardrails is
+documented in `docs-internal/supported-versions.md`.
 
 **Note**: This application no longer requires a database. All data is stored using Laravel's file cache and filesystem storage.
 
@@ -112,13 +116,13 @@ If you prefer not to install Docker, PHP, or Composer locally, use the Codespace
    cd national-lottery-generator
    ```
 
-2. Install Composer dependencies (requires PHP 8.2+ on host, or use a Docker container):
+2. Install Composer dependencies (requires PHP 8.3+ on host, or use a Docker container):
    ```bash
    docker run --rm \
        -u "$(id -u):$(id -g)" \
        -v "$(pwd):/var/www/html" \
        -w /var/www/html \
-       laravelsail/php84-composer:latest \
+      laravelsail/php85-composer:latest \
        composer install --ignore-platform-reqs
    ```
 
@@ -240,7 +244,7 @@ The following cache and filesystem settings should be configured:
 
 ### PHP Runtime Configuration
 
-This application requires **PHP 8.2 or higher** (PHP 8.4 recommended for Azure). Azure App Service for Linux supports PHP 8.4 in most regions.
+This application supports **PHP 8.3 through 8.5** (aligned with Laravel 13). Default development and deployment target is PHP 8.5.
 
 **Note**: PHP version availability varies by Azure region. Use the CLI command below to check which PHP versions are available in your region.
 
@@ -252,11 +256,11 @@ To set the PHP runtime version for your Azure Web App:
 # List available PHP runtimes in your region
 az webapp list-runtimes --os linux | grep PHP
 
-# Set PHP 8.4 runtime (replace with your resource group and app name)
+# Set PHP 8.5 runtime (replace with your resource group and app name)
 az webapp config set \
   --resource-group <your-resource-group> \
   --name <your-app-name> \
-  --linux-fx-version "PHP|8.4"
+   --linux-fx-version "PHP|8.5"
 
 # Verify the configuration
 az webapp config show \
@@ -270,13 +274,13 @@ az webapp config show \
 1. Navigate to your App Service in the Azure Portal
 2. Go to **Configuration** → **General settings**
 3. Set **Stack** to "PHP"
-4. Set **Major version** to "8.4" (or highest available in your region)
+4. Set **Major version** to "8.5" (or highest available in your region)
 5. Click **Save**
 
 #### References
 
-- [Laravel 12 Release Notes](https://laravel.com/docs/12.x/releases) - Supports PHP 8.2-8.5
-- [Laravel 12 Upgrade Guide](https://laravel.com/docs/12.x/upgrade)
+- [Laravel 13 Release Notes](https://laravel.com/docs/13.x/releases) - Supports PHP 8.3-8.5
+- [Laravel 13 Upgrade Guide](https://laravel.com/docs/13.x/upgrade)
 - [Azure App Service PHP Support](https://learn.microsoft.com/en-us/azure/app-service/configure-language-php)
 - [Azure Language Support Policy](https://learn.microsoft.com/en-us/azure/app-service/language-support-policy)
 
@@ -365,7 +369,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for deta
 
 - **Documentation**: Check the [docs/](docs/) folder for detailed guides
 - **Issues**: Search [existing issues](https://github.com/markheydon/national-lottery-generator/issues) or create a new one
-- **Laravel Docs**: Consult the [Laravel 12 documentation](https://laravel.com/docs/12.x)
+- **Laravel Docs**: Consult the [Laravel 13 documentation](https://laravel.com/docs/13.x)
 
 ### Reporting Security Vulnerabilities
 
