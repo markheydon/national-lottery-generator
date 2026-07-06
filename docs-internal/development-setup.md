@@ -49,6 +49,41 @@ The project follows PSR-12 through Laravel Pint:
 ./vendor/bin/sail pint
 ```
 
+## Deployment and Azure App Service
+
+The application is deployed to Azure App Services with file-based storage. The production environment should include the usual Laravel settings:
+
+- `APP_KEY`
+- `CACHE_DRIVER=file`
+- `FILESYSTEM_DISK=local`
+
+A simple startup command for the web server can be based on the repository's [nginx-default](../nginx-default) file:
+
+```bash
+cp /home/site/wwwroot/nginx-default /etc/nginx/sites-available/default && service nginx reload
+```
+
+To set the PHP runtime version in Azure, either use the Azure CLI or the portal:
+
+```bash
+az webapp list-runtimes --os linux | grep PHP
+az webapp config set \
+  --resource-group <your-resource-group> \
+  --name <your-app-name> \
+  --linux-fx-version "PHP|8.5"
+```
+
+In the Azure portal, set the App Service stack to PHP 8.5 where available.
+
+## Contributor workflow
+
+When preparing a change:
+
+1. Create a feature branch.
+2. Make the change and keep it focused.
+3. Run the test suite and Pint.
+4. Open a pull request with a short summary of the change.
+
 ## Common issues
 
 ### Port 80 already in use
