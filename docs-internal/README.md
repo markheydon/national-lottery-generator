@@ -10,3 +10,4 @@ dependency updates, runtime updates, and workflow changes remain consistent.
 ## Index
 
 - [Supported Versions Policy](supported-versions.md)
+- [Dependency Update Commands](dependency-update-commands.md)
