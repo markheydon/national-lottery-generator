@@ -40,13 +40,7 @@ The app is designed for entertainment only. It does not predict future draws and
 
 ## Development
 
-Useful commands:
-
-```bash
-./vendor/bin/sail artisan test
-./vendor/bin/sail pint --test
-./vendor/bin/sail pint
-```
+The main README stays focused on the project overview and quick start. Detailed contributor setup and maintenance guidance now lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
 
 The GitHub Actions workflows run the test suite for PHP 8.3, 8.4, and 8.5.
 
