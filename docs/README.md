@@ -1,33 +1,12 @@
-# National Lottery Number Generator Documentation
+# Documentation
 
-Welcome to the documentation for the National Lottery Number Generator!
+This folder contains the public documentation for the National Lottery Number Generator.
 
-## User Documentation
+Use the pages below depending on what you want to do:
 
-For information on using the app, please visit the main documentation site:
+- [Home](index.md) for a quick overview and links to the live app
+- [Getting Started](getting-started.md) for step-by-step usage guidance
+- [How It Works](how-it-works.md) for an explanation of the app behaviour and storage model
+- [FAQ](faq.md) for common questions and troubleshooting
 
-**[lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)**
-
-This documentation site explains how to use the app and provides helpful guides.
-
-Or browse the documentation pages directly:
-
-- [Home](index.md) - Introduction and overview
-- [Getting Started](getting-started.md) - How to use the app
-- [How It Works](how-it-works.md) - Understanding the algorithm
-- [FAQ](faq.md) - Frequently asked questions
-
-## Developer Documentation
-
-For technical information about the project, see:
-
-- [Main Project README](../README.md) - Setup, development, and deployment
-- [Developer Reference](developer-reference.md) - Documentation organisation and structure
-- [Contributing Guidelines](../CONTRIBUTING.md) - How to contribute to the project
-
-## Quick Links
-
-- **Live App**: [Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)
-- **Documentation Site**: [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk)
-- **GitHub Repository**: [markheydon/national-lottery-generator](https://github.com/markheydon/national-lottery-generator)
-- **Report Issues**: [GitHub Issues](https://github.com/markheydon/national-lottery-generator/issues)
+For project setup, development, and deployment details, see the [main README](../README.md).

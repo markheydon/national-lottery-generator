@@ -1,86 +1,32 @@
 ---
 layout: default
 title: How It Works
-This page explains how the National Lottery Number Generator creates its suggestions.
+---
 
 # How It Works
 
-Curious about what happens behind the scenes? This page explains how the National Lottery Number Generator creates its suggestions.
+The app follows a simple workflow. A visitor chooses a game, the app checks whether fresh draw history is available, and then it generates a set of number suggestions for that game.
 
-## The Basics
+## What the app uses
 
-The app analyses **historical draw data** from the UK National Lottery and uses that information to generate number suggestions. It downloads the latest results automatically and looks for patterns in the data.
+The public interface is driven by the game list and generator pages in the Laravel app. The supported games are defined in the configuration file and are rendered as cards on the home page.
 
-- **Set For Life** – All past Set For Life draws
-- **Lotto** – All past Lotto draws
-- **EuroMillions** – All past EuroMillions draws  
-- Draw dates
-The data is refreshed automatically when cached files are older than 24 hours.
-- Bonus balls (where applicable)
-- Lucky Stars (for EuroMillions)
+## How data is refreshed
 
-The data is refreshed automatically every 24 hours, so you're always working with up-to-date information.
+When a generator page is requested, the app checks whether the relevant draw-history file is present and fresh enough to use. If it is missing or out of date, the app downloads a new copy from the National Lottery website and stores it locally.
 
-## The Algorithm
+The app uses file-based storage rather than a database. That means the cached draw history and generated data are stored on disk under the Laravel storage directories.
 
-The app uses a **playful, non-scientific algorithm** to generate suggestions. Here's what it does:
+## Why the suggestions are playful
 
-### 1. Frequency Analysis
+The generation logic is designed to be light-hearted rather than predictive. It uses historical draw information and some randomness to build suggestion lines, but it cannot change the fact that each lottery draw is random and independent.
 
-The app looks at how often each number has been drawn historically. Numbers that appear more frequently in past draws are given more weight.
+In practice, that means:
 
-### 2. Pattern Recognition
+- the app can be a fun way to explore patterns in past draws
+- the results are not a reliable way to predict future outcomes
+- the suggestions are no more likely to win than any other selection
 
-The algorithm examines which numbers tend to appear together in the same draw. It looks for combinations that have occurred in the past.
+## In short
 
-### 3. Recency Weighting
-
-Recent draws are given slightly more importance than older ones. This means the algorithm considers what's been happening lately, not just all-time statistics.
-
-### 4. Random Selection
-
-Despite the analysis, there's still an element of randomness in the final selection. This keeps things interesting and ensures you get different suggestions each time.
-
-## What Makes It "Just for Fun"?
-
-It's important to understand that **this algorithm is playful, not predictive**. Here's why:
-
-❌ **Past draws don't predict future results** – Each lottery draw is completely independent and random. What happened before has no effect on what happens next.
-
-❌ **No algorithm can beat the lottery** – The National Lottery uses certified random number generators. There's no pattern to discover or exploit.
-
-❌ **Frequency doesn't mean probability** – Just because a number was drawn often in the past doesn't make it more likely to be drawn in the future.
-
-✅ **It's designed to be fun** – The algorithm creates number suggestions in a more interesting way than just pressing a "random number" button.
-
-## How Often Does Data Update?
-
-The app checks for new draw data every time someone uses it. If the cached data is more than 24 hours old, it automatically downloads the latest results from the National Lottery website.
-
-You don't need to do anything – it all happens automatically in the background.
-
-- **Built with Laravel** – A popular PHP web framework
-- **File-based storage** – No database required; everything is cached to disk
-- **Hosted on Azure** – Runs on Microsoft's cloud platform
-- **Open source** – The full code is available on [GitHub](https://github.com/markheydon/national-lottery-generator)
-
-Developers can explore the code to see exactly how the algorithm works.
-
-
-- A **learning project** to experiment with Laravel and data processing
-- A **fun alternative** to random number generators
-- An **entertaining tool** that makes choosing lottery numbers more engaging
-
-It was never intended to be a serious prediction system – just a playful way to generate numbers with a bit more character than clicking "random."
-
-## The Bottom Line
-
-The National Lottery is, and always will be, completely random. This app doesn't change those odds – it just makes generating numbers a bit more fun!
-
-
-- [FAQ](faq.md) – Common questions and answers
-- [← Back to Home](index.md)
-
----
-
-**Questions about the algorithm?** Feel free to explore the [source code on GitHub](https://github.com/markheydon/national-lottery-generator).
+The app is a small Laravel project that combines historical data, local caching, and simple presentation to create lottery number suggestions for entertainment purposes.

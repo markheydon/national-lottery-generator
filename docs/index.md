@@ -5,68 +5,33 @@ title: Home
 
 # Welcome to the National Lottery Number Generator
 
-Generate lottery numbers for your favourite UK National Lottery games, just for fun.
+This app suggests lottery numbers for UK games for entertainment only. It is built with Laravel and uses historical draw data to create a set of playful number suggestions.
 
-This page is your start-here guide for using the app quickly.
+## Start here
 
-## 🎲 Try the App Now
+1. Open the live app: [mheydon73-lottery-generator.azurewebsites.net](https://mheydon73-lottery-generator.azurewebsites.net/)
+2. Choose a game card on the home page.
+3. Click "Generate Numbers" to view suggested lines and the latest draw date.
 
-**[Launch the Number Generator →](https://mheydon73-lottery-generator.azurewebsites.net/)**
+The home page currently lists these games:
 
-Get started in seconds – no sign-up required!
+- Lotto
+- EuroMillions
+- Thunderball
+- Set For Life
+- Lotto Hotpicks
+- EuroMillions Hotpicks
 
-## What is This?
+## What to expect
 
-The National Lottery Number Generator is a free web app that creates lottery number suggestions for UK games including:
+- No sign-up is required.
+- The app uses historical draw data and a simple algorithm to generate suggestions.
+- The app is not a prediction tool and cannot improve your odds.
 
-- **Lotto** – the classic Saturday night draw
-- **EuroMillions** – the big European jackpot game
-- **Thunderball** – better odds, great prizes
-- **Set For Life** – top prize paid over time
-- **Lotto HotPicks** – pick your own way to play
-- **EuroMillions HotPicks** – EuroMillions with a twist
+Please gamble responsibly. If you need support, visit [BeGambleAware](https://www.begambleaware.org/) or call 0808 8020 133.
 
-The app analyses past draw results and uses a playful algorithm to suggest numbers. It is designed to be a bit of fun, not a serious prediction tool.
+## Next steps
 
-## Quick Start
-
-**Ready to generate some numbers?**
-
-1. Visit the app: [Visit the app](https://mheydon73-lottery-generator.azurewebsites.net/)
-2. Choose your game from the home page
-3. Click "Generate Numbers"
-4. View your suggested numbers and latest draw date
-
-That's it! You'll see a set of suggested numbers based on historical draw data.
-
-## Features
-
-✅ **No sign-up required** – just visit and use  
-✅ **Multiple games supported** – Lotto, EuroMillions, Thunderball, Set For Life, Lotto HotPicks, and EuroMillions HotPicks  
-✅ **Free to use** – no hidden costs or subscriptions  
-✅ **Always up to date** – the app automatically downloads the latest draw results  
-✅ **Simple and fast** – get your numbers in seconds
-
-## Important Notice
-
-**This app is for entertainment only.** The National Lottery is a game of chance, and past results don't predict future outcomes. The numbers generated here are based on a playful algorithm – they're no more likely to win than any random selection.
-
-Please gamble responsibly:
-- **UK Gambling Help**: [BeGambleAware.org](https://www.begambleaware.org/)
-- **Helpline**: 0808 8020 133
-
-## Learn More
-
-- [Getting Started](getting-started.md) – Learn how to use the app
-- [How It Works](how-it-works.md) – Understand the algorithm
-- [FAQ](faq.md) – Common questions and answers
-
-## About This Project
-
-This is a hobby project created for fun. It's open source and not affiliated with or endorsed by the National Lottery. The app is built using Laravel and deployed on Azure.
-
-**Questions or feedback?** Visit the [GitHub repository](https://github.com/markheydon/national-lottery-generator).
-
----
-
-Good luck.
+- [Getting Started](getting-started.md)
+- [How It Works](how-it-works.md)
+- [FAQ](faq.md)

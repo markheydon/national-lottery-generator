@@ -1,6 +1,6 @@
 ---
 agent: 'update-docs'
-model: GPT-5.3-Codex
+model: MAI-Code-1-Flash
 description: Update repository documentation by refreshing README.md and syncing public docs in docs/ with the current codebase and policy.
 ---
 
