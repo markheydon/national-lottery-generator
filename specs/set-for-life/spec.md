@@ -12,7 +12,7 @@
 
 A user generates suggested Set For Life lines with 5 main numbers and 1 life ball based on historical draw data.
 
-**Independent Test**: Call `SetForLifeGenerate::generate()` — no dedicated unit test exists.
+**Independent Test**: Call `SetForLifeGenerate::generate()` via `SetForLifeGenerateTest`.
 
 **Acceptance Scenarios**:
 
@@ -28,8 +28,4 @@ A user generates suggested Set For Life lines with 5 main numbers and 1 life bal
 ## Success Criteria
 
 - **SC-001**: Generate page renders correctly at `/game/set-for-life/generate`
-
-## Gaps Identified
-
-- ⚠️ No `SetForLifeGenerateTest.php` or `SetForLifeDownloadTest.php`
-- ⚠️ Constitution requires unit tests for lottery logic — this game is untested
+- **SC-002**: Unit tests cover download and generate services
