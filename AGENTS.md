@@ -82,3 +82,22 @@ Use `.agents/skills/repo-update-docs/SKILL.md` to refresh `README.md` and public
 - Supported PHP versions: `docs-internal/supported-versions.md`
 - Public user docs: `docs/`
 - Open follow-ups: #187 (Set For Life tests), #188 (constitution hotpicks note), #189 (GameController refactor), #190 (HTTP feature test)
+
+## Cursor Cloud specific instructions
+
+The Cloud VM runs PHP 8.3, Composer, and Node directly (no Docker/Sail). Use the plain
+tooling instead of the `./vendor/bin/sail` wrappers documented above:
+
+- Serve: `php artisan serve --host=0.0.0.0 --port=8000`
+- Test: `php artisan test` (or `vendor/bin/phpunit`) — uses in-memory SQLite, no DB service needed
+- Lint: `./vendor/bin/pint --test` (fix with `./vendor/bin/pint`)
+
+Non-obvious caveats:
+
+- Frontend asset build (`npm run dev`/`npm run prod`) currently fails: `laravel-mix@6` requires
+  `webpack/lib/SizeFormatHelpers`, removed in the pinned `webpack@5.108`. The app still runs because
+  compiled assets are committed under `public/css` and `public/js`, and CI does not build assets. Do
+  not rebuild assets unless you first resolve that dependency incompatibility.
+- The `/game/{slug}/generate` routes fetch live draw-history CSVs from the National Lottery API on
+  first use (outbound HTTPS required), caching them to `storage/app/lottery/` for 24h. After the cache
+  is warm the pages render offline.
