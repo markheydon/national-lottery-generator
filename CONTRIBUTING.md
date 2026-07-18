@@ -10,7 +10,8 @@ Thank you for your interest in contributing to the National Lottery Generator! T
 - [Coding Standards](#coding-standards)
 - [Testing](#testing)
 - [Submitting Changes](#submitting-changes)
-- [Reporting Issues](#reporting-issues)
+- [AI-Assisted Contributors](#ai-assisted-contributors)
+- [Questions?](#questions)
 
 ## Code of Conduct
 
@@ -295,6 +296,14 @@ Why this feature would be useful
 ## Alternatives
 Other solutions you've considered
 ```
+
+## AI-Assisted Contributors
+
+If you use an AI coding agent (Cursor, GitHub Copilot, Claude Code, etc.):
+
+- Start with [`AGENTS.md`](AGENTS.md) for project orientation, commands, and constraints
+- Follow `.specify/memory/constitution.md` for spec-driven development work
+- To refresh `README.md` or public docs in `docs/`, use [`.agents/skills/repo-update-docs/SKILL.md`](.agents/skills/repo-update-docs/SKILL.md)
 
 ## Questions?
 
