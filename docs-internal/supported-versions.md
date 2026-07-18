@@ -46,5 +46,20 @@ enforced, and verified in this repository.
 - `composer.lock`
 - `.github/workflows/laravel.yml`
 - `.github/workflows/deploy-azure-webapp.yml`
+- `.github/workflows/phpmd.yml`
 - `docker-compose.yml`
 - `.devcontainer/Dockerfile`
+- `AGENTS.md`
+
+## PHP Version Update Checklist
+
+When changing the supported PHP version:
+
+1. Update this policy document first
+2. Update `composer.json` PHP requirement and platform config
+3. Update `docker-compose.yml` Sail runtime
+4. Update `.devcontainer/Dockerfile` if applicable
+5. Update `README.md` version badges and requirements
+6. Update GitHub workflow PHP versions in `laravel.yml`, `deploy-azure-webapp.yml`, and `phpmd.yml`
+7. Update `AGENTS.md` if version statements are present
+8. Run the full test suite on the lowest and highest supported PHP versions
