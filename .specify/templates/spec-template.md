@@ -70,62 +70,75 @@
 
 ### Edge Cases
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right edge cases.
--->
-
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+- What happens when historical CSV data is unavailable or stale?
+- What happens when a game slug in the URL does not match any entry in `config/games.php`?
+- How does the system handle download failures from external lottery data sources?
+- What happens when generated lines contain duplicate numbers within a line?
 
 ## Requirements *(mandatory)*
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right functional requirements.
--->
-
 ### Functional Requirements
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-001**: System MUST [specific capability]
+- **FR-002**: System MUST [specific capability]
+- **FR-003**: Users MUST be able to [key interaction]
+- **FR-004**: System MUST [data requirement]
+- **FR-005**: System MUST [behaviour]
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-006**: System MUST [behaviour] via [NEEDS CLARIFICATION: approach not specified]
+
+### Game Configuration *(include if feature adds or modifies a lottery game)*
+
+- **GC-001**: Game MUST be registered in `config/games.php` with `slug`, `name`, and `logo`
+- **GC-002**: Game slug MUST be kebab-case and match the URL pattern `/game/{slug}/generate`
+- **GC-003**: Game logo file MUST exist in the public assets directory
+
+### Lottery Service Requirements *(include if feature involves draw data or number generation)*
+
+- **LS-001**: Download logic MUST be implemented in `app/Services/Lottery/{Game}Download.php`
+- **LS-002**: Generation logic MUST be implemented in `app/Services/Lottery/{Game}Generate.php`
+- **LS-003**: Services MUST use `Downloader` and/or `CsvDownloadService` for CSV caching
+- **LS-004**: Generated output MUST include `gameName`, `latestDrawDate`, and `lines` array
+- **LS-005**: Unit tests MUST be added in `tests/Unit/Lottery/{Game}GenerateTest.php` and/or `{Game}DownloadTest.php`
+
+### Web / Blade UI Requirements *(include if feature has user-facing pages)*
+
+- **UI-001**: Pages MUST extend the existing layout (`resources/views/layout.blade.php`)
+- **UI-002**: Game pages MUST live in `resources/views/games/`
+- **UI-003**: Controller MUST pass pre-formatted data to views (no business logic in Blade)
+- **UI-004**: UI MUST use existing Bootstrap 5 styling conventions
+
+### File Storage & Caching *(include if feature reads or writes persistent data)*
+
+- **FS-001**: Draw history MUST be stored via Laravel Storage facade (not database)
+- **FS-002**: Download freshness MUST be checked via `CsvDownloadService::isDownloadRequired()`
+- **FS-003**: Cache driver MUST remain file-based (no new database dependencies)
+
+### Entertainment Disclaimer *(include for any user-facing feature)*
+
+- **ED-001**: Feature MUST NOT present generated numbers as predictions or forecasts
+- **ED-002**: User-facing copy MUST preserve or reference the entertainment-only purpose
 
 ### Key Entities *(include if feature involves data)*
 
-- **[Entity 1]**: [What it represents, key attributes without implementation]
-- **[Entity 2]**: [What it represents, relationships to other entities]
+- **Game**: Config-driven lottery game (slug, name, logo) from `config/games.php`
+- **[Entity]**: [What it represents, key attributes without implementation]
 
 ## Success Criteria *(mandatory)*
 
-<!--
-  ACTION REQUIRED: Define measurable success criteria.
-  These must be technology-agnostic and measurable.
--->
-
 ### Measurable Outcomes
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+- **SC-001**: [Measurable metric, e.g., "Users can generate numbers for a game in under 3 seconds"]
+- **SC-002**: [Measurable metric, e.g., "All new service classes have passing unit tests"]
+- **SC-003**: [User satisfaction metric, e.g., "Generated lines display correctly formatted on mobile and desktop"]
+- **SC-004**: [Quality metric, e.g., "CI passes on PHP 8.3, 8.4, and 8.5"]
 
 ## Assumptions
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right assumptions based on reasonable defaults
-  chosen when the feature description did not specify certain details.
--->
-
-- [Assumption about target users, e.g., "Users have stable internet connectivity"]
-- [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
-- [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
-- [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+- Historical draw data is available from existing National Lottery CSV sources
+- File-based storage and cache are sufficient (no database required)
+- Feature runs within the existing Laravel Sail development environment
+- Entertainment-only disclaimer applies to all user-facing output
+- [Additional assumption based on feature scope]

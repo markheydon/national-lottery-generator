@@ -9,7 +9,7 @@ description: "Task list template for feature implementation"
 
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Include test tasks for any lottery logic changes (per constitution). Skip test tasks only for purely cosmetic/UI changes with no service impact.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -21,10 +21,33 @@ description: "Task list template for feature implementation"
 
 ## Path Conventions
 
-- **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
-- **Mobile**: `api/src/`, `ios/src/` or `android/src/`
-- Paths shown below assume single project - adjust based on plan.md structure
+This is a Laravel monolith. All paths are relative to the repository root:
+
+- **Services**: `app/Services/Lottery/`
+- **Controllers**: `app/Http/Controllers/`
+- **Models**: `app/Models/`
+- **Config**: `config/`
+- **Views**: `resources/views/games/`
+- **Routes**: `routes/web.php`
+- **Tests**: `tests/Unit/Lottery/`, `tests/Feature/`
+- **Assets**: `resources/js/`, `resources/sass/` (compiled to `public/`)
+
+## Quality Commands
+
+```bash
+# Run tests
+./vendor/bin/sail artisan test
+
+# Check code style
+./vendor/bin/sail pint --test
+
+# Fix code style
+./vendor/bin/sail pint
+
+# Compile frontend assets (if SCSS/JS changed)
+npm run dev        # development
+npm run prod       # production
+```
 
 <!--
   ============================================================================
@@ -47,11 +70,11 @@ description: "Task list template for feature implementation"
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Project initialization and basic structure
+**Purpose**: Verify development environment and dependencies
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T001 Verify Laravel Sail is running (`./vendor/bin/sail up -d`)
+- [ ] T002 Confirm `.env` is configured (copy from `.env.example` if needed)
+- [ ] T003 [P] Run existing test suite to establish baseline (`./vendor/bin/sail artisan test`)
 
 ---
 
@@ -61,16 +84,13 @@ description: "Task list template for feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-Examples of foundational tasks (adjust based on your project):
+- [ ] T004 Add or update game entry in `config/games.php` (slug, name, logo)
+- [ ] T005 [P] Create download service in `app/Services/Lottery/{Game}Download.php`
+- [ ] T006 [P] Create generate service in `app/Services/Lottery/{Game}Generate.php`
+- [ ] T007 Wire game dispatch in `app/Http/Controllers/GameController.php`
+- [ ] T008 Add route in `routes/web.php` if new URL pattern needed
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
-
-**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+**Checkpoint**: Foundation ready — user story implementation can now begin
 
 ---
 
@@ -80,23 +100,20 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
-
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T009 [P] [US1] Unit test for generate service in `tests/Unit/Lottery/{Game}GenerateTest.php`
+- [ ] T010 [P] [US1] Unit test for download service in `tests/Unit/Lottery/{Game}DownloadTest.php`
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T011 [US1] Implement generate logic in `app/Services/Lottery/{Game}Generate.php`
+- [ ] T012 [US1] Implement download logic in `app/Services/Lottery/{Game}Download.php`
+- [ ] T013 [US1] Add controller method or extend dispatch in `app/Http/Controllers/GameController.php`
+- [ ] T014 [US1] Create or update Blade view in `resources/views/games/generate.blade.php`
+- [ ] T015 [US1] Run tests (`./vendor/bin/sail artisan test`) and Pint (`./vendor/bin/sail pint --test`)
 
-**Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
+**Checkpoint**: User Story 1 fully functional and testable independently
 
 ---
 
@@ -106,19 +123,17 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 2
 
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T016 [P] [US2] Unit test in `tests/Unit/Lottery/{Game}GenerateTest.php`
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T017 [US2] Implement service changes in `app/Services/Lottery/`
+- [ ] T018 [US2] Update view in `resources/views/games/`
+- [ ] T019 [US2] Run tests and Pint
 
-**Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
+**Checkpoint**: User Stories 1 and 2 both work independently
 
 ---
 
@@ -128,18 +143,17 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 3
 
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T020 [P] [US3] Unit test in `tests/Unit/Lottery/`
 
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T021 [US3] Implement changes in `app/Services/Lottery/`
+- [ ] T022 [US3] Update views or assets as needed
+- [ ] T023 [US3] Run tests and Pint
 
-**Checkpoint**: All user stories should now be independently functional
+**Checkpoint**: All user stories independently functional
 
 ---
 
@@ -151,11 +165,11 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Documentation updates in docs/
-- [ ] TXXX Code cleanup and refactoring
-- [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
-- [ ] TXXX Security hardening
+- [ ] TXXX [P] Update public docs in `docs/` if user-facing behaviour changed
+- [ ] TXXX [P] Update maintainer docs in `docs-internal/` if setup changed
+- [ ] TXXX Compile production assets (`npm run prod`) if SCSS/JS changed
+- [ ] TXXX Verify entertainment-only disclaimer is present in user-facing output
+- [ ] TXXX Final test run (`./vendor/bin/sail artisan test`) and Pint check
 - [ ] TXXX Run quickstart.md validation
 
 ---
@@ -164,49 +178,25 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies - can start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
+- **Setup (Phase 1)**: No dependencies — can start immediately
+- **Foundational (Phase 2)**: Depends on Setup — BLOCKS all user stories
 - **User Stories (Phase 3+)**: All depend on Foundational phase completion
-  - User stories can then proceed in parallel (if staffed)
-  - Or sequentially in priority order (P1 → P2 → P3)
+  - User stories can proceed in parallel or sequentially (P1 → P2 → P3)
 - **Polish (Final Phase)**: Depends on all desired user stories being complete
-
-### User Story Dependencies
-
-- **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
-- **User Story 2 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently testable
-- **User Story 3 (P3)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently testable
 
 ### Within Each User Story
 
-- Tests (if included) MUST be written and FAIL before implementation
-- Models before services
-- Services before endpoints
+- Tests MUST be written and FAIL before implementation (for lottery logic)
+- Services before controllers
+- Controllers before views
 - Core implementation before integration
-- Story complete before moving to next priority
+- Run `./vendor/bin/sail artisan test` and `./vendor/bin/sail pint --test` before marking complete
 
 ### Parallel Opportunities
 
-- All Setup tasks marked [P] can run in parallel
-- All Foundational tasks marked [P] can run in parallel (within Phase 2)
-- Once Foundational phase completes, all user stories can start in parallel (if team capacity allows)
-- All tests for a user story marked [P] can run in parallel
-- Models within a story marked [P] can run in parallel
-- Different user stories can be worked on in parallel by different team members
-
----
-
-## Parallel Example: User Story 1
-
-```bash
-# Launch all tests for User Story 1 together (if tests requested):
-Task: "Contract test for [endpoint] in tests/contract/test_[name].py"
-Task: "Integration test for [user journey] in tests/integration/test_[name].py"
-
-# Launch all models for User Story 1 together:
-Task: "Create [Entity1] model in src/models/[entity1].py"
-Task: "Create [Entity2] model in src/models/[entity2].py"
-```
+- Download and Generate service creation (T005, T006) can run in parallel
+- Unit tests for download and generate (T009, T010) can run in parallel
+- Documentation updates in Polish phase can run in parallel
 
 ---
 
@@ -215,29 +205,17 @@ Task: "Create [Entity2] model in src/models/[entity2].py"
 ### MVP First (User Story 1 Only)
 
 1. Complete Phase 1: Setup
-2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
+2. Complete Phase 2: Foundational
 3. Complete Phase 3: User Story 1
-4. **STOP and VALIDATE**: Test User Story 1 independently
+4. **STOP and VALIDATE**: `./vendor/bin/sail artisan test`
 5. Deploy/demo if ready
 
 ### Incremental Delivery
 
-1. Complete Setup + Foundational → Foundation ready
-2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
-3. Add User Story 2 → Test independently → Deploy/Demo
-4. Add User Story 3 → Test independently → Deploy/Demo
-5. Each story adds value without breaking previous stories
-
-### Parallel Team Strategy
-
-With multiple developers:
-
-1. Team completes Setup + Foundational together
-2. Once Foundational is done:
-   - Developer A: User Story 1
-   - Developer B: User Story 2
-   - Developer C: User Story 3
-3. Stories complete and integrate independently
+1. Setup + Foundational → Foundation ready
+2. User Story 1 → Test → Deploy (MVP)
+3. User Story 2 → Test → Deploy
+4. Each story adds value without breaking previous stories
 
 ---
 
@@ -245,8 +223,7 @@ With multiple developers:
 
 - [P] tasks = different files, no dependencies
 - [Story] label maps task to specific user story for traceability
-- Each user story should be independently completable and testable
-- Verify tests fail before implementing
+- All lottery logic changes require unit tests per constitution
+- No database migrations needed for core features (file-based storage)
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
-- Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
