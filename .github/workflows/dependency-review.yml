@@ -18,3 +18,6 @@ jobs:
         uses: actions/checkout@v7
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v5
+        with:
+          # brace-expansion@1.1.16 is falsely flagged against GHSA-mh99 (v5 line <=5.0.7)
+          allow-ghsa-ids: GHSA-mh99-v99m-4gvg
