@@ -15,7 +15,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@playwright/test": "^1.55.0",
+        "@playwright/test": "^1.62.1",
         "@popperjs/core": "^2.11.8",
         "bootstrap": "^5.3.8",
         "cross-env": "^10.1.0",
