@@ -26,31 +26,25 @@ jobs:
       - name: Install PHP dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Prepare Laravel application
+      - name: Prepare application
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
-          php artisan key:generate
-          chmod -R 777 storage bootstrap/cache
-          mkdir -p database
-          touch database/database.sqlite
+          chmod -R 777 storage
 
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
-          cache: yarn
 
-      - name: Install Node dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Install Playwright browsers
-        run: yarn playwright install --with-deps chromium
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install @playwright/test@^1.62.1 --no-save
+          npx playwright install --with-deps chromium
 
       - name: Run Playwright UI tests
-        run: yarn test:e2e
+        run: npx playwright test
         env:
           CI: true
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
 
       - name: Upload Playwright report
         if: failure()

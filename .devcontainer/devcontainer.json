@@ -4,49 +4,29 @@
         "dockerfile": "Dockerfile"
     },
     "features": {
-        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-            "moby": false
-        },
-        "ghcr.io/devcontainers/features/node:2": {
-            "version": "22"
-        },
-        "ghcr.io/devcontainers/features/github-cli:1": {},
-        "ghcr.io/devcontainers/features/python:1": {},
-        "ghcr.io/devcontainers-extra/features/uv:1": {}
+        "ghcr.io/devcontainers/features/github-cli:1": {}
     },
     "containerEnv": {
         "COMPOSER_MEMORY_LIMIT": "-1",
         "XDEBUG_MODE": "off"
     },
     "forwardPorts": [
-        80,
-        5173,
-        9003
+        8000
     ],
     "portsAttributes": {
-        "80": {
-            "label": "Laravel Sail app",
+        "8000": {
+            "label": "PHP built-in server",
             "onAutoForward": "openPreview"
-        },
-        "5173": {
-            "label": "Asset dev server (Laravel Mix/webpack)",
-            "onAutoForward": "silent"
-        },
-        "9003": {
-            "label": "Xdebug",
-            "onAutoForward": "silent"
         }
     },
     "postCreateCommand": "bash .devcontainer/setup.sh",
     "customizations": {
         "vscode": {
             "extensions": [
-                "bmewburn.vscode-intelephense-client",
-                "xdebug.php-debug"
+                "bmewburn.vscode-intelephense-client"
             ],
             "settings": {
                 "php.validate.executablePath": "/usr/local/bin/php",
-                "php.debug.port": 9003,
                 "terminal.integrated.defaultProfile.linux": "bash"
             }
         }

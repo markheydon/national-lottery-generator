@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\Game;
-use Illuminate\Support\Facades\Storage;
+use App\Game;
+use App\Http\Application;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 class FileBasedStorageTest extends TestCase
 {
-    /**
-     * Test that games can be loaded from configuration.
-     */
     public function test_games_load_from_config(): void
     {
         $games = Game::all();
@@ -18,15 +18,11 @@ class FileBasedStorageTest extends TestCase
         $this->assertIsArray($games);
         $this->assertGreaterThan(0, count($games));
 
-        // Check that Lotto game exists
         $lottoGame = Game::findBySlug('lotto');
         $this->assertNotNull($lottoGame);
-        $this->assertEquals('Lotto', $lottoGame->getGameName());
+        $this->assertSame('Lotto', $lottoGame->getGameName());
     }
 
-    /**
-     * Test that Game model can create a downloader.
-     */
     public function test_game_can_create_downloader(): void
     {
         $game = Game::findBySlug('lotto');
@@ -37,26 +33,59 @@ class FileBasedStorageTest extends TestCase
         $this->assertInstanceOf(\App\Services\Lottery\Downloader::class, $downloader);
     }
 
-    /**
-     * Test that storage directory is accessible.
-     */
     public function test_storage_directory_accessible(): void
     {
-        // Ensure the lottery storage directory exists
-        Storage::disk('local')->makeDirectory('lottery');
+        $lotteryDir = storage_path('lottery');
 
-        $this->assertTrue(Storage::disk('local')->exists('lottery'));
+        if (! is_dir($lotteryDir)) {
+            mkdir($lotteryDir, 0755, true);
+        }
+
+        $this->assertDirectoryExists($lotteryDir);
+        $this->assertTrue(is_writable($lotteryDir));
+    }
+
+    public function test_homepage_loads(): void
+    {
+        $response = (new Application())->handle('GET', '/');
+
+        $this->assertSame(200, $response->getStatus());
+        $this->assertStringContainsString('Lottery Generator', $response->getBody());
+        $this->assertStringContainsString('Lotto', $response->getBody());
     }
 
     /**
-     * Test that homepage loads without database.
+     * @return array<string, array{0: string}>
      */
-    public function test_homepage_loads(): void
+    public static function gameSlugProvider(): array
     {
-        $response = $this->get('/');
+        return [
+            'lotto' => ['lotto'],
+            'euromillions' => ['euromillions'],
+            'thunderball' => ['thunderball'],
+            'set-for-life' => ['set-for-life'],
+            'lotto-hotpicks' => ['lotto-hotpicks'],
+            'euromillions-hotpicks' => ['euromillions-hotpicks'],
+        ];
+    }
 
-        $response->assertStatus(200);
-        $response->assertSee('Lottery Generator');
-        $response->assertSee('Lotto');
+    #[DataProvider('gameSlugProvider')]
+    public function test_game_generate_route_returns_200(string $slug): void
+    {
+        $response = (new Application())->handle('GET', '/game/' . $slug . '/generate');
+
+        $this->assertSame(200, $response->getStatus());
+        $this->assertStringContainsString('Suggested Lines', $response->getBody());
+        $this->assertStringContainsString(
+            'While the numbers generated using this just-for-fun tool are not random',
+            $response->getBody()
+        );
+    }
+
+    public function test_unknown_slug_returns_404(): void
+    {
+        $response = (new Application())->handle('GET', '/game/not-a-real-game/generate');
+
+        $this->assertSame(404, $response->getStatus());
     }
 }

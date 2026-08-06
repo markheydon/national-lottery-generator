@@ -10,19 +10,19 @@ Core platform providing game configuration, CSV download infrastructure, web rou
 
 ## Technical Context
 
-**Language/Version**: PHP 8.3–8.5, Laravel 13
+**Language/Version**: PHP 8.3–8.5, vanilla PHP (no framework)
 
-**Primary Dependencies**: Laravel HTTP/Storage/Cache facades, Guzzle (via Laravel HTTP)
+**Primary Dependencies**: Guzzle HTTP client, vlucas/phpdotenv
 
-**Storage**: Local filesystem via Laravel Storage (`storage/app/lottery/`)
+**Storage**: Local filesystem (`storage/app/lottery/`)
 
 **Testing**: PHPUnit 12 — `tests/Feature/FileBasedStorageTest.php`, `tests/Unit/Lottery/UtilsTest.php`
 
-**Project Type**: Monolithic Laravel MVC
+**Project Type**: Minimal PHP front controller with plain PHP templates
 
 ## Constitution Check
 
-- [x] Business logic delegated to `app/Services/Lottery/` (partial — dispatch logic remains in controller)
+- [x] Business logic delegated to `src/Services/Lottery/` (partial — dispatch logic remains in controller)
 - [x] File-based storage, no database for core features
 - [x] Entertainment disclaimer on generate pages
 - [ ] Thin controllers — `GameController` is 304 lines with inline dispatch (violation noted)
@@ -30,9 +30,10 @@ Core platform providing game configuration, CSV download infrastructure, web rou
 ## Project Structure
 
 ```text
-app/
-├── Http/Controllers/GameController.php   # index + generate orchestration
-├── Models/Game.php                        # Config-driven game model
+src/
+├── Http/GameController.php                # index + generate orchestration
+├── Http/Application.php                   # front-controller routing
+├── Game.php                               # Config-driven game model
 └── Services/Lottery/
     ├── Downloader.php                     # Shared CSV download
     ├── CsvDownloadService.php             # Freshness checks
@@ -40,13 +41,13 @@ app/
 
 config/games.php                           # 6 game definitions
 
-resources/views/
-├── layout.blade.php
+templates/
+├── layout.php
 └── games/
-    ├── index.blade.php                    # Game selector
-    └── generate.blade.php                 # Number display + disclaimer
+    ├── index.php                          # Game selector
+    └── generate.php                       # Number display + disclaimer
 
-routes/web.php                             # 2 routes
+public/index.php                           # 2 routes
 
 tests/
 ├── Feature/FileBasedStorageTest.php
@@ -65,7 +66,7 @@ tests/
 
 ### Phase C: Web Layer — DONE
 
-`routes/web.php` defines 2 routes. `GameController` handles index and generate. Blade views render game cards and formatted number tables.
+`public/index.php` defines 2 routes. `GameController` handles index and generate. PHP templates render game cards and formatted number tables.
 
 ### Phase D: Tests — DONE (partial)
 
