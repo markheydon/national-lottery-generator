@@ -21,32 +21,31 @@ description: "Task list template for feature implementation"
 
 ## Path Conventions
 
-This is a Laravel monolith. All paths are relative to the repository root:
+This is a vanilla PHP application. All paths are relative to the repository root:
 
-- **Services**: `app/Services/Lottery/`
-- **Controllers**: `app/Http/Controllers/`
-- **Models**: `app/Models/`
+- **Services**: `src/Services/Lottery/`
+- **HTTP**: `src/Http/`
+- **Game registry**: `src/Game.php`
 - **Config**: `config/`
-- **Views**: `resources/views/games/`
-- **Routes**: `routes/web.php`
+- **Templates**: `templates/games/`
+- **Front controller**: `public/index.php`
 - **Tests**: `tests/Unit/Lottery/`, `tests/Feature/`
-- **Assets**: `resources/js/`, `resources/sass/` (compiled to `public/`)
+- **Assets**: committed under `public/css`, `public/js`, `public/img`
 
 ## Quality Commands
 
 ```bash
 # Run tests
-./vendor/bin/sail artisan test
+vendor/bin/phpunit
 
 # Check code style
-./vendor/bin/sail pint --test
+./vendor/bin/pint --test
 
 # Fix code style
-./vendor/bin/sail pint
+./vendor/bin/pint
 
-# Compile frontend assets (if SCSS/JS changed)
-npm run dev        # development
-npm run prod       # production
+# Frontend assets are committed under public/ (do not rebuild unless Mix issue is resolved)
+# assets are already committed in public/css and public/js
 ```
 
 <!--
@@ -72,9 +71,9 @@ npm run prod       # production
 
 **Purpose**: Verify development environment and dependencies
 
-- [ ] T001 Verify Laravel Sail is running (`./vendor/bin/sail up -d`)
+- [ ] T001 Verify PHP built-in server is running (`php -S 0.0.0.0:8000 -t public`)
 - [ ] T002 Confirm `.env` is configured (copy from `.env.example` if needed)
-- [ ] T003 [P] Run existing test suite to establish baseline (`./vendor/bin/sail artisan test`)
+- [ ] T003 [P] Run existing test suite to establish baseline (`vendor/bin/phpunit`)
 
 ---
 
@@ -85,10 +84,10 @@ npm run prod       # production
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [ ] T004 Add or update game entry in `config/games.php` (slug, name, logo)
-- [ ] T005 [P] Create download service in `app/Services/Lottery/{Game}Download.php`
-- [ ] T006 [P] Create generate service in `app/Services/Lottery/{Game}Generate.php`
-- [ ] T007 Wire game dispatch in `app/Http/Controllers/GameController.php`
-- [ ] T008 Add route in `routes/web.php` if new URL pattern needed
+- [ ] T005 [P] Create download service in `src/Services/Lottery/{Game}Download.php`
+- [ ] T006 [P] Create generate service in `src/Services/Lottery/{Game}Generate.php`
+- [ ] T007 Wire game dispatch in `src/Http/GameController.php`
+- [ ] T008 Add route in `public/index.php` if new URL pattern needed
 
 **Checkpoint**: Foundation ready — user story implementation can now begin
 
@@ -107,11 +106,11 @@ npm run prod       # production
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Implement generate logic in `app/Services/Lottery/{Game}Generate.php`
-- [ ] T012 [US1] Implement download logic in `app/Services/Lottery/{Game}Download.php`
-- [ ] T013 [US1] Add controller method or extend dispatch in `app/Http/Controllers/GameController.php`
-- [ ] T014 [US1] Create or update Blade view in `resources/views/games/generate.blade.php`
-- [ ] T015 [US1] Run tests (`./vendor/bin/sail artisan test`) and Pint (`./vendor/bin/sail pint --test`)
+- [ ] T011 [US1] Implement generate logic in `src/Services/Lottery/{Game}Generate.php`
+- [ ] T012 [US1] Implement download logic in `src/Services/Lottery/{Game}Download.php`
+- [ ] T013 [US1] Add controller method or extend dispatch in `src/Http/GameController.php`
+- [ ] T014 [US1] Create or update PHP template in `templates/games/generate.php`
+- [ ] T015 [US1] Run tests (`vendor/bin/phpunit`) and Pint (`./vendor/bin/pint --test`)
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -129,8 +128,8 @@ npm run prod       # production
 
 ### Implementation for User Story 2
 
-- [ ] T017 [US2] Implement service changes in `app/Services/Lottery/`
-- [ ] T018 [US2] Update view in `resources/views/games/`
+- [ ] T017 [US2] Implement service changes in `src/Services/Lottery/`
+- [ ] T018 [US2] Update view in `templates/games/`
 - [ ] T019 [US2] Run tests and Pint
 
 **Checkpoint**: User Stories 1 and 2 both work independently
@@ -149,7 +148,7 @@ npm run prod       # production
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Implement changes in `app/Services/Lottery/`
+- [ ] T021 [US3] Implement changes in `src/Services/Lottery/`
 - [ ] T022 [US3] Update views or assets as needed
 - [ ] T023 [US3] Run tests and Pint
 
@@ -167,9 +166,9 @@ npm run prod       # production
 
 - [ ] TXXX [P] Update public docs in `docs/` if user-facing behaviour changed
 - [ ] TXXX [P] Update maintainer docs in `docs-internal/` if setup changed
-- [ ] TXXX Compile production assets (`npm run prod`) if SCSS/JS changed
+- [ ] TXXX Confirm committed assets under `public/` still cover UI changes (do not rebuild Mix unless scoped)
 - [ ] TXXX Verify entertainment-only disclaimer is present in user-facing output
-- [ ] TXXX Final test run (`./vendor/bin/sail artisan test`) and Pint check
+- [ ] TXXX Final test run (`vendor/bin/phpunit`) and Pint check
 - [ ] TXXX Run quickstart.md validation
 
 ---
@@ -190,7 +189,7 @@ npm run prod       # production
 - Services before controllers
 - Controllers before views
 - Core implementation before integration
-- Run `./vendor/bin/sail artisan test` and `./vendor/bin/sail pint --test` before marking complete
+- Run `vendor/bin/phpunit` and `./vendor/bin/pint --test` before marking complete
 
 ### Parallel Opportunities
 
@@ -207,7 +206,7 @@ npm run prod       # production
 1. Complete Phase 1: Setup
 2. Complete Phase 2: Foundational
 3. Complete Phase 3: User Story 1
-4. **STOP and VALIDATE**: `./vendor/bin/sail artisan test`
+4. **STOP and VALIDATE**: `vendor/bin/phpunit`
 5. Deploy/demo if ready
 
 ### Incremental Delivery

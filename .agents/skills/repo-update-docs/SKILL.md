@@ -32,6 +32,7 @@ Refresh `README.md` from these source-of-truth files:
 - `.github/workflows/deploy-azure-webapp.yml` — deployment target
 - `config/games.php` — supported lottery games
 - `public/index.php` — available routes
+- `deploy/nginx-default` — Azure nginx helper (if documenting deploy)
 - `CONTRIBUTING.md` — contribution pointers
 - `docs-internal/supported-versions.md` — version policy
 
