@@ -16,19 +16,12 @@
 name: PHPMD
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   schedule:
     - cron: '41 9 * * 0'
+  workflow_dispatch:
 
 permissions:
   contents: read
-
-concurrency:
-  group: app-ci-${{ github.ref }}
-  cancel-in-progress: false
 
 jobs:
   PHPMD:
