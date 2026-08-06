@@ -19,7 +19,7 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3, 8.4, 8.5'
+          php-version: '8.4'
           tools: phpmd
 
       - name: Copy .env
@@ -34,16 +34,29 @@ jobs:
       - name: Run Pint
         run: ./vendor/bin/pint --test
 
-      - name: Run PHPUnit across supported PHP versions
-        run: |
-          set -euo pipefail
-          for version in 8.3 8.4 8.5; do
-            echo "::group::PHPUnit on PHP ${version}"
-            sudo update-alternatives --set php "/usr/bin/php${version}"
-            php -v
-            vendor/bin/phpunit
-            echo "::endgroup::"
-          done
+      - name: Run PHPUnit on PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: PHPUnit 8.3
+        run: vendor/bin/phpunit
+
+      - name: Run PHPUnit on PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: PHPUnit 8.4
+        run: vendor/bin/phpunit
+
+      - name: Run PHPUnit on PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+
+      - name: PHPUnit 8.5
+        run: vendor/bin/phpunit
 
       - uses: actions/setup-node@v7
         with:
