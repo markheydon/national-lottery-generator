@@ -17,7 +17,7 @@ Minimal PHP front controller with plain PHP templates and file-based storage (no
 | Unit tests | `tests/Unit/Lottery/` |
 | Feature tests | `tests/Feature/` |
 | E2E tests | `tests/e2e/` (Playwright) |
-| Azure nginx helper | `deploy/nginx-default` |
+| Azure nginx helper | `deploy/nginx-default` (also adaptable for local nginx; see `deploy/README.md`) |
 
 Hotpicks variants (`lotto-hotpicks`, `euromillions-hotpicks`) share their parent game's download service. See `src/Game.php::getDownloader()`.
 

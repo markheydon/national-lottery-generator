@@ -35,6 +35,24 @@ The public app is a simple game selector:
 
 The app is designed for entertainment only. It does not predict future draws and should not be treated as a forecasting tool.
 
+## Running the app
+
+### Local (PHP built-in server)
+
+```bash
+composer install
+cp .env.example .env
+php -S localhost:8000 -t public
+```
+
+Open http://localhost:8000. Full local notes: [QUICKSTART.md](QUICKSTART.md).
+
+You can also serve `public/` with Apache (`public/.htaccess`) or nginx — see [deploy/README.md](deploy/README.md).
+
+### Azure App Service (production)
+
+The live site is deployed to Azure App Service. The workflow runs `composer install --no-dev` and uses `public/` as the web root. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`. Nginx helper: [deploy/nginx-default](deploy/nginx-default).
+
 ## Project layout
 
 | Path | Purpose |
@@ -46,7 +64,7 @@ The app is designed for entertainment only. It does not predict future draws and
 | `storage/app/lottery/` | Cached draw-history CSVs |
 | `tests/Unit/`, `tests/Feature/` | PHPUnit |
 | `tests/e2e/` | Playwright UI tests |
-| `deploy/nginx-default` | Azure App Service nginx helper |
+| `deploy/` | Optional nginx / Azure helpers (local or cloud) |
 
 ## Development
 
@@ -60,10 +78,6 @@ npx playwright test         # E2E (install @playwright/test first)
 ```
 
 CI (`.github/workflows/ci.yml`) runs Pint, PHPUnit on PHP 8.3–8.5, Playwright, and PHPMD.
-
-## Deployment
-
-The app is deployed to Azure App Service. The deployment workflow runs `composer install --no-dev` and serves `public/` as the web root. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`.
 
 ## Documentation
 

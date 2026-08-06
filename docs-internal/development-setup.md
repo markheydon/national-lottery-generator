@@ -12,6 +12,8 @@ No database, Docker, or Node.js is required for the core application. Playwright
 
 ## Local development
 
+Primary local option — no Docker or Azure required:
+
 ```bash
 composer install
 cp .env.example .env
@@ -19,6 +21,8 @@ php -S localhost:8000 -t public
 ```
 
 Open http://localhost:8000.
+
+To use Apache or nginx locally instead of the built-in server, point the document root at `public/` (see [deploy/README.md](../deploy/README.md)). Ensure `storage/app/lottery/` is writable.
 
 ## Codespaces / devcontainer
 
@@ -57,7 +61,20 @@ The project follows PSR-12 through Laravel Pint (used as a standalone linter, no
 ./vendor/bin/pint
 ```
 
-## Deployment and Azure App Service
+## Deployment options
+
+### Local / self-hosted
+
+Anyone can run the app on their own machine or a VPS with PHP 8.3+:
+
+1. `composer install --no-dev` (or `composer install` for a full checkout)
+2. Serve the `public/` directory (built-in server, Apache, or nginx)
+3. Ensure `storage/app/lottery/` is writable
+4. Optional: set `LOTTERY_DOWNLOAD_TIMEOUT` in `.env`
+
+See [deploy/README.md](../deploy/README.md) for Apache/nginx notes.
+
+### Azure App Service (this project's production)
 
 The application is deployed to Azure App Service with file-based storage. Production does not require Laravel environment variables (`APP_KEY`, `CACHE_DRIVER`, etc.). Optional:
 
