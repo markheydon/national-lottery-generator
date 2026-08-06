@@ -99,6 +99,7 @@ The app downloads draw-history CSV files from the National Lottery API on first 
 ## What's Next?
 
 - **Read the full [README.md](README.md)** to understand how the application works
+- **Serve with Apache/nginx locally** if you prefer: [deploy/README.md](deploy/README.md)
 - **Check [CONTRIBUTING.md](CONTRIBUTING.md)** if you want to contribute
 - **Explore the code** in the `src/` directory
 - **Run the tests** to see everything working: `vendor/bin/phpunit`

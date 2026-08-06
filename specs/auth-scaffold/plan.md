@@ -2,37 +2,19 @@
 
 **Branch**: N/A (migrated) | **Date**: 2026-07-18 | **Spec**: [spec.md](./spec.md)
 
-**Status**: Migrated (dormant)
+**Status**: Removed (2026) — deleted during vanilla PHP migration (#205 / #210)
 
 ## Summary
 
-Standard Laravel authentication scaffolding. Present in codebase but not integrated — no routes, no UI, no tests.
+Laravel default authentication scaffolding (login, register, password reset, email verification) was present but never wired into routes or UI. It was removed entirely when the app moved off Laravel.
 
-## Technical Context
+## What was removed
 
-**Controllers**: 5 files in `src/Http/Auth/` (~220 lines total)
-
-**Model**: `src/User.php`
-
-**Migrations**: `create_users_table`, `create_password_resets_table`
-
-**Routes**: None registered
-
-## Project Structure
-
-```text
-src/Http/Auth/
-├── ForgotPasswordController.php
-├── LoginController.php
-├── RegisterController.php
-├── ResetPasswordController.php
-└── VerificationController.php
-
-src/User.php
-database/migrations/2014_10_12_000000_create_users_table.php
-database/migrations/2014_10_12_100000_create_password_resets_table.php
-```
+- Auth controllers (`LoginController`, `RegisterController`, etc.)
+- `User` Eloquent model
+- Users / password-resets migrations
+- Related Laravel auth config and Sanctum dependency
 
 ## Recommendation
 
-Either remove unused scaffold or document as out-of-scope. Activating auth would require routes, views, tests, and a database — conflicting with the file-based architecture principle.
+Do not reintroduce auth without an explicit new feature spec. Activating accounts would require routes, views, tests, and a database — conflicting with the file-based, entertainment-only architecture.
