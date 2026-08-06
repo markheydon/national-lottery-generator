@@ -9,11 +9,15 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: app-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   playwright-ui-tests:
     name: Playwright UI tests
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v7
@@ -35,11 +39,26 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(npm view @playwright/test@1.62.1 version)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ steps.playwright-version.outputs.version }}-chromium
+
       - name: Install Playwright
         run: |
           npm init -y >/dev/null 2>&1
           npm install @playwright/test@^1.62.1 --no-save
-          npx playwright install --with-deps chromium
+          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
+            npx playwright install --with-deps chromium
+          else
+            npx playwright install chromium
+          fi
 
       - name: Run Playwright UI tests
         run: npx playwright test

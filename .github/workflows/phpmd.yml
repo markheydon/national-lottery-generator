@@ -26,10 +26,15 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: app-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   PHPMD:
     name: Run PHPMD scanning
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read # for checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -46,7 +51,7 @@ jobs:
           tools: phpmd
 
       - name: Run PHPMD
-        run: phpmd . sarif codesize --reportfile phpmd-results.sarif
+        run: phpmd src,templates,tests,public/index.php sarif codesize --reportfile phpmd-results.sarif
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
