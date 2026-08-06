@@ -9,13 +9,13 @@ The app follows a simple workflow. A visitor chooses a game, the app checks whet
 
 ## What the app uses
 
-The public interface is driven by the game list and generator pages in the Laravel app. The supported games are defined in the configuration file and are rendered as cards on the home page.
+The public interface is a small PHP front controller with plain templates. The supported games are defined in configuration and are rendered as cards on the home page.
 
 ## How data is refreshed
 
-When a generator page is requested, the app checks whether the relevant draw-history file is present and fresh enough to use. If it is missing or out of date, the app downloads a new copy from the National Lottery website and stores it locally.
+When a generator page is requested, the app checks whether the relevant draw-history file is present and fresh enough to use. If it is missing or older than 24 hours, the app downloads a new copy from the National Lottery website and stores it locally under `storage/app/lottery/`.
 
-The app uses file-based storage rather than a database. That means the cached draw history and generated data are stored on disk under the Laravel storage directories.
+The app uses file-based storage rather than a database.
 
 ## Why the suggestions are playful
 
@@ -29,4 +29,4 @@ In practice, that means:
 
 ## In short
 
-The app is a small Laravel project that combines historical data, local caching, and simple presentation to create lottery number suggestions for entertainment purposes.
+The app combines historical data, local caching, and simple presentation to create lottery number suggestions for entertainment purposes.

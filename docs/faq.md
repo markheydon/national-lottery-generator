@@ -7,7 +7,7 @@ title: FAQ
 
 ## What is this app?
 
-This is a Laravel web app that generates playful number suggestions for UK National Lottery games.
+This is a PHP web app that generates playful number suggestions for UK National Lottery games.
 
 ## Is it free to use?
 
@@ -34,7 +34,7 @@ The app checks whether fresh draw-history data is available, downloads it if nee
 
 ## Does the app need a database?
 
-No. The app uses local file storage and Laravel's file cache rather than a database.
+No. The app uses local file storage for cached draw-history CSVs rather than a database.
 
 ## What if a game or page is not loading?
 

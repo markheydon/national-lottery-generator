@@ -4,19 +4,14 @@ This document outlines the commands and procedures for updating dependencies wit
 
 ## Updating Dependencies
 
-Start the containers:
+Typically, the following commands are run to update Composer dependencies and ensure everything is working correctly:
 
-```
-./vendor/bin/sail up -d
+```bash
+composer update
+composer validate
+composer audit
+vendor/bin/phpunit
+./vendor/bin/pint --test
 ```
 
-Typically, the following commands are run to update dependencies and ensure everything is working correctly:
-
-```
-./vendor/bin/sail composer update
-./vendor/bin/sail yarn upgrade
-./vendor/bin/sail artisan test
-./vendor/bin/sail pint --test
-./vendor/bin/sail composer validate
-./vendor/bin/sail composer audit
-```
+There is no npm project for the application. Playwright is installed on demand in CI (and optionally locally) without a committed `package.json`.

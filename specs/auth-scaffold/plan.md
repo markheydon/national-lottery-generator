@@ -10,9 +10,9 @@ Standard Laravel authentication scaffolding. Present in codebase but not integra
 
 ## Technical Context
 
-**Controllers**: 5 files in `app/Http/Controllers/Auth/` (~220 lines total)
+**Controllers**: 5 files in `src/Http/Auth/` (~220 lines total)
 
-**Model**: `app/Models/User.php`
+**Model**: `src/User.php`
 
 **Migrations**: `create_users_table`, `create_password_resets_table`
 
@@ -21,14 +21,14 @@ Standard Laravel authentication scaffolding. Present in codebase but not integra
 ## Project Structure
 
 ```text
-app/Http/Controllers/Auth/
+src/Http/Auth/
 ├── ForgotPasswordController.php
 ├── LoginController.php
 ├── RegisterController.php
 ├── ResetPasswordController.php
 └── VerificationController.php
 
-app/Models/User.php
+src/User.php
 database/migrations/2014_10_12_000000_create_users_table.php
 database/migrations/2014_10_12_100000_create_password_resets_table.php
 ```

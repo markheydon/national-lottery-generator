@@ -35,21 +35,35 @@ The public app is a simple game selector:
 
 The app is designed for entertainment only. It does not predict future draws and should not be treated as a forecasting tool.
 
+## Project layout
+
+| Path | Purpose |
+|------|---------|
+| `public/` | Web root and front controller |
+| `src/` | Application code (HTTP layer + lottery services) |
+| `templates/` | Plain PHP views |
+| `config/games.php` | Supported games |
+| `storage/app/lottery/` | Cached draw-history CSVs |
+| `tests/Unit/`, `tests/Feature/` | PHPUnit |
+| `tests/e2e/` | Playwright UI tests |
+| `deploy/nginx-default` | Azure App Service nginx helper |
+
 ## Development
 
-Detailed contributor setup and maintenance guidance lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
+Detailed contributor setup lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
 
 ```bash
-vendor/bin/phpunit          # Run tests
+vendor/bin/phpunit          # Unit + feature tests
 ./vendor/bin/pint --test    # Check code style
 ./vendor/bin/pint           # Fix code style
+npx playwright test         # E2E (install @playwright/test first)
 ```
 
-The GitHub Actions workflows run the test suite for PHP 8.3, 8.4, and 8.5.
+CI (`.github/workflows/ci.yml`) runs Pint, PHPUnit on PHP 8.3–8.5, Playwright, and PHPMD.
 
 ## Deployment
 
-The app is deployed to Azure App Service and uses file-based storage. The deployment workflow runs `composer install --no-dev` and serves the `public/` directory as the web root.
+The app is deployed to Azure App Service. The deployment workflow runs `composer install --no-dev` and serves `public/` as the web root. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`.
 
 ## Documentation
 

@@ -76,7 +76,7 @@ While viewing generated numbers, a user can navigate to another game via the "Ot
 ### Key Entities
 
 - **Game**: Config-driven object with slug, name, logo; provides a `Downloader` instance per game slug
-- **Downloader**: Shared CSV download/cache service using Laravel Storage
+- **Downloader**: Shared CSV download/cache service using the local filesystem
 - **CsvDownloadService**: Freshness check for cached CSV files
 
 ## Success Criteria

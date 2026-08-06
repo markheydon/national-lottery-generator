@@ -4,19 +4,19 @@
 
 **Name**: National Lottery Generator
 
-**Purpose**: A Laravel application that analyses UK National Lottery historical draw data and generates playful number suggestions for entertainment. This is not a forecasting tool and must never be presented as one.
+**Purpose**: A PHP application that analyses UK National Lottery historical draw data and generates playful number suggestions for entertainment. This is not a forecasting tool and must never be presented as one.
 
 **Primary language**: PHP 8.3–8.5
 
-**Architecture**: Monolithic Laravel 13 MVC web application with server-rendered Blade views and file-based storage (no database required for core features).
+**Architecture**: Minimal vanilla PHP front controller with plain PHP templates and file-based storage (no database required for core features).
 
 **Deployment**: Azure App Service
 
 ## Core Principles
 
-### I. Thin Controllers, Service-Layer Logic
+### I. Thin HTTP Layer, Service-Layer Logic
 
-HTTP controllers (`app/Http/Controllers/`) orchestrate requests and delegate to services. Business logic lives in `app/Services/Lottery/`. Controllers MUST NOT contain lottery analysis, CSV parsing, or number-generation algorithms.
+The front controller and `GameController` orchestrate requests and delegate to services. Business logic lives in `src/Services/Lottery/`. The HTTP layer MUST NOT contain lottery analysis, CSV parsing, or number-generation algorithms.
 
 ### II. Per-Game Service Pattern
 
@@ -29,19 +29,19 @@ Shared behaviour belongs in `Downloader`, `Utils`, or `CsvDownloadService`. New 
 
 ### III. Config-Driven Games
 
-Game definitions live in `config/games.php` (slug, name, logo). The `Game` model (`app/Models/Game.php`) reads from this config and is not Eloquent-backed. Adding a game requires a config entry plus corresponding service classes.
+Game definitions live in `config/games.php` (slug, name, logo). The `Game` class (`src/Game.php`) reads from this config. Adding a game requires a config entry plus corresponding service classes.
 
 ### IV. File-Based Storage (No Database for Core Features)
 
-Historical draw data is stored on the local filesystem via Laravel's Storage facade. Cache uses file or array drivers. Features MUST NOT introduce database dependencies unless explicitly scoped and justified. SQLite is used in CI/tests only.
+Historical draw data is stored on the local filesystem under `storage/app/lottery/`. Features MUST NOT introduce database dependencies unless explicitly scoped and justified.
 
 ### V. Tests Required for Lottery Logic
 
-New or modified lottery logic MUST include PHPUnit tests in `tests/Unit/Lottery/`. Use shared base cases (`GenerateTestCase`, `DownloaderTestCase`) where applicable. Feature tests for storage behaviour go in `tests/Feature/`.
+New or modified lottery logic MUST include PHPUnit tests in `tests/Unit/Lottery/`. Use shared base cases (`GenerateTestCase`, `DownloaderTestCase`) where applicable. Feature tests for storage and HTTP behaviour go in `tests/Feature/`. Playwright E2E specs live in `tests/e2e/`.
 
 ### VI. PSR-12 Code Style (NON-NEGOTIABLE)
 
-All PHP code MUST follow PSR-12, enforced by Laravel Pint (`pint.json`). Run `./vendor/bin/sail pint` before committing. Use type hints, return types, and PHPDoc on public classes and methods.
+All PHP code MUST follow PSR-12, enforced by Laravel Pint (`pint.json`) used as a standalone linter. Run `./vendor/bin/pint` before committing. Use type hints, return types, and PHPDoc on public classes and methods.
 
 ### VII. Entertainment-Only Disclaimer
 
@@ -51,23 +51,24 @@ User-facing features MUST include or preserve the entertainment-only disclaimer.
 
 | Directory | Purpose | May depend on |
 |-----------|---------|---------------|
-| `app/Http/Controllers/` | Request handling, view data assembly | Services, Models, Views |
-| `app/Services/Lottery/` | Download, analysis, generation | Laravel facades (Http, Storage, Cache, Log) |
-| `app/Models/` | Domain objects (`Game` config reader, `User` scaffold) | `config/` |
-| `config/` | Application and game configuration | — |
-| `resources/views/games/` | Blade templates for game UI | Layout, Bootstrap assets |
-| `resources/js/`, `resources/sass/` | Frontend assets (Bootstrap 5, jQuery) | Laravel Mix build |
-| `routes/web.php` | Web route definitions | Controllers |
+| `public/index.php` | Front controller / routing | HTTP layer |
+| `src/Http/` | Request handling, view data assembly | Services, Game, templates |
+| `src/Services/Lottery/` | Download, analysis, generation | Guzzle, filesystem helpers |
+| `src/Game.php` | Config-driven game registry | `config/games.php` |
+| `config/` | Game configuration | — |
+| `templates/` | Plain PHP templates for game UI | Layout, public assets |
 | `tests/Unit/Lottery/` | Per-game unit tests | Application services |
 | `tests/Feature/` | Integration/feature tests | Application |
+| `tests/e2e/` | Playwright UI tests | Running app |
 | `docs/` | Public user documentation | — |
 | `docs-internal/` | Maintainer documentation | — |
+| `deploy/` | Azure/nginx deploy helpers | — |
 
 ## Naming Conventions
 
 - **PHP classes**: PascalCase (`LottoGenerate.php`, `CsvDownloadService.php`)
 - **Game slugs**: kebab-case (`set-for-life`, `lotto-hotpicks`)
-- **Blade views**: kebab-case filenames in `resources/views/games/`
+- **Templates**: kebab-case filenames in `templates/games/`
 - **Config keys**: snake_case
 - **Test files**: `*Test.php` in `tests/Unit/Lottery/` or `tests/Feature/`
 - **Branches**: `feature/*` or `fix/*` for general work; Spec Kit numbered branches (`001-slug`) for SDD features
@@ -75,40 +76,18 @@ User-facing features MUST include or preserve the entertainment-only disclaimer.
 ## Testing Requirements
 
 - **Framework**: PHPUnit 12
-- **Run command**: `./vendor/bin/sail artisan test` (or `vendor/bin/phpunit`)
+- **Run command**: `vendor/bin/phpunit`
 - **Unit tests**: One test class per game service in `tests/Unit/Lottery/`
-- **Feature tests**: File-based storage and end-to-end flows in `tests/Feature/`
-- **CI matrix**: Tests MUST pass on PHP 8.3, 8.4, and 8.5
+- **Feature tests**: File-based storage and HTTP flows in `tests/Feature/`
+- **E2E**: Playwright specs in `tests/e2e/` (`npx playwright test`)
 
-## Dependency Rules
+## Environment Variables
 
-- Controllers → Services → Laravel facades (allowed direction)
-- Services MUST NOT depend on Controllers or Views
-- Services MAY use `Downloader`, `Utils`, `CsvDownloadService` and other lottery services
-- Views receive pre-formatted data from controllers; no business logic in Blade templates
-- `routes/api.php` is unused; new API endpoints require explicit feature scoping
-
-## Quality Gates
-
-All changes MUST pass before merge:
-
-1. **PHPUnit** — full test suite (`vendor/bin/phpunit`)
-2. **Laravel Pint** — PSR-12 check (`./vendor/bin/sail pint --test`)
-3. **PHPMD** — static analysis (CI scheduled scan)
-4. **GitHub Actions** — Laravel workflow on push/PR to `main`
-
-## Development Workflow
-
-1. Create a branch (`feature/*`, `fix/*`, or Spec Kit `001-slug`)
-2. Implement changes following code boundaries above
-3. Add or update tests for lottery logic changes
-4. Run Pint and tests locally
-5. Open a pull request to `main`
-
-Detailed contributor guidance: `CONTRIBUTING.md` and `docs-internal/development-setup.md`.
+| Variable | Purpose |
+|----------|---------|
+| `LOTTERY_DOWNLOAD_TIMEOUT` | HTTP timeout for CSV downloads (default 30) |
+| `LOTTERY_DOWNLOAD_URL_*` | Test overrides for CSV download URLs |
 
 ## Governance
 
-This constitution supersedes generic Spec Kit defaults for this project. Amendments require updating this file and noting the version/date below. All feature specs, plans, and tasks MUST comply with these rules. Complexity that violates a principle MUST be documented in the plan's Complexity Tracking table with justification.
-
-**Version**: 1.0.0 | **Ratified**: 2026-07-18 | **Last Amended**: 2026-07-18
+This constitution supersedes conflicting guidance in outdated docs. When principles change, update this file and dependent templates/docs in the same change.
