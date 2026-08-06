@@ -1,0 +1,42 @@
+name: PHP
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3, 8.4, 8.5'
+
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    - name: Directory Permissions
+      run: chmod -R 777 storage
+
+    - name: Run Pint
+      run: ./vendor/bin/pint --test
+
+    - name: Run PHPUnit across supported PHP versions
+      run: |
+        set -euo pipefail
+        for version in 8.3 8.4 8.5; do
+          echo "::group::PHPUnit on PHP ${version}"
+          sudo update-alternatives --set php "/usr/bin/php${version}"
+          php -v
+          vendor/bin/phpunit
+          echo "::endgroup::"
+        done

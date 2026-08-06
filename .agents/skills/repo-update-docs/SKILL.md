@@ -5,7 +5,7 @@ description: Refresh this repository's README.md and public docs/ from repositor
 
 # Update Repository Documentation
 
-Maintain documentation for the National Lottery Generator Laravel application. Use repository-native facts only — do not invent unsupported claims. Keep wording in UK English.
+Maintain documentation for the National Lottery Generator PHP application. Use repository-native facts only — do not invent unsupported claims. Keep wording in UK English.
 
 ## When to Use
 
@@ -26,12 +26,12 @@ Maintain documentation for the National Lottery Generator Laravel application. U
 
 Refresh `README.md` from these source-of-truth files:
 
-- `composer.json` — PHP version, Laravel version, description
+- `composer.json` — PHP version, description
 - `README.md` — preserve strong existing content unless stale
-- `.github/workflows/laravel.yml` — CI PHP matrix
+- `.github/workflows/ci.yml` — CI PHP matrix
 - `.github/workflows/deploy-azure-webapp.yml` — deployment target
 - `config/games.php` — supported lottery games
-- `routes/web.php` — available routes
+- `public/index.php` — available routes
 - `CONTRIBUTING.md` — contribution pointers
 - `docs-internal/supported-versions.md` — version policy
 
@@ -39,7 +39,7 @@ Refresh `README.md` from these source-of-truth files:
 
 - Contributor-friendly overview: what the app does, quick start, development commands
 - State entertainment-only purpose; do not present as a forecasting tool
-- Include Sail-based setup (`./vendor/bin/sail up -d`, `artisan test`, `pint`)
+- Include PHP + Composer setup (`composer install`, `php -S … -t public`, `vendor/bin/phpunit`, `pint`)
 - Note file-based storage (no database required for core features)
 - Link to public docs in `docs/` and maintainer docs in `docs-internal/`
 - Use standard Markdown; keep opening sections scannable
@@ -50,8 +50,8 @@ Refresh `README.md` from these source-of-truth files:
 Keep public docs in sync with current app behaviour. Inspect before editing:
 
 - `config/games.php`
-- `routes/web.php`
-- `resources/views/games/` — user-facing UI
+- `public/index.php`
+- `templates/games/` — user-facing UI
 - `docs/README.md`, `docs/index.md`, `docs/getting-started.md`
 - `docs/how-it-works.md`, `docs/faq.md`, `docs/developer-reference.md`
 

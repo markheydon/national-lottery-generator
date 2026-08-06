@@ -17,10 +17,10 @@ When updating public docs, align wording with:
 
 - [composer.json](../composer.json)
 - [config/games.php](../config/games.php)
-- [routes/web.php](../routes/web.php)
-- [app/Http/Controllers/GameController.php](../app/Http/Controllers/GameController.php)
-- [resources/views/games/index.blade.php](../resources/views/games/index.blade.php)
-- [resources/views/games/generate.blade.php](../resources/views/games/generate.blade.php)
+- [public/index.php](../public/index.php)
+- [src/Http/GameController.php](../src/Http/GameController.php)
+- [templates/games/index.php](../templates/games/index.php)
+- [templates/games/generate.php](../templates/games/generate.php)
 - [README.md](../README.md)
 - [CONTRIBUTING.md](../CONTRIBUTING.md)
 

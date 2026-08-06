@@ -1,16 +1,18 @@
-name: Playwright
+name: CI
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
 
 jobs:
-  playwright-ui-tests:
-    name: Playwright UI tests
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v7
@@ -18,15 +20,43 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          coverage: none
+          tools: phpmd
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install PHP dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Prepare application
-        run: |
-          php -r "file_exists('.env') || copy('.env.example', '.env');"
-          chmod -R 777 storage
+      - name: Directory Permissions
+        run: chmod -R 777 storage
+
+      - name: Run Pint
+        run: ./vendor/bin/pint --test
+
+      - name: Run PHPUnit on PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: PHPUnit 8.3
+        run: vendor/bin/phpunit
+
+      - name: Run PHPUnit on PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: PHPUnit 8.4
+        run: vendor/bin/phpunit
+
+      - name: Run PHPUnit on PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+
+      - name: PHPUnit 8.5
+        run: vendor/bin/phpunit
 
       - uses: actions/setup-node@v7
         with:
@@ -67,3 +97,7 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+      - name: Run PHPMD
+        run: phpmd src,templates,tests sarif codesize --reportfile phpmd-results.sarif
+        continue-on-error: true

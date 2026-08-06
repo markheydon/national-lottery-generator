@@ -1,17 +1,15 @@
 # National Lottery Generator
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Laravel](https://img.shields.io/badge/Laravel-13.x-red.svg)](https://laravel.com/docs/13.x)
 [![PHP](https://img.shields.io/badge/PHP-8.3--8.5-purple.svg)](https://www.php.net/)
 
-This Laravel 13 application generates playful number suggestions for UK National Lottery games. It uses historical draw data, file-based caching, and a lightweight web interface to show suggested lines for Lotto, EuroMillions, Thunderball, Set For Life, Lotto Hotpicks, and EuroMillions Hotpicks.
+This PHP application generates playful number suggestions for UK National Lottery games. It uses historical draw data, file-based caching, and a lightweight web interface to show suggested lines for Lotto, EuroMillions, Thunderball, Set For Life, Lotto Hotpicks, and EuroMillions Hotpicks.
 
 ## Requirements
 
 - PHP 8.3 to 8.5
 - Composer
-- Docker and Laravel Sail are optional, but recommended for local development
-- No database is required; the app uses file cache and local filesystem storage
+- No database is required; the app uses the local filesystem for CSV caching
 
 ## Quick start
 
@@ -22,11 +20,10 @@ git clone https://github.com/markheydon/national-lottery-generator.git
 cd national-lottery-generator
 composer install
 cp .env.example .env
-./vendor/bin/sail up -d
-./vendor/bin/sail artisan key:generate
+php -S localhost:8000 -t public
 ```
 
-Then open the app at http://localhost.
+Then open the app at http://localhost:8000.
 
 ## Usage
 
@@ -40,13 +37,19 @@ The app is designed for entertainment only. It does not predict future draws and
 
 ## Development
 
-The main README stays focused on the project overview and quick start. Detailed contributor setup and maintenance guidance now lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
+Detailed contributor setup and maintenance guidance lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
+
+```bash
+vendor/bin/phpunit          # Run tests
+./vendor/bin/pint --test    # Check code style
+./vendor/bin/pint           # Fix code style
+```
 
 The GitHub Actions workflows run the test suite for PHP 8.3, 8.4, and 8.5.
 
 ## Deployment
 
-The app is deployed to Azure App Services and uses file-based storage. The deployment workflow expects the usual Laravel environment variables, including `APP_KEY`, `CACHE_DRIVER=file`, and `FILESYSTEM_DISK=local`.
+The app is deployed to Azure App Service and uses file-based storage. The deployment workflow runs `composer install --no-dev` and serves the `public/` directory as the web root.
 
 ## Documentation
 
@@ -57,7 +60,7 @@ The app is deployed to Azure App Services and uses file-based storage. The deplo
 
 ## Contributing
 
-Contributions are welcome. Please open an issue or pull request, and follow the existing Laravel and Pint conventions described in [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome. Please open an issue or pull request, and follow the PSR-12 conventions described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

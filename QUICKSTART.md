@@ -1,59 +1,16 @@
 # Quick Start Guide
 
-This is a simplified quick start guide for getting the National Lottery Generator running either in GitHub Codespaces or on your local machine.
-
-## Fastest Option: GitHub Codespaces
-
-If you want to avoid installing PHP, Composer, Node.js, or Docker locally, use Codespaces.
-
-### 1. Open in Codespaces
-
-- Create a new GitHub Codespace for this repository.
-- Wait for the devcontainer to finish building.
-
-### 2. Let Bootstrap Finish
-
-The devcontainer setup will automatically:
-
-- copy `.env.example` to `.env` when needed
-- install Composer dependencies
-- install JavaScript dependencies
-- generate an application key if needed
-
-### 3. Start the Application
-
-```bash
-./vendor/bin/sail up -d
-```
-
-### 4. Open the Forwarded Port
-
-Open the forwarded app URL from the Codespaces **Ports** panel.
-
-### 5. Start Coding
-
-Useful commands:
-
-```bash
-./vendor/bin/sail artisan test
-./vendor/bin/sail pint --test
-./vendor/bin/sail down
-```
-
-## Local Docker + Sail Option
-
-If you would rather run the project on your own machine, follow the local Sail flow below.
+This is a simplified quick start guide for getting the National Lottery Generator running locally or in GitHub Codespaces.
 
 ## Prerequisites
 
-You need:
-- **Docker Desktop** installed ([Download here](https://www.docker.com/products/docker-desktop))
-- **Git** installed ([Download here](https://git-scm.com/downloads))
-- A terminal/command prompt
+- PHP 8.3 or newer
+- Composer
+- Git
 
-That's it! No need to install PHP, Composer, or any other dependencies.
+No database, Docker, or Node.js is required for the core application.
 
-## Installation (5 Steps)
+## Installation (4 Steps)
 
 ### 1. Clone the Repository
 
@@ -65,15 +22,8 @@ cd national-lottery-generator
 ### 2. Install Dependencies
 
 ```bash
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php84-composer:latest \
-    composer install --ignore-platform-reqs
+composer install
 ```
-
-**Windows users**: Use PowerShell and replace `$(pwd)` with `${PWD}` or the full path to your project directory.
 
 ### 3. Set Up Environment
 
@@ -81,127 +31,83 @@ docker run --rm \
 cp .env.example .env
 ```
 
+The `.env` file is optional for local use. It mainly configures CSV download timeouts and test URL overrides.
+
 ### 4. Start the Application
 
 ```bash
-./vendor/bin/sail up -d
-```
-
-**Windows users**: Use `vendor/bin/sail` instead of `./vendor/bin/sail`
-
-This will:
-- Download and set up Docker containers
-- Start the web server
-- Configure the application
-
-**First time?** This step takes 2-5 minutes. Subsequent starts are much faster.
-
-### 5. Generate Application Key
-
-```bash
-./vendor/bin/sail artisan key:generate
+php -S localhost:8000 -t public
 ```
 
 ## Access the Application
 
-Open your browser and go to: **http://localhost**
+Open your browser and go to: **http://localhost:8000**
 
-🎉 **Done!** The application is now running.
+Done. The application is now running.
 
 ## Common Commands
 
-### Stop the Application
-```bash
-./vendor/bin/sail down
-```
-
-### Restart the Application
-```bash
-./vendor/bin/sail down
-./vendor/bin/sail up -d
-```
-
-### View Logs
-```bash
-./vendor/bin/sail logs
-```
-
 ### Run Tests
+
 ```bash
-./vendor/bin/sail artisan test
+vendor/bin/phpunit
 ```
+
+### Check Code Style
+
+```bash
+./vendor/bin/pint --test
+```
+
+### Fix Code Style
+
+```bash
+./vendor/bin/pint
+```
+
+## GitHub Codespaces
+
+If you use Codespaces:
+
+1. Create a new GitHub Codespace for this repository.
+2. Run `composer install`.
+3. Start the server with `php -S 0.0.0.0:8000 -t public`.
+4. Open the forwarded port from the Codespaces **Ports** panel.
 
 ## Troubleshooting
 
-### "Port 80 is already in use"
+### Port 8000 is already in use
 
-Another application is using port 80 (probably Apache or another web server).
+Use another port:
 
-**Quick fix**: Stop the conflicting service:
 ```bash
-# On Linux/Mac
-sudo service apache2 stop
-sudo service nginx stop
-
-# On Windows
-# Stop IIS or Apache from Services panel
+php -S localhost:8080 -t public
 ```
 
-### "Permission denied" errors
+### Permission errors in `storage/`
 
-Fix file permissions:
+Ensure the lottery cache directory is writable:
+
 ```bash
-sudo chmod -R 775 storage bootstrap/cache
-sudo chown -R $USER:$USER storage bootstrap/cache
+chmod -R 775 storage
 ```
 
-### Nothing happens when I access localhost
+### Generate page is slow on first visit
 
-1. Check if containers are running:
-   ```bash
-   docker ps
-   ```
-   You should see containers for `national-lottery-generator`
-
-2. Check logs for errors:
-   ```bash
-   ./vendor/bin/sail logs
-   ```
-
-3. Try restarting:
-   ```bash
-   ./vendor/bin/sail down
-   ./vendor/bin/sail up -d
-   ```
+The app downloads draw-history CSV files from the National Lottery API on first use. Subsequent visits use the cached files in `storage/app/lottery/` for up to 24 hours.
 
 ## What's Next?
 
 - **Read the full [README.md](README.md)** to understand how the application works
 - **Check [CONTRIBUTING.md](CONTRIBUTING.md)** if you want to contribute
-- **Explore the code** in the `app/` directory
-- **Run the tests** to see everything working: `./vendor/bin/sail artisan test`
+- **Explore the code** in the `src/` directory
+- **Run the tests** to see everything working: `vendor/bin/phpunit`
 
 ## Need More Help?
 
-- Check the [Troubleshooting section](README.md#troubleshooting) in the main README
 - Browse [existing issues](https://github.com/markheydon/national-lottery-generator/issues)
 - Open a new issue if you're stuck
 
-## Uninstallation
-
-To completely remove the application:
-
-```bash
-# Stop and remove containers
-./vendor/bin/sail down -v
-
-# Navigate out of the directory
-cd ..
-
-# Remove the project directory
-rm -rf national-lottery-generator
-```
-
 ---
 
-**Happy lottery number generating!** 🎲
+**Happy lottery number generating!**

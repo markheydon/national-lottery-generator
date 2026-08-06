@@ -25,11 +25,9 @@ This project follows a simple code of conduct:
 
 ### Prerequisites
 
-- PHP 8.3 to 8.5 (Laravel 13 supported range; 8.5 is the default runtime target)
-- Docker (for Laravel Sail)
+- PHP 8.3 to 8.5
 - Git
 - Composer
-- Basic understanding of Laravel framework
 
 Internal maintainer policy for supported versions and dependency update guardrails
 is documented in `docs-internal/supported-versions.md`.
@@ -44,24 +42,18 @@ is documented in `docs-internal/supported-versions.md`.
 
 2. **Install Dependencies**
    ```bash
-   docker run --rm \
-       -u "$(id -u):$(id -g)" \
-       -v "$(pwd):/var/www/html" \
-       -w /var/www/html \
-      laravelsail/php85-composer:latest \
-       composer install --ignore-platform-reqs
+   composer install
    ```
 
 3. **Set Up Environment**
    ```bash
    cp .env.example .env
-   ./vendor/bin/sail up -d
-   ./vendor/bin/sail artisan key:generate
    ```
 
 4. **Verify Installation**
    ```bash
-   ./vendor/bin/sail artisan test
+   vendor/bin/phpunit
+   php -S localhost:8000 -t public
    ```
 
 ## Development Workflow
@@ -84,13 +76,13 @@ is documented in `docs-internal/supported-versions.md`.
 3. **Test Your Changes**
    ```bash
    # Run tests
-   ./vendor/bin/sail artisan test
-   
+   vendor/bin/phpunit
+
    # Check code style
-   ./vendor/bin/sail pint --test
-   
+   ./vendor/bin/pint --test
+
    # Fix code style issues
-   ./vendor/bin/sail pint
+   ./vendor/bin/pint
    ```
 
 4. **Commit Your Changes**
@@ -116,43 +108,39 @@ is documented in `docs-internal/supported-versions.md`.
 
 This project follows [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standards:
 
-- **Always run Laravel Pint** before committing:
+- **Always run Pint** before committing:
   ```bash
-  ./vendor/bin/sail pint
+  ./vendor/bin/pint
   ```
 
 - **Use meaningful names**: Avoid generic names like `$var`, `$method1`, `$temp`
 - **Document your code**: Add PHPDoc comments for classes, methods, and complex logic
 - **Keep it simple**: Write clear, maintainable code over clever code
 
-### Laravel Best Practices
+### Application Structure
 
-- Keep controllers thin - move business logic to Services
-- Use Laravel's built-in features (validation, caching, etc.)
-- Follow Laravel naming conventions
+- Keep the front controller thin — move business logic to `src/Services/Lottery/`
 - Use type hints and return types
-- Leverage dependency injection
+- Prefer plain PHP templates in `templates/` for user-facing pages
 
 ### Example Code Style
 
 ```php
 <?php
 
-namespace App\Services;
+declare(strict_types=1);
 
-use App\Models\LotteryDraw;
-use Illuminate\Support\Collection;
+namespace App\Services\Lottery;
 
-class NumberGenerator
+class ExampleService
 {
     /**
      * Generate lottery numbers based on historical data.
      *
-     * @param  Collection  $historicalDraws
-     * @param  int  $count
-     * @return array
+     * @param array<int, array<string, mixed>> $historicalDraws
+     * @return array<int, int>
      */
-    public function generateNumbers(Collection $historicalDraws, int $count = 6): array
+    public function generateNumbers(array $historicalDraws, int $count = 6): array
     {
         // Implementation here
         return $numbers;
@@ -196,13 +184,10 @@ class NumberGeneratorTest extends TestCase
 
 ```bash
 # Run all tests
-./vendor/bin/sail artisan test
+vendor/bin/phpunit
 
 # Run specific test file
-./vendor/bin/sail artisan test tests/Unit/Services/NumberGeneratorTest.php
-
-# Run tests with coverage
-./vendor/bin/sail artisan test --coverage
+vendor/bin/phpunit tests/Unit/Lottery/LottoGenerateTest.php
 ```
 
 ## Submitting Changes
@@ -277,7 +262,6 @@ What actually happens
 
 ## Environment
 - PHP Version: 8.5
-- Laravel Version: 13.x
 - Browser: Chrome 120
 - OS: Ubuntu 22.04
 ```
