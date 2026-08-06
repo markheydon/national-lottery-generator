@@ -28,7 +28,7 @@ Refresh `README.md` from these source-of-truth files:
 
 - `composer.json` — PHP version, description
 - `README.md` — preserve strong existing content unless stale
-- `.github/workflows/php.yml` — CI PHP matrix
+- `.github/workflows/ci.yml` — CI PHP matrix
 - `.github/workflows/deploy-azure-webapp.yml` — deployment target
 - `config/games.php` — supported lottery games
 - `public/index.php` — available routes

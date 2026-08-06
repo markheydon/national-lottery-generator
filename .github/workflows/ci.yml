@@ -20,6 +20,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3, 8.4, 8.5'
+          tools: phpmd
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -83,12 +84,6 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
-
-      - name: Setup PHPMD
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          tools: phpmd
 
       - name: Run PHPMD
         run: phpmd src,templates,tests sarif codesize --reportfile phpmd-results.sarif
