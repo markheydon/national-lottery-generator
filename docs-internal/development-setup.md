@@ -8,58 +8,64 @@ This page collects the practical setup and maintenance guidance that is useful f
 - Composer
 - Git
 
-No database, Docker, or Node.js is required for the core application. Playwright E2E tests install `@playwright/test` on demand.
+No database or Docker is required for the core application. Playwright E2E tests use the committed `package.json` (Node.js is included in the Dev Container).
 
-## Local development
+## Dev Container / Codespaces (recommended)
+
+The repository includes a `.devcontainer` configuration for VS Code, Cursor, or GitHub Codespaces (Docker or Podman).
+
+After the container finishes building, `postCreate` runs Composer install, `npm ci`, and Playwright Chromium install automatically. Then:
+
+```bash
+php -S 0.0.0.0:8000 -t public
+```
+
+Open the forwarded port from the Ports panel.
+
+## Local development (no container)
 
 Primary local option — no Docker or Azure required:
 
 ```bash
 composer install
-cp .env.example .env
 php -S localhost:8000 -t public
 ```
+
+Optional: copy `.env.example` to `.env` if you need to tune CSV download timeouts or test URL overrides.
 
 Open http://localhost:8000.
 
 To use Apache or nginx locally instead of the built-in server, point the document root at `public/` (see [deploy/README.md](../deploy/README.md)). Ensure `storage/app/lottery/` is writable.
 
-## Codespaces / devcontainer
-
-The repository includes a `.devcontainer` configuration. After the container finishes building:
-
-```bash
-composer install
-php -S 0.0.0.0:8000 -t public
-```
-
-Open the forwarded port from the Codespaces **Ports** panel.
-
 ## Daily workflow
 
 ```bash
 vendor/bin/phpunit
-./vendor/bin/pint --test
-./vendor/bin/pint
+vendor/bin/pint --test
+vendor/bin/pint
+npm run test:e2e
 ```
 
-Playwright E2E (optional locally):
+In the Dev Container, Playwright browsers are installed during create. On a host PHP install:
 
 ```bash
-npm init -y
-npm install @playwright/test@^1.62.1 --no-save
-npx playwright install chromium
-npx playwright test
+npm ci
+npm run test:e2e:install
+npm run test:e2e
 ```
+
+On a Windows drive mount, if `npm install` fails with `EPERM` / `chmod`, see [QUICKSTART.md](QUICKSTART.md#npm-install-fails-with-eperm-dev-container-on-windows).
 
 ## Code style
 
 The project follows PSR-12 through Laravel Pint (used as a standalone linter, not the Laravel framework):
 
 ```bash
-./vendor/bin/pint --test
-./vendor/bin/pint
+vendor/bin/pint --test
+vendor/bin/pint
 ```
+
+On a Windows drive mount (common in local Dev Containers), your working copy may use CRLF line endings while CI checks out LF. That can make `vendor/bin/pint --test` report many `line_ending` issues locally even though CI passes. Trust CI for style checks, or clone the repo onto a native Linux filesystem if you need local Pint to match CI.
 
 ## Deployment options
 
@@ -104,7 +110,7 @@ When preparing a change:
 
 1. Create a feature branch.
 2. Make the change and keep it focused.
-3. Run the test suite and Pint.
+3. Run the test suite, Pint, and Playwright E2E where relevant.
 4. Open a pull request with a short summary of the change.
 
 ## Common issues

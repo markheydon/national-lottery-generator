@@ -70,12 +70,24 @@ The live site is deployed to Azure App Service. The workflow runs `composer inst
 
 Detailed contributor setup lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
 
+**Dev Container / Codespaces** (VS Code, Cursor, or GitHub Codespaces): open in a container and wait for `postCreate` — Composer, npm, and Playwright Chromium are installed automatically. Then:
+
+```bash
+php -S 0.0.0.0:8000 -t public
+vendor/bin/phpunit
+npm run test:e2e
+```
+
+**Local PHP** (no container):
+
 ```bash
 vendor/bin/phpunit          # Unit + feature tests
-./vendor/bin/pint --test    # Check code style
-./vendor/bin/pint           # Fix code style
-npx playwright test         # E2E (install @playwright/test first)
+vendor/bin/pint --test        # Check code style
+vendor/bin/pint               # Fix code style
+npm ci && npm run test:e2e:install && npm run test:e2e   # E2E (requires Node.js)
 ```
+
+On a Windows drive mount in a Dev Container, if `npm ci` fails with `EPERM` / `chmod`, rebuild the Dev Container (it uses Docker volumes for Composer and `node_modules/`), or see [QUICKSTART.md](QUICKSTART.md#npm-install-fails-with-eperm-dev-container-on-windows).
 
 CI (`.github/workflows/ci.yml`) runs Pint, PHPUnit on PHP 8.3–8.5, Playwright, and PHPMD.
 
