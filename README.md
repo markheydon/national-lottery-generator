@@ -19,9 +19,10 @@ For a concise local setup guide, see [QUICKSTART.md](QUICKSTART.md).
 git clone https://github.com/markheydon/national-lottery-generator.git
 cd national-lottery-generator
 composer install
-cp .env.example .env
 php -S localhost:8000 -t public
 ```
+
+Optional: copy `.env.example` to `.env` if you need to tune CSV download timeouts or test URL overrides.
 
 Then open the app at http://localhost:8000.
 
@@ -41,7 +42,6 @@ The app is designed for entertainment only. It does not predict future draws and
 
 ```bash
 composer install
-cp .env.example .env
 php -S localhost:8000 -t public
 ```
 
