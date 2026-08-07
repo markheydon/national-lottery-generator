@@ -25,15 +25,7 @@ cd national-lottery-generator
 composer install
 ```
 
-### 3. Set Up Environment
-
-```bash
-cp .env.example .env
-```
-
-The `.env` file is optional for local use. It mainly configures CSV download timeouts and test URL overrides.
-
-### 4. Start the Application
+### 3. Start the Application
 
 ```bash
 php -S localhost:8000 -t public
@@ -83,6 +75,20 @@ Use another port:
 ```bash
 php -S localhost:8080 -t public
 ```
+
+### `composer install` fails with "Operation not permitted" (Dev Container on Windows)
+
+The workspace is on a Windows drive mount that cannot set file permissions during extraction. Rebuild the Dev Container (the config uses a Docker volume for `vendor/`), or run:
+
+```bash
+rm -rf vendor
+COMPOSER_VENDOR_DIR=/home/vscode/.cache/national-lottery-generator-vendor composer install
+ln -sfn /home/vscode/.cache/national-lottery-generator-vendor vendor
+```
+
+### Optional environment file
+
+Copy `.env.example` to `.env` only if you need to tune `LOTTERY_DOWNLOAD_TIMEOUT` or test URL overrides. The app runs without it.
 
 ### Permission errors in `storage/`
 
