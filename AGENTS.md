@@ -29,10 +29,17 @@ Draw history CSVs are stored in `storage/app/lottery/`. Downloads refresh when f
 composer install                     # Install dependencies
 php -S 0.0.0.0:8000 -t public        # Start dev server
 vendor/bin/phpunit                   # Run PHPUnit
-./vendor/bin/pint --test             # Check PSR-12
-./vendor/bin/pint                    # Fix code style
-npx playwright test                  # E2E (after installing @playwright/test)
+vendor/bin/pint --test               # Check PSR-12
+vendor/bin/pint                      # Fix code style
 ```
+
+Playwright E2E (Dev Container installs deps and Chromium during create):
+
+```bash
+npm run test:e2e
+```
+
+On a host PHP install (no Dev Container): `npm ci`, `npm run test:e2e:install`, then `npm run test:e2e`.
 
 ## Adding a New Game
 
@@ -92,7 +99,7 @@ The Cloud VM runs PHP 8.3, Composer, and Node directly (no Docker/Sail). Use:
 
 - Serve: `php -S 0.0.0.0:8000 -t public`
 - Test: `vendor/bin/phpunit`
-- Lint: `./vendor/bin/pint --test` (fix with `./vendor/bin/pint`)
+- Lint: `vendor/bin/pint --test` (fix with `vendor/bin/pint`)
 
 Non-obvious caveats:
 
@@ -100,4 +107,4 @@ Non-obvious caveats:
 - The `/game/{slug}/generate` routes fetch live draw-history CSVs from the National Lottery API on
   first use (outbound HTTPS required), caching them to `storage/app/lottery/` for 24h. After the cache
   is warm the pages render offline.
-- Playwright E2E tests live in `tests/e2e/` and install `@playwright/test` in CI without a project `package.json`.
+- Playwright E2E tests live in `tests/e2e/`; run `npm run test:e2e` after `npm ci` and `npm run test:e2e:install` (Dev Container does this during create).

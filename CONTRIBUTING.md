@@ -29,10 +29,16 @@ This project follows a simple code of conduct:
 - Git
 - Composer
 
+For Playwright E2E on a host install: Node.js and `npm ci` (Node.js is included in the Dev Container).
+
 Internal maintainer policy for supported versions and dependency update guardrails
 is documented in `docs-internal/supported-versions.md`.
 
 ### Setting Up Your Development Environment
+
+**Recommended:** Open the repository in a Dev Container or GitHub Codespace (VS Code or Cursor with Docker/Podman). After `postCreate`, Composer, npm, and Playwright Chromium are ready — see [QUICKSTART.md](QUICKSTART.md).
+
+**Local PHP (no container):**
 
 1. **Fork and Clone the Repository**
    ```bash
@@ -45,10 +51,9 @@ is documented in `docs-internal/supported-versions.md`.
    composer install
    ```
 
-3. **Set Up Environment**
-   ```bash
-   cp .env.example .env
-   ```
+3. **Set Up Environment** (optional)
+
+   Copy `.env.example` to `.env` only if you need to tune CSV download timeouts or test URL overrides.
 
 4. **Verify Installation**
    ```bash
@@ -75,14 +80,9 @@ is documented in `docs-internal/supported-versions.md`.
 
 3. **Test Your Changes**
    ```bash
-   # Run tests
    vendor/bin/phpunit
-
-   # Check code style
-   ./vendor/bin/pint --test
-
-   # Fix code style issues
-   ./vendor/bin/pint
+   vendor/bin/pint --test
+   npm run test:e2e
    ```
 
 4. **Commit Your Changes**
@@ -110,7 +110,7 @@ This project follows [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standa
 
 - **Always run Pint** before committing:
   ```bash
-  ./vendor/bin/pint
+  vendor/bin/pint
   ```
 
 - **Use meaningful names**: Avoid generic names like `$var`, `$method1`, `$temp`
@@ -183,11 +183,16 @@ class NumberGeneratorTest extends TestCase
 ### Running Tests
 
 ```bash
-# Run all tests
+# Run all PHPUnit tests
 vendor/bin/phpunit
 
 # Run specific test file
 vendor/bin/phpunit tests/Unit/Lottery/LottoGenerateTest.php
+
+# Playwright E2E (ready after Dev Container create)
+npm run test:e2e
+
+# Host PHP install: npm ci && npm run test:e2e:install first
 ```
 
 ## Submitting Changes

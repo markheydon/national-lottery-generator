@@ -11,7 +11,15 @@ composer update
 composer validate
 composer audit
 vendor/bin/phpunit
-./vendor/bin/pint --test
+vendor/bin/pint --test
 ```
 
-There is no npm project for the application. Playwright is installed on demand in CI (and optionally locally) without a committed `package.json`.
+For Playwright E2E (committed `package.json`):
+
+```bash
+npm update
+npm audit
+npm run test:e2e
+```
+
+After updating `@playwright/test`, run `npm run test:e2e:install` locally if browser binaries need refreshing.

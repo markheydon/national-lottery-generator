@@ -41,7 +41,7 @@ New or modified lottery logic MUST include PHPUnit tests in `tests/Unit/Lottery/
 
 ### VI. PSR-12 Code Style (NON-NEGOTIABLE)
 
-All PHP code MUST follow PSR-12, enforced by Laravel Pint (`pint.json`) used as a standalone linter. Run `./vendor/bin/pint` before committing. Use type hints, return types, and PHPDoc on public classes and methods.
+All PHP code MUST follow PSR-12, enforced by Laravel Pint (`pint.json`) used as a standalone linter. Run `vendor/bin/pint` before committing. Use type hints, return types, and PHPDoc on public classes and methods.
 
 ### VII. Entertainment-Only Disclaimer
 
@@ -79,7 +79,7 @@ User-facing features MUST include or preserve the entertainment-only disclaimer.
 - **Run command**: `vendor/bin/phpunit`
 - **Unit tests**: One test class per game service in `tests/Unit/Lottery/`
 - **Feature tests**: File-based storage and HTTP flows in `tests/Feature/`
-- **E2E**: Playwright specs in `tests/e2e/` (`npx playwright test`)
+- **E2E**: Playwright specs in `tests/e2e/` (`npm run test:e2e`)
 
 ## Environment Variables
 
