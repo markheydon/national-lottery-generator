@@ -97,24 +97,24 @@
 
 ### Lottery Service Requirements *(include if feature involves draw data or number generation)*
 
-- **LS-001**: Download logic MUST be implemented in `app/Services/Lottery/{Game}Download.php`
-- **LS-002**: Generation logic MUST be implemented in `app/Services/Lottery/{Game}Generate.php`
+- **LS-001**: Download logic MUST be implemented in `src/Services/Lottery/{Game}Download.php`
+- **LS-002**: Generation logic MUST be implemented in `src/Services/Lottery/{Game}Generate.php`
 - **LS-003**: Services MUST use `Downloader` and/or `CsvDownloadService` for CSV caching
 - **LS-004**: Generated output MUST include `gameName`, `latestDrawDate`, and `lines` array
 - **LS-005**: Unit tests MUST be added in `tests/Unit/Lottery/{Game}GenerateTest.php` and/or `{Game}DownloadTest.php`
 
-### Web / Blade UI Requirements *(include if feature has user-facing pages)*
+### Web / PHP UI Requirements *(include if feature has user-facing pages)*
 
-- **UI-001**: Pages MUST extend the existing layout (`resources/views/layout.blade.php`)
-- **UI-002**: Game pages MUST live in `resources/views/games/`
-- **UI-003**: Controller MUST pass pre-formatted data to views (no business logic in Blade)
+- **UI-001**: Pages MUST extend the existing layout (`templates/layout.php`)
+- **UI-002**: Game pages MUST live in `templates/games/`
+- **UI-003**: Controller MUST pass pre-formatted data to views (no business logic in templates)
 - **UI-004**: UI MUST use existing Bootstrap 5 styling conventions
 
 ### File Storage & Caching *(include if feature reads or writes persistent data)*
 
-- **FS-001**: Draw history MUST be stored via Laravel Storage facade (not database)
+- **FS-001**: Draw history MUST be stored on the local filesystem under `storage/app/lottery/` (not database)
 - **FS-002**: Download freshness MUST be checked via `CsvDownloadService::isDownloadRequired()`
-- **FS-003**: Cache driver MUST remain file-based (no new database dependencies)
+- **FS-003**: No new database dependencies
 
 ### Entertainment Disclaimer *(include for any user-facing feature)*
 
@@ -139,6 +139,6 @@
 
 - Historical draw data is available from existing National Lottery CSV sources
 - File-based storage and cache are sufficient (no database required)
-- Feature runs within the existing Laravel Sail development environment
+- Feature runs within the existing PHP built-in server development environment
 - Entertainment-only disclaimer applies to all user-facing output
 - [Additional assumption based on feature scope]

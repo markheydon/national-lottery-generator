@@ -4,10 +4,14 @@
         "dockerfile": "Dockerfile"
     },
     "features": {
-        "ghcr.io/devcontainers/features/github-cli:1": {}
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "24"
+        }
     },
     "containerEnv": {
         "COMPOSER_MEMORY_LIMIT": "-1",
+        "COMPOSER_VENDOR_DIR": "/home/vscode/.composer-vendor",
         "XDEBUG_MODE": "off"
     },
     "forwardPorts": [
@@ -19,6 +23,10 @@
             "onAutoForward": "openPreview"
         }
     },
+    "mounts": [
+        "source=${localWorkspaceFolderBasename}-vendor,target=/home/vscode/.composer-vendor,type=volume",
+        "source=${localWorkspaceFolderBasename}-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+    ],
     "postCreateCommand": "bash .devcontainer/setup.sh",
     "customizations": {
         "vscode": {

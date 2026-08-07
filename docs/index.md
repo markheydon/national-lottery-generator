@@ -5,7 +5,7 @@ title: Home
 
 # Welcome to the National Lottery Number Generator
 
-This app suggests lottery numbers for UK games for entertainment only. It is built with Laravel and uses historical draw data to create a set of playful number suggestions.
+This PHP app suggests lottery numbers for UK games for entertainment only. It uses historical draw data to create a set of playful number suggestions.
 
 ## Start here
 

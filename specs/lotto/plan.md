@@ -21,7 +21,7 @@ Lotto game with dedicated download and generate services. Downloads 180-day draw
 ## Project Structure
 
 ```text
-app/Services/Lottery/
+src/Services/Lottery/
 ├── LottoDownload.php
 └── LottoGenerate.php
 

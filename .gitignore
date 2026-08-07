@@ -2,27 +2,11 @@ composer.phar
 /vendor/
 node_modules/
 npm-debug.log
-yarn-error.log
-package-lock.json
 
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
-
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
-
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
-
-storage/*.key
-storage/app/lottery-data/*.csv
+# Environment
 .env
-Homestead.yaml
-Homestead.json
-/.vagrant
+
+# PHPUnit
 .phpunit.result.cache
 
 # Playwright
@@ -30,6 +14,10 @@ Homestead.json
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Cached lottery CSV downloads and backups (keep directory)
+/storage/app/lottery/*
+!/storage/app/lottery/.gitkeep
 
 # Build artifacts
 *.LICENSE.txt

@@ -16,6 +16,8 @@ Minimal PHP front controller with plain PHP templates and file-based storage (no
 | Routes | `public/index.php` — `/` and `/game/{slug}/generate` |
 | Unit tests | `tests/Unit/Lottery/` |
 | Feature tests | `tests/Feature/` |
+| E2E tests | `tests/e2e/` (Playwright) |
+| Azure nginx helper | `deploy/nginx-default` (also adaptable for local nginx; see `deploy/README.md`) |
 
 Hotpicks variants (`lotto-hotpicks`, `euromillions-hotpicks`) share their parent game's download service. See `src/Game.php::getDownloader()`.
 
@@ -27,9 +29,17 @@ Draw history CSVs are stored in `storage/app/lottery/`. Downloads refresh when f
 composer install                     # Install dependencies
 php -S 0.0.0.0:8000 -t public        # Start dev server
 vendor/bin/phpunit                   # Run PHPUnit
-./vendor/bin/pint --test             # Check PSR-12
-./vendor/bin/pint                    # Fix code style
+vendor/bin/pint --test               # Check PSR-12
+vendor/bin/pint                      # Fix code style
 ```
+
+Playwright E2E (Dev Container installs deps and Chromium during create):
+
+```bash
+npm run test:e2e
+```
+
+On a host PHP install (no Dev Container): `npm ci`, `npm run test:e2e:install`, then `npm run test:e2e`.
 
 ## Adding a New Game
 
@@ -42,7 +52,7 @@ vendor/bin/phpunit                   # Run PHPUnit
 
 - Entertainment-only disclaimer must remain on user-facing pages
 - No database dependency for core features without explicit scoping
-- PSR-12 via Laravel Pint — run before committing
+- PSR-12 via Laravel Pint (standalone linter) — run before committing
 - PHPUnit tests required for new or modified lottery logic
 - Business logic belongs in `src/Services/Lottery/`, not the front controller
 
@@ -89,7 +99,7 @@ The Cloud VM runs PHP 8.3, Composer, and Node directly (no Docker/Sail). Use:
 
 - Serve: `php -S 0.0.0.0:8000 -t public`
 - Test: `vendor/bin/phpunit`
-- Lint: `./vendor/bin/pint --test` (fix with `./vendor/bin/pint`)
+- Lint: `vendor/bin/pint --test` (fix with `vendor/bin/pint`)
 
 Non-obvious caveats:
 
@@ -97,4 +107,4 @@ Non-obvious caveats:
 - The `/game/{slug}/generate` routes fetch live draw-history CSVs from the National Lottery API on
   first use (outbound HTTPS required), caching them to `storage/app/lottery/` for 24h. After the cache
   is warm the pages render offline.
-- Playwright E2E tests install `@playwright/test` in CI without a project `package.json`.
+- Playwright E2E tests live in `tests/e2e/`; run `npm run test:e2e` after `npm ci` and `npm run test:e2e:install` (Dev Container does this during create).
