@@ -1,5 +1,9 @@
 {
   "name": "National Lottery Generator",
+  "build": {
+    "dockerfile": "../.devcontainer/Dockerfile",
+    "context": ".."
+  },
   "install": "composer install --no-interaction --no-progress",
   "ports": [
     {
