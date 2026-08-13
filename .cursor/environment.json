@@ -1,0 +1,10 @@
+{
+  "name": "National Lottery Generator",
+  "install": "composer install --no-interaction --no-progress",
+  "ports": [
+    {
+      "name": "PHP dev server",
+      "port": 8000
+    }
+  ]
+}
