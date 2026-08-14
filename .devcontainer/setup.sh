@@ -65,16 +65,55 @@ run_npm_install() {
     fi
 }
 
+ensure_node_modules_writable() {
+    if [[ ! -f package.json ]]; then
+        return 0
+    fi
+
+    if [[ ! -d node_modules ]]; then
+        mkdir -p node_modules 2>/dev/null || sudo mkdir -p node_modules
+    fi
+
+    if [[ ! -w node_modules ]]; then
+        echo "[devcontainer] Fixing node_modules volume ownership..."
+        sudo chown -R "$(id -u)":"$(id -g)" node_modules
+    fi
+}
+
 install_npm_deps() {
     if [[ ! -f package.json ]] || ! command -v npm >/dev/null 2>&1; then
         return 0
     fi
 
+    ensure_node_modules_writable
     echo "[devcontainer] Installing npm dependencies..."
     run_npm_install
 }
 
-install_playwright_browsers() {
+retry_npm_install() {
+    if mountpoint -q node_modules 2>/dev/null; then
+        echo "[devcontainer] npm install failed on node_modules volume; fixing permissions and retrying..."
+        sudo chown -R "$(id -u)":"$(id -g)" node_modules
+        install_npm_deps
+        return
+    fi
+
+    # Windows bind mounts (9p/drvfs) cannot chmod into node_modules.
+    echo "[devcontainer] npm install failed; retrying on native filesystem..."
+    rm -rf node_modules
+    NPM_PREFIX="/home/vscode/.cache/${PWD##*/}-npm"
+    mkdir -p "$NPM_PREFIX"
+    cp package.json "$NPM_PREFIX/"
+    if [[ -f package-lock.json ]]; then
+        cp package-lock.json "$NPM_PREFIX/"
+        npm ci --prefix "$NPM_PREFIX" --no-fund --no-audit
+    else
+        npm install --prefix "$NPM_PREFIX" --no-fund --no-audit
+    fi
+    ln -sfn "$NPM_PREFIX/node_modules" node_modules
+}
+
+install_playwright_os_deps() {
     if [[ ! -f package.json ]] || ! command -v npx >/dev/null 2>&1; then
         return 0
     fi
@@ -83,30 +122,29 @@ install_playwright_browsers() {
         return 0
     fi
 
-    echo "[devcontainer] Installing Playwright Chromium..."
-    npx playwright install --with-deps chromium
+    echo "[devcontainer] Installing Playwright OS dependencies for Chromium..."
+    npx playwright install-deps chromium
+}
+
+install_playwright_browsers() {
+    if [[ ! -d node_modules/@playwright/test ]] || ! command -v npx >/dev/null 2>&1; then
+        return 0
+    fi
+
+    echo "[devcontainer] Ensuring Playwright Chromium binaries match project version..."
+    npx playwright install chromium
 }
 
 if [[ ! -d node_modules/@playwright/test ]]; then
     if ! install_npm_deps; then
-        # Windows bind mounts (9p/drvfs) cannot chmod into node_modules.
-        echo "[devcontainer] npm install failed; retrying on native filesystem..."
-        rm -rf node_modules
-        NPM_PREFIX="/home/vscode/.cache/${PWD##*/}-npm"
-        mkdir -p "$NPM_PREFIX"
-        cp package.json "$NPM_PREFIX/"
-        if [[ -f package-lock.json ]]; then
-            cp package-lock.json "$NPM_PREFIX/"
-            npm ci --prefix "$NPM_PREFIX" --no-fund --no-audit
-        else
-            npm install --prefix "$NPM_PREFIX" --no-fund --no-audit
-        fi
-        ln -sfn "$NPM_PREFIX/node_modules" node_modules
+        retry_npm_install
     fi
 else
+    ensure_node_modules_writable
     echo "[devcontainer] npm dependencies already installed; skipping"
 fi
 
+install_playwright_os_deps
 install_playwright_browsers
 
 cat <<'EOF'

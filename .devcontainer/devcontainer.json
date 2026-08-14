@@ -5,10 +5,17 @@
     },
     "features": {
         "ghcr.io/devcontainers/features/github-cli:1": {},
-        "ghcr.io/devcontainers/features/node:1": {
+        "ghcr.io/devcontainers/features/node:2": {
             "version": "24"
+        },
+        "ghcr.io/helpers4/devcontainer/playwright-dev:1": {
+            "browsers": "chromium",
+            "installDeps": false
         }
     },
+    "runArgs": [
+        "--tmpfs=/tmp:rw,exec,nosuid,nodev,mode=1777"
+    ],
     "containerEnv": {
         "COMPOSER_MEMORY_LIMIT": "-1",
         "COMPOSER_VENDOR_DIR": "/home/vscode/.composer-vendor",
@@ -27,6 +34,7 @@
         "source=${localWorkspaceFolderBasename}-vendor,target=/home/vscode/.composer-vendor,type=volume",
         "source=${localWorkspaceFolderBasename}-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
     ],
+    "onCreateCommand": "bash -c 'for dir in \"$COMPOSER_VENDOR_DIR\" node_modules; do if [[ -d \"$dir\" && ! -w \"$dir\" ]]; then sudo chown -R \"$(id -u):$(id -g)\" \"$dir\"; fi; done'",
     "postCreateCommand": "bash .devcontainer/setup.sh",
     "customizations": {
         "vscode": {
