@@ -12,17 +12,17 @@
 
 ## Technical Context
 
-**Language/Version**: PHP 8.3–8.5 (Laravel 13 supported range)
+**Language/Version**: PHP 8.3–8.5
 
-**Primary Dependencies**: Laravel 13, Guzzle (HTTP), Laravel Mix 6 (Webpack), Bootstrap 5, jQuery
+**Primary Dependencies**: Guzzle (HTTP); committed Bootstrap/jQuery assets under `public/`
 
-**Storage**: File-based cache and local filesystem via Laravel Storage facade (no database for core features)
+**Storage**: Local filesystem under `storage/app/lottery/` (no database for core features)
 
-**Testing**: PHPUnit 12 (`./vendor/bin/sail artisan test`)
+**Testing**: PHPUnit 12 (`vendor/bin/phpunit`)
 
-**Target Platform**: Linux (Laravel Sail / Azure App Service)
+**Target Platform**: Linux (PHP built-in server / Azure App Service)
 
-**Project Type**: Monolithic Laravel MVC web application with server-rendered Blade views
+**Project Type**: Minimal vanilla PHP front controller with plain PHP templates
 
 **Performance Goals**: Page load and number generation under 3 seconds for typical draw history files
 
@@ -34,7 +34,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- [ ] Business logic stays in `app/Services/Lottery/`, not controllers
+- [ ] Business logic stays in `src/Services/Lottery/`, not controllers
 - [ ] New games follow `*Download` + `*Generate` service pattern
 - [ ] Game config added to `config/games.php` if applicable
 - [ ] PHPUnit tests planned for lottery logic changes
@@ -59,12 +59,13 @@ specs/[###-feature]/
 ### Source Code (repository root)
 
 ```text
-app/
+src/
 ├── Http/
-│   └── Controllers/
-│       └── GameController.php       # Web route handlers
-├── Models/
-│   └── Game.php                     # Config-driven game model
+│   ├── Application.php              # Front-controller routing
+│   ├── GameController.php           # Presentation + dispatch
+│   ├── Response.php
+│   └── View.php
+├── Game.php                         # Config-driven game registry
 └── Services/
     └── Lottery/
         ├── Downloader.php           # Shared CSV download/caching
@@ -76,47 +77,46 @@ app/
 config/
 └── games.php                        # Game definitions (slug, name, logo)
 
-resources/
-├── views/
-│   └── games/
-│       ├── index.blade.php          # Game selector
-│       └── generate.blade.php       # Number display
-├── js/app.js                        # Frontend JS (minimal)
-└── sass/app.scss                    # Bootstrap styles
+templates/
+├── layout.php
+└── games/
+    ├── index.php                    # Game selector
+    └── generate.php                 # Number display
 
-routes/
-└── web.php                          # Web routes
+public/
+└── index.php                        # Front controller
 
 tests/
 ├── Unit/
 │   └── Lottery/
-│       ├── GenerateTestCase.php     # Shared generate test base
-│       ├── DownloaderTestCase.php   # Shared download test base
-│       ├── {Game}GenerateTest.php   # Per-game generate tests
-│       └── {Game}DownloadTest.php   # Per-game download tests
-└── Feature/
-    └── FileBasedStorageTest.php     # Storage integration tests
+│       ├── GenerateTestCase.php
+│       ├── DownloaderTestCase.php
+│       ├── {Game}GenerateTest.php
+│       └── {Game}DownloadTest.php
+├── Feature/
+│   └── FileBasedStorageTest.php
+└── e2e/                             # Playwright UI tests
 ```
 
-**Structure Decision**: Single Laravel monolith. All feature code lives under `app/`, `config/`, `resources/`, and `routes/` at the repository root. No separate frontend/backend packages.
+**Structure Decision**: Vanilla PHP app. Feature code lives under `src/`, `config/`, `templates/`, and `public/` at the repository root.
 
 ## Implementation Phases
 
 ### Phase A: Lottery Services
 
-Implement or modify `*Download` and `*Generate` classes in `app/Services/Lottery/`. Shared logic goes in `Downloader`, `Utils`, or `CsvDownloadService`.
+Implement or modify `*Download` and `*Generate` classes in `src/Services/Lottery/`. Shared logic goes in `Downloader`, `Utils`, or `CsvDownloadService`.
 
 ### Phase B: Configuration & Routing
 
-Add game entries to `config/games.php`. Register routes in `routes/web.php`. Wire game dispatch in `GameController`.
+Add game entries to `config/games.php`. Wire routes in `public/index.php` / `Application` and dispatch in `GameController`.
 
 ### Phase C: Views & Assets
 
-Create or update Blade templates in `resources/views/games/`. Compile assets with `npm run dev` or `npm run prod` if SCSS/JS changes are needed.
+Create or update PHP templates in `templates/games/`. Do not rebuild frontend assets unless the Mix/webpack issue is separately resolved.
 
 ### Phase D: Tests & Quality
 
-Add PHPUnit tests in `tests/Unit/Lottery/`. Run `./vendor/bin/sail artisan test` and `./vendor/bin/sail pint --test`.
+Add PHPUnit tests in `tests/Unit/Lottery/`. Run `vendor/bin/phpunit` and `./vendor/bin/pint --test`.
 
 ## Complexity Tracking
 

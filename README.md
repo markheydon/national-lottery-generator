@@ -19,9 +19,10 @@ For a concise local setup guide, see [QUICKSTART.md](QUICKSTART.md).
 git clone https://github.com/markheydon/national-lottery-generator.git
 cd national-lottery-generator
 composer install
-cp .env.example .env
 php -S localhost:8000 -t public
 ```
+
+Optional: copy `.env.example` to `.env` if you need to tune CSV download timeouts or test URL overrides.
 
 Then open the app at http://localhost:8000.
 
@@ -35,21 +36,60 @@ The public app is a simple game selector:
 
 The app is designed for entertainment only. It does not predict future draws and should not be treated as a forecasting tool.
 
-## Development
+## Running the app
 
-Detailed contributor setup and maintenance guidance lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
+### Local (PHP built-in server)
 
 ```bash
-vendor/bin/phpunit          # Run tests
-./vendor/bin/pint --test    # Check code style
-./vendor/bin/pint           # Fix code style
+composer install
+php -S localhost:8000 -t public
 ```
 
-The GitHub Actions workflows run the test suite for PHP 8.3, 8.4, and 8.5.
+Open http://localhost:8000. Full local notes: [QUICKSTART.md](QUICKSTART.md).
 
-## Deployment
+You can also serve `public/` with Apache (`public/.htaccess`) or nginx — see [deploy/README.md](deploy/README.md).
 
-The app is deployed to Azure App Service and uses file-based storage. The deployment workflow runs `composer install --no-dev` and serves the `public/` directory as the web root.
+### Azure App Service (production)
+
+The live site is deployed to Azure App Service. The workflow runs `composer install --no-dev` and uses `public/` as the web root. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`. Nginx helper: [deploy/nginx-default](deploy/nginx-default).
+
+## Project layout
+
+| Path | Purpose |
+|------|---------|
+| `public/` | Web root and front controller |
+| `src/` | Application code (HTTP layer + lottery services) |
+| `templates/` | Plain PHP views |
+| `config/games.php` | Supported games |
+| `storage/app/lottery/` | Cached draw-history CSVs |
+| `tests/Unit/`, `tests/Feature/` | PHPUnit |
+| `tests/e2e/` | Playwright UI tests |
+| `deploy/` | Optional nginx / Azure helpers (local or cloud) |
+
+## Development
+
+Detailed contributor setup lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
+
+**Dev Container / Codespaces** (VS Code, Cursor, or GitHub Codespaces): open in a container and wait for `postCreate` — Composer, npm, and Playwright Chromium are installed automatically. Then:
+
+```bash
+php -S 0.0.0.0:8000 -t public
+vendor/bin/phpunit
+npm run test:e2e
+```
+
+**Local PHP** (no container):
+
+```bash
+vendor/bin/phpunit          # Unit + feature tests
+vendor/bin/pint --test        # Check code style
+vendor/bin/pint               # Fix code style
+npm ci && npm run test:e2e:install && npm run test:e2e   # E2E (requires Node.js)
+```
+
+On a Windows drive mount in a Dev Container, if `npm ci` fails with `EPERM` / `chmod`, rebuild the Dev Container (it uses Docker volumes for Composer and `node_modules/`), or see [QUICKSTART.md](QUICKSTART.md#npm-install-fails-with-eperm-dev-container-on-windows).
+
+CI (`.github/workflows/ci.yml`) runs Pint, PHPUnit on PHP 8.3–8.5, Playwright, and PHPMD.
 
 ## Documentation
 

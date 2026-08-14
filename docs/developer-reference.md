@@ -21,6 +21,8 @@ When updating public docs, align wording with:
 - [src/Http/GameController.php](../src/Http/GameController.php)
 - [templates/games/index.php](../templates/games/index.php)
 - [templates/games/generate.php](../templates/games/generate.php)
+- [deploy/README.md](../deploy/README.md) — local Apache/nginx and Azure notes
+- [deploy/nginx-default](../deploy/nginx-default) (nginx helper for Azure or local)
 - [README.md](../README.md)
 - [CONTRIBUTING.md](../CONTRIBUTING.md)
 
