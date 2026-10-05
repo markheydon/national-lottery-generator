@@ -62,5 +62,6 @@ updates:
         patterns:
           - "*"
         update-types:
+          - "major"
           - "minor"
           - "patch"
