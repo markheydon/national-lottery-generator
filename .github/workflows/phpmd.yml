@@ -16,6 +16,10 @@
 name: PHPMD
 
 on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   schedule:
     - cron: '41 9 * * 0'
   workflow_dispatch:
@@ -44,10 +48,11 @@ jobs:
           tools: phpmd
 
       - name: Run PHPMD
-        run: phpmd src,templates,tests,public/index.php sarif codesize --reportfile phpmd-results.sarif
+        run: phpmd analyze --ruleset codesize --reportfile-sarif phpmd-results.sarif src templates tests public/index.php
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
+        if: ${{ hashFiles('phpmd-results.sarif') != '' }}
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: phpmd-results.sarif
