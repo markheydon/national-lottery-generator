@@ -33,13 +33,7 @@ vendor/bin/pint --test               # Check PSR-12
 vendor/bin/pint                      # Fix code style
 ```
 
-Playwright E2E (Dev Container installs deps and Chromium during create):
-
-```bash
-npm run test:e2e
-```
-
-On a host PHP install (no Dev Container): `npm ci`, `npm run test:e2e:install`, then `npm run test:e2e`.
+Playwright E2E (`tests/e2e/`): runs in GitHub Actions CI on pull requests only (`.github/workflows/ci.yml`). The Dev Container does not install Node or Playwright.
 
 ## Adding a New Game
 
@@ -117,7 +111,7 @@ Use `.agents/skills/repo-update-docs/SKILL.md` to refresh `README.md` and public
 
 ## Cursor Cloud specific instructions
 
-The Cloud VM runs PHP 8.3, Composer, and Node directly (no Docker/Sail). Use:
+The Cloud VM runs PHP 8.3 and Composer directly (no Docker/Sail). Use:
 
 - Serve: `php -S 0.0.0.0:8000 -t public`
 - Test: `vendor/bin/phpunit`
@@ -129,4 +123,4 @@ Non-obvious caveats:
 - The `/game/{slug}/generate` routes fetch live draw-history CSVs from the National Lottery API on
   first use (outbound HTTPS required), caching them to `storage/app/lottery/` for 24h. After the cache
   is warm the pages render offline.
-- Playwright E2E tests live in `tests/e2e/`; run `npm run test:e2e` after `npm ci` and `npm run test:e2e:install` (Dev Container does this during create).
+- Playwright E2E specs live in `tests/e2e/`; CI runs `npm run test:e2e` — not in the Dev Container.

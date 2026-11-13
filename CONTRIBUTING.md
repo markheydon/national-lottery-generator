@@ -6,6 +6,7 @@ Thank you for your interest in contributing to the National Lottery Generator! T
 
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
+  - [Dev Container and Codespaces](#dev-container-and-codespaces)
 - [Development Workflow](#development-workflow)
 - [Coding Standards](#coding-standards)
 - [Testing](#testing)
@@ -29,14 +30,18 @@ This project follows a simple code of conduct:
 - Git
 - Composer
 
-For Playwright E2E on a host install: Node.js and `npm ci` (Node.js is included in the Dev Container).
+Playwright E2E runs in GitHub Actions CI on pull requests; Node.js is not required for local development.
 
 Internal maintainer policy for supported versions and dependency update guardrails
 is documented in `docs-internal/supported-versions.md`.
 
+### Dev Container and Codespaces
+
+The Dev Container uses **`mcr.microsoft.com/devcontainers/php:8.5`** with features for GitHub CLI and maintainer tooling—no custom Dockerfile. Maintainer setup details (rebuild, ports, volumes) are in [`docs-internal/development-setup.md`](docs-internal/development-setup.md).
+
 ### Setting Up Your Development Environment
 
-**Recommended:** Open the repository in a Dev Container or GitHub Codespace (VS Code or Cursor with Docker/Podman). After `postCreate`, Composer, npm, and Playwright Chromium are ready — see [QUICKSTART.md](QUICKSTART.md).
+**Recommended:** Open the repository in a Dev Container or GitHub Codespace (VS Code or Cursor with Docker/Podman). After `postCreate`, Composer dependencies are ready — see [QUICKSTART.md](QUICKSTART.md).
 
 **Local PHP (no container):**
 
@@ -82,8 +87,9 @@ is documented in `docs-internal/supported-versions.md`.
    ```bash
    vendor/bin/phpunit
    vendor/bin/pint --test
-   npm run test:e2e
    ```
+
+   Playwright E2E runs in CI when you open a pull request.
 
 4. **Commit Your Changes**
    ```bash
@@ -189,10 +195,7 @@ vendor/bin/phpunit
 # Run specific test file
 vendor/bin/phpunit tests/Unit/Lottery/LottoGenerateTest.php
 
-# Playwright E2E (ready after Dev Container create)
-npm run test:e2e
-
-# Host PHP install: npm ci && npm run test:e2e:install first
+# Playwright E2E: runs in GitHub Actions CI on pull requests (see .github/workflows/ci.yml)
 ```
 
 ## Submitting Changes

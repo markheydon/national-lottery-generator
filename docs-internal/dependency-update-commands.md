@@ -14,12 +14,9 @@ vendor/bin/phpunit
 vendor/bin/pint --test
 ```
 
-For Playwright E2E (committed `package.json`):
+For Playwright E2E (`@playwright/test` in committed `package.json`):
 
-```bash
-npm update
-npm audit
-npm run test:e2e
-```
+- Apply updates via Dependabot PR or run `npm update` on a machine with Node.js, commit `package-lock.json`, and open a pull request.
+- Validate Playwright in GitHub Actions CI (`.github/workflows/ci.yml` runs `npm run test:e2e`).
 
-After updating `@playwright/test`, run `npm run test:e2e:install` locally if browser binaries need refreshing.
+Local `npm run test:e2e` is not part of the standard contributor workflow.
