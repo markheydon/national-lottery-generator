@@ -291,11 +291,12 @@ Other solutions you've considered
 
 ## AI-Assisted Contributors
 
-If you use an AI coding agent (Cursor, GitHub Copilot, Claude Code, etc.):
+If you use an AI coding agent (Cursor is the maintainer's primary choice; others can use the same files):
 
 - Start with [`AGENTS.md`](AGENTS.md) for project orientation, commands, and constraints
 - Follow `.specify/memory/constitution.md` for spec-driven development work
-- To refresh `README.md` or public docs in `docs/`, use [`.agents/skills/repo-update-docs/SKILL.md`](.agents/skills/repo-update-docs/SKILL.md)
+- Spec Kit on Cursor: `.cursor/skills/speckit-*` (not `.github/agents/` or `.github/prompts/`)
+- To refresh `README.md` or public docs in `docs/`, use [`.agents/skills/project-documentation/SKILL.md`](.agents/skills/project-documentation/SKILL.md)
 
 ## Questions?
 

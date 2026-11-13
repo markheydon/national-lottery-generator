@@ -97,9 +97,48 @@ This project uses [Spec Kit](https://github.com/github/spec-kit) for spec-driven
 
 New features: use `/speckit-specify` on a Spec Kit numbered branch (`001-slug`).
 
-## Maintaining Documentation
+Spec Kit commands for Cursor live under `.cursor/skills/speckit-*`. This repository does not maintain GitHub Copilot agent or prompt files under `.github/agents/` or `.github/prompts/`. Supported Spec Kit integration: **cursor-agent** (see `.specify/integrations/cursor-agent.manifest.json`).
 
-Use `.agents/skills/repo-update-docs/SKILL.md` to refresh `README.md` and public `docs/`. Do not edit `docs-internal/` unless asked.
+## Documentation conventions
+
+- Keep `README.md` suitable for contributors and quick evaluation.
+- Public user docs live in `docs/` (GitHub Pages / Jekyll).
+- Maintainer notes live in `docs-internal/`.
+- Use concise UK English.
+- User-facing copy in `README.md` and `docs/` should not explain documentation methodology or name authoring frameworks; use agent skills and `docs-internal/` for methodology.
+- Preserve the entertainment-only disclaimer on user-facing pages; do not present the app as a forecasting tool.
+
+## Repository source of truth
+
+When writing or updating code or documentation, prioritise:
+
+- `composer.json` for PHP requirements, description, and Composer scripts
+- `config/games.php` for supported games
+- `src/` and `tests/` for behaviour and usage evidence
+- `.github/workflows/ci.yml` for CI and PHP matrix
+- `docs-internal/supported-versions.md` for version policy
+- `docs-internal/development-setup.md` for maintainer setup
+
+Do not invent behaviour, compatibility claims, or roadmap commitments unsupported by repository files.
+
+## Task routing
+
+- **Code** (`src/`, `tests/`, `templates/`): PHP conventions and change discipline in this file.
+- **User documentation** (`README.md`, `docs/`): `project-documentation` skill.
+- **Maintainer markdown** (`docs-internal/**/*.md`): `project-documentation` skill when explicitly in scope.
+- **Pre-merge review**: `code-review` skill or `/loop-code-review`.
+- **Dependabot config**: `/update-dependabot` (`.cursor/commands/update-dependabot.md`).
+
+## Project skills
+
+Use these skills for specialised workflows:
+
+| Skill | When to use |
+|-------|-------------|
+| `project-documentation` | README, `docs/`, maintainer docs when requested (Diátaxis placement via skill) |
+| `code-review` | Branch, PR, or local diff review before merge |
+
+Skills live in `.agents/skills/<skill-name>/SKILL.md` (agent-agnostic). Cursor slash commands live in `.cursor/commands/`.
 
 ## Pointers
 
