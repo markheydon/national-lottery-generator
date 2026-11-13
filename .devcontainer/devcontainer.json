@@ -1,23 +1,25 @@
 {
     "name": "National Lottery Generator",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
+    "image": "mcr.microsoft.com/devcontainers/php:8.5",
     "features": {
         "ghcr.io/devcontainers/features/github-cli:1": {},
-        "ghcr.io/devcontainers/features/node:2": {
-            "version": "24"
-        },
-        "ghcr.io/helpers4/devcontainer/playwright-dev:1": {
-            "browsers": "chromium",
-            "installDeps": false
-        }
+        "ghcr.io/markheydon/devcontainer-features/copilot-likes:1": {},
+        "ghcr.io/stu-bell/devcontainer-features/cursor-cli:0": {}
+    },
+    "hostRequirements": {
+        "cpus": 2,
+        "memory": "8gb",
+        "storage": "16gb"
     },
     "runArgs": [
         "--tmpfs=/tmp:rw,exec,nosuid,nodev,mode=1777"
     ],
+    "remoteEnv": {
+        "CURSOR_API_KEY": "${localEnv:CURSOR_API_KEY}",
+        "GH_TOKEN": "${localEnv:GH_TOKEN}",
+        "GH_HOST": "github.com"
+    },
     "containerEnv": {
-        "COMPOSER_MEMORY_LIMIT": "-1",
         "COMPOSER_VENDOR_DIR": "/home/vscode/.composer-vendor",
         "XDEBUG_MODE": "off"
     },
@@ -31,15 +33,16 @@
         }
     },
     "mounts": [
-        "source=${localWorkspaceFolderBasename}-vendor,target=/home/vscode/.composer-vendor,type=volume",
-        "source=${localWorkspaceFolderBasename}-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+        "source=${localWorkspaceFolderBasename}-vendor,target=/home/vscode/.composer-vendor,type=volume"
     ],
-    "onCreateCommand": "bash -c 'for dir in \"$COMPOSER_VENDOR_DIR\" node_modules; do if [[ -d \"$dir\" && ! -w \"$dir\" ]]; then sudo chown -R \"$(id -u):$(id -g)\" \"$dir\"; fi; done'",
+    "onCreateCommand": "bash -c 'for dir in \"$COMPOSER_VENDOR_DIR\"; do if [[ -d \"$dir\" && ! -w \"$dir\" ]]; then sudo chown -R \"$(id -u):$(id -g)\" \"$dir\"; fi; done'",
     "postCreateCommand": "bash .devcontainer/setup.sh",
     "customizations": {
         "vscode": {
             "extensions": [
-                "bmewburn.vscode-intelephense-client"
+                "bmewburn.vscode-intelephense-client",
+                "recca0120.vscode-phpunit",
+                "xdebug.php-debug"
             ],
             "settings": {
                 "php.validate.executablePath": "/usr/local/bin/php",

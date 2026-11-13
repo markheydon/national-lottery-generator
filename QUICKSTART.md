@@ -7,7 +7,7 @@ This is a simplified quick start guide for getting the National Lottery Generato
 Works in VS Code, Cursor, or GitHub Codespaces with Docker or Podman.
 
 1. Open the repository in a Dev Container (or create a GitHub Codespace).
-2. Wait for the container to finish building — `postCreate` installs Composer deps, npm deps, and Playwright Chromium automatically.
+2. Wait for the container to finish building — `postCreate` installs Composer dependencies automatically.
 3. Start the server:
 
 ```bash
@@ -20,8 +20,9 @@ Run tests without extra setup:
 
 ```bash
 vendor/bin/phpunit
-npm run test:e2e
 ```
+
+Playwright E2E runs in GitHub Actions CI on pull requests, not in the Dev Container.
 
 ## Local PHP (no container)
 
@@ -68,18 +69,6 @@ Done. The application is now running.
 vendor/bin/phpunit
 ```
 
-### Run Playwright E2E
-
-Requires Node.js. On a host install:
-
-```bash
-npm ci
-npm run test:e2e:install
-npm run test:e2e
-```
-
-In the Dev Container, E2E is ready after create — run `npm run test:e2e` only.
-
 ### Check Code Style
 
 ```bash
@@ -105,20 +94,6 @@ php -S localhost:8080 -t public
 ### Pint reports many issues (Dev Container on Windows)
 
 If the repo is on a Windows drive mount, your working copy may use CRLF line endings while CI checks out LF. That makes `vendor/bin/pint --test` report many `line_ending` issues locally even though CI passes. Trust CI for style checks, or clone onto a native Linux filesystem if you need local Pint to match CI.
-
-### npm install fails with EPERM (Dev Container on Windows)
-
-The workspace is on a Windows drive mount that cannot set file permissions in `node_modules/`. Rebuild the Dev Container (the config uses a Docker volume for `node_modules/`), or run:
-
-```bash
-rm -rf node_modules
-mkdir -p /home/vscode/.cache/national-lottery-generator-npm
-cp package.json package-lock.json /home/vscode/.cache/national-lottery-generator-npm/
-npm ci --prefix /home/vscode/.cache/national-lottery-generator-npm
-ln -sfn /home/vscode/.cache/national-lottery-generator-npm/node_modules node_modules
-npm run test:e2e:install
-npm run test:e2e
-```
 
 ### `composer install` fails with "Operation not permitted" (Dev Container on Windows)
 

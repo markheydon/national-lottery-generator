@@ -8,13 +8,15 @@ This page collects the practical setup and maintenance guidance that is useful f
 - Composer
 - Git
 
-No database or Docker is required for the core application. Playwright E2E tests use the committed `package.json` (Node.js is included in the Dev Container).
+No database, Docker, or Node.js is required for the core application or local development. Playwright E2E specs in `tests/e2e/` run in GitHub Actions CI on pull requests (see [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
 
 ## Dev Container / Codespaces (recommended)
 
-The repository includes a `.devcontainer` configuration for VS Code, Cursor, or GitHub Codespaces (Docker or Podman).
+Open the repository in a Dev Container (VS Code / Cursor) or GitHub Codespaces. The configuration uses **`mcr.microsoft.com/devcontainers/php:8.5`** as the base image; [devcontainer features](https://containers.dev/features) add GitHub CLI and other maintainer tooling (see [`.devcontainer/devcontainer.json`](../.devcontainer/devcontainer.json)).
 
-After the container finishes building, `postCreate` runs Composer install, `npm ci`, and Playwright Chromium install automatically. Then:
+There is no custom Dockerfile—rebuild the container after changing `.devcontainer/devcontainer.json` or the lockfile (`Dev Containers: Rebuild Container`).
+
+After the container finishes building, `postCreate` runs [`.devcontainer/setup.sh`](../.devcontainer/setup.sh): Composer install only. Then:
 
 ```bash
 php -S 0.0.0.0:8000 -t public
@@ -43,18 +45,9 @@ To use Apache or nginx locally instead of the built-in server, point the documen
 vendor/bin/phpunit
 vendor/bin/pint --test
 vendor/bin/pint
-npm run test:e2e
 ```
 
-In the Dev Container, Playwright browsers are installed during create. On a host PHP install:
-
-```bash
-npm ci
-npm run test:e2e:install
-npm run test:e2e
-```
-
-On a Windows drive mount, if `npm install` fails with `EPERM` / `chmod`, see [QUICKSTART.md](QUICKSTART.md#npm-install-fails-with-eperm-dev-container-on-windows).
+Open a pull request to run Playwright E2E in CI.
 
 ## Code style
 
@@ -110,7 +103,7 @@ When preparing a change:
 
 1. Create a feature branch.
 2. Make the change and keep it focused.
-3. Run the test suite, Pint, and Playwright E2E where relevant.
+3. Run PHPUnit and Pint locally; rely on CI for Playwright E2E.
 4. Open a pull request with a short summary of the change.
 
 ## Common issues

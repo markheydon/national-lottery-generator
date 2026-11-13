@@ -41,7 +41,7 @@ verified in this repository.
 - `.github/workflows/ci.yml`
 - `.github/workflows/deploy-azure-webapp.yml`
 - `.github/workflows/phpmd.yml`
-- `.devcontainer/Dockerfile`
+- `.devcontainer/devcontainer.json` (`mcr.microsoft.com/devcontainers/php:8.5`)
 - `AGENTS.md`
 
 ## PHP Version Update Checklist
@@ -50,7 +50,7 @@ When changing the supported PHP version:
 
 1. Update this policy document first
 2. Update `composer.json` PHP requirement and platform config
-3. Update `.devcontainer/Dockerfile` if applicable
+3. Update `.devcontainer/devcontainer.json` image tag if applicable
 4. Update `README.md` version badges and requirements
 5. Update GitHub workflow PHP versions in `ci.yml`, `deploy-azure-webapp.yml`, and `phpmd.yml`
 6. Update `AGENTS.md` if version statements are present

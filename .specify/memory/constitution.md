@@ -79,7 +79,7 @@ User-facing features MUST include or preserve the entertainment-only disclaimer.
 - **Run command**: `vendor/bin/phpunit`
 - **Unit tests**: One test class per game service in `tests/Unit/Lottery/`
 - **Feature tests**: File-based storage and HTTP flows in `tests/Feature/`
-- **E2E**: Playwright specs in `tests/e2e/` (`npm run test:e2e`)
+- **E2E**: Playwright specs in `tests/e2e/` — executed in GitHub Actions CI on pull requests (`.github/workflows/ci.yml`)
 
 ## Environment Variables
 
