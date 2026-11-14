@@ -3,6 +3,7 @@
     "image": "mcr.microsoft.com/devcontainers/php:8.5",
     "features": {
         "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/markheydon/devcontainer-features/spec-kit:1": {},
         "ghcr.io/markheydon/devcontainer-features/copilot-likes:1": {},
         "ghcr.io/stu-bell/devcontainer-features/cursor-cli:0": {}
     },
