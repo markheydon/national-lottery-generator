@@ -92,3 +92,10 @@ updates:
       - dependencies
     assignees:
       - markheydon
+    groups:
+      patch-and-minor:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
