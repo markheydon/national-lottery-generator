@@ -100,12 +100,37 @@ class Downloader
             }
 
             $this->writeLocalFile($storagePath, (string) $response->getBody());
+            $this->pruneOldBackups();
 
             return '';
         } catch (GuzzleException|\Exception $e) {
             $this->safeLog('Failed to download lottery CSV: ' . $e->getMessage());
 
             return 'Download failed';
+        }
+    }
+
+    /**
+     * Keep only the newest backup CSV files for this draw history.
+     */
+    private function pruneOldBackups(): void
+    {
+        $maxBackups = max(1, (int) env('LOTTERY_BACKUP_MAX', 5));
+        $pattern = storage_path(
+            self::STORAGE_PATH . DIRECTORY_SEPARATOR . $this->filename . '-*.csv'
+        );
+        $files = glob($pattern);
+
+        if ($files === false || count($files) <= $maxBackups) {
+            return;
+        }
+
+        usort($files, static fn (string $a, string $b): int => filemtime($b) <=> filemtime($a));
+
+        foreach (array_slice($files, $maxBackups) as $oldFile) {
+            if (is_file($oldFile)) {
+                unlink($oldFile);
+            }
         }
     }
 

@@ -95,6 +95,4 @@ While viewing generated numbers, a user can navigate to another game via the "Ot
 
 ## Gaps Identified
 
-- ⚠️ `GameController` contains a large switch statement for game dispatch (constitution recommends thin controllers)
-- ⚠️ No feature/integration test for the full HTTP generate flow
-- ⚠️ No explicit error UI when CSV download fails during generation
+- Resolved: slug-based dispatch in `GameController`, HTTP generate coverage in `tests/Feature/FileBasedStorageTest.php`, and unavailable draw-history UI (`templates/games/unavailable.php`).

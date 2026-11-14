@@ -6,6 +6,7 @@ namespace App\Http;
 
 use App\Game;
 use App\Services\Lottery\CsvDownloadService;
+use App\Services\Lottery\DrawHistoryService;
 use App\Services\Lottery\EuromillionsDownload;
 use App\Services\Lottery\EuromillionsGenerate;
 use App\Services\Lottery\EuromillionsHotpicksGenerate;
@@ -35,20 +36,22 @@ class GameController
             return new Response('Game not found', 404);
         }
 
+        if (! DrawHistoryService::ensureAvailable($game)) {
+            return new Response(View::render('games/unavailable', [
+                'title' => $game->getGameName(),
+                'gameName' => $game->getGameName(),
+                'gameLogo' => $game->getGameLogo(),
+                'currentSlug' => $slug,
+                'allGames' => Game::all(),
+            ]), 503);
+        }
+
         $downloadRequired = $this->isDownloadRequiredForGame($game);
 
-        $generate = match (strtolower($game->getGameName())) {
-            'euromillions' => self::generateEuroMillions($downloadRequired),
-            'lotto' => self::generateLotto($downloadRequired),
-            'thunderball' => self::generateThunderball($downloadRequired),
-            'lotto hotpicks' => self::generateLottoHotpicks($downloadRequired),
-            'euromillions hotpicks' => self::generateEuroMillionsHotpicks($downloadRequired),
-            'set for life' => self::generateSetForLife($downloadRequired),
-            default => null,
-        };
+        $generate = self::dispatchGenerate($game, $downloadRequired);
 
         if ($generate === null) {
-            return new Response('Unsupported Game Name: ' . $game->getGameName(), 500);
+            return new Response('Unsupported game: ' . $game->getSlug(), 500);
         }
 
         $viewData = self::buildViewDataArray($generate);
@@ -69,6 +72,22 @@ class GameController
         }
 
         return CsvDownloadService::isDownloadRequired($downloader->filePath());
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private static function dispatchGenerate(Game $game, bool $downloadNeeded): ?array
+    {
+        return match ($game->getSlug()) {
+            'lotto' => self::generateLotto($downloadNeeded),
+            'euromillions' => self::generateEuroMillions($downloadNeeded),
+            'thunderball' => self::generateThunderball($downloadNeeded),
+            'lotto-hotpicks' => self::generateLottoHotpicks($downloadNeeded),
+            'euromillions-hotpicks' => self::generateEuroMillionsHotpicks($downloadNeeded),
+            'set-for-life' => self::generateSetForLife($downloadNeeded),
+            default => null,
+        };
     }
 
     /**

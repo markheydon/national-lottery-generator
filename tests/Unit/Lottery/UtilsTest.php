@@ -25,14 +25,26 @@ class UtilsTest extends TestCase
      */
     public function testCsvToArrayNoFile()
     {
-        set_error_handler(function (int $errno, string $errstr, string $errfile = '', int $errline = 0): bool {
-            unset($errno, $errstr, $errfile, $errline);
-
-            return true;
-        });
         $result = Utils::csvToArray('FILE_NOT_FOUND');
-        restore_error_handler();
         $this->assertEmpty($result);
+    }
+
+    public function testCsvToArraySkipsRaggedRows(): void
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'test-csv-ragged-');
+        $contents = "col1,col2,col3\n";
+        $contents .= "a,b,c\n";
+        $contents .= "only,one\n";
+        $contents .= "x,y,z\n";
+        file_put_contents($tempFile, $contents);
+
+        $parsed = Utils::csvToArray($tempFile);
+
+        $this->assertCount(2, $parsed);
+        $this->assertSame('a', $parsed[0]['col1']);
+        $this->assertSame('x', $parsed[1]['col1']);
+
+        unlink($tempFile);
     }
 
     /**

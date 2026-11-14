@@ -88,4 +88,37 @@ class FileBasedStorageTest extends TestCase
 
         $this->assertSame(404, $response->getStatus());
     }
+
+    public function test_generate_returns_503_when_draw_history_unavailable(): void
+    {
+        $historyPath = storage_path('lottery/lotto-draw-history.csv');
+
+        if (is_file($historyPath)) {
+            unlink($historyPath);
+        }
+
+        putenv('LOTTERY_DOWNLOAD_URL_LOTTO=http://127.0.0.1:9/unreachable');
+        $_ENV['LOTTERY_DOWNLOAD_URL_LOTTO'] = 'http://127.0.0.1:9/unreachable';
+        putenv('LOTTERY_DOWNLOAD_TIMEOUT=1');
+        $_ENV['LOTTERY_DOWNLOAD_TIMEOUT'] = '1';
+
+        $response = (new Application())->handle('GET', '/game/lotto/generate');
+
+        $this->assertSame(503, $response->getStatus());
+        $this->assertStringContainsString('Draw history is not available', $response->getBody());
+        $this->assertStringContainsString(
+            'While the numbers generated using this just-for-fun tool are not random',
+            $response->getBody()
+        );
+
+        seed_lottery_fixtures();
+    }
+
+    public function test_non_get_method_returns_405_with_allow_header(): void
+    {
+        $response = (new Application())->handle('POST', '/');
+
+        $this->assertSame(405, $response->getStatus());
+        $this->assertSame('GET', $response->getHeaders()['Allow'] ?? null);
+    }
 }

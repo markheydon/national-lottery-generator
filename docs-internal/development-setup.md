@@ -71,6 +71,8 @@ Anyone can run the app on their own machine or a VPS with PHP 8.3+:
 3. Ensure `storage/app/lottery/` is writable
 4. Optional: set `LOTTERY_DOWNLOAD_TIMEOUT` in `.env`
 
+PHPUnit seeds draw history from `tests/fixtures/lottery/` (see `tests/bootstrap.php`). Live download smoke tests are in the `integration` group (`vendor/bin/phpunit --group integration`).
+
 See [deploy/README.md](../deploy/README.md) for Apache/nginx notes.
 
 ### Azure App Service (this project's production)
