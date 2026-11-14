@@ -19,3 +19,4 @@ param enableMonitoring = false
 param manageAppSettings = true
 param appSettings = {}
 param adoptExistingOidcIdentity = false
+param assignWebsiteContributor = true

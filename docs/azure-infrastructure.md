@@ -53,7 +53,7 @@ Grant **Contributor** on `rg-mheydon73-lottery-generator` to `oidc-msi-8d9c` if 
 
 Production `main.bicepparam` keeps `manageAppSettings = false` so incremental Bicep deploys do not replace the full app settings map in the portal. Set `manageAppSettings = true` only for green-field deployments.
 
-Brown-field production uses `adoptExistingOidcIdentity = true` so Bicep references the existing user-assigned identity and manages the federated credential plus **Website Contributor** on the web app (see `deploy/bicep/modules/githubOidc.bicep`). Forks that create a new identity set `adoptExistingOidcIdentity = false` in `main.bicepparam.example`.
+Brown-field production uses `adoptExistingOidcIdentity = true` and `assignWebsiteContributor = false` so Bicep skips creating a role assignment when IAM already exists in the portal. Green-field forks set `adoptExistingOidcIdentity = false` and `assignWebsiteContributor = true` in `main.bicepparam.example` (deploying principal needs permission to create role assignments).
 
 Optional Log Analytics and Application Insights deploy when `enableMonitoring = true` in parameters (`deploy/bicep/modules/monitoring.bicep`).
 

@@ -47,6 +47,9 @@ param appSettings object = {}
 @description('Reference an existing OIDC user-assigned identity instead of creating one.')
 param adoptExistingOidcIdentity bool = true
 
+@description('Grant Website Contributor on the web app to the OIDC identity (false when RBAC already exists).')
+param assignWebsiteContributor bool = true
+
 var alwaysOn = appServicePlanSku.tier != 'Free'
 
 module appServicePlan 'modules/appServicePlan.bicep' = {
@@ -78,6 +81,7 @@ module githubOidc 'modules/githubOidc.bicep' = {
     oidcIdentityName: oidcIdentityName
     federatedCredentialName: federatedCredentialName
     adoptExistingOidcIdentity: adoptExistingOidcIdentity
+    assignWebsiteContributor: assignWebsiteContributor
     githubOidcSubject: githubOidcSubject
     webAppName: webAppName
   }
