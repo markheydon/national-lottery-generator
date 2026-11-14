@@ -68,7 +68,7 @@ The live site is deployed to Azure App Service. The workflow runs `composer inst
 
 ## Development
 
-Detailed contributor setup lives in [docs-internal/development-setup.md](docs-internal/development-setup.md).
+Detailed contributor setup lives in [docs/development-setup.md](docs/development-setup.md).
 
 **Dev Container / Codespaces** (VS Code, Cursor, or GitHub Codespaces): open in a container and wait for `postCreate` — Composer dependencies are installed automatically. Then:
 
@@ -91,10 +91,11 @@ CI (`.github/workflows/ci.yml`) runs Pint, PHPUnit on PHP 8.3–8.5, Playwright,
 
 ## Documentation
 
-- [Public docs](docs/README.md)
-- [Getting started guide](docs/getting-started.md)
-- [How the app works](docs/how-it-works.md)
-- [FAQ](docs/faq.md)
+- [Public site](https://lottery.markheydon.me.uk/) — user guides (source in `website/content/`)
+- [Getting started](https://lottery.markheydon.me.uk/guides/getting-started/)
+- [How the app works](https://lottery.markheydon.me.uk/guides/how-it-works/)
+- [FAQ](https://lottery.markheydon.me.uk/guides/faq/)
+- [Maintainer docs](docs/README.md)
 
 ## Contributing
 

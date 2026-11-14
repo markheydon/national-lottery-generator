@@ -21,3 +21,6 @@ npm-debug.log
 
 # Build artifacts
 *.LICENSE.txt
+/website/public/
+/website/_vendor/
+website/.hugo_build.lock

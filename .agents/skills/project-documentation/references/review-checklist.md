@@ -10,6 +10,6 @@ Before considering documentation complete, verify the following:
 - Examples, commands, and file paths are consistent with the repository.
 - The writing is concise and avoids generic filler.
 - The destination file is appropriate for the content (see [document-placement.md](document-placement.md)).
-- Links use correct relative paths for GitHub Pages where relevant.
+- Links use correct site-relative paths in `website/content/` where relevant.
 - `README.md`: requirements and dev commands match [readme-github.md](readme-github.md), `composer.json`, and CI workflows.
-- Public `docs/`: no documentation framework names in body prose; responsible gambling messaging intact where required.
+- Public `website/content/`: no documentation framework names in body prose; responsible gambling messaging intact where required.

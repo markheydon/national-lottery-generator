@@ -12,7 +12,7 @@ Repository-wide conventions: [AGENTS.md](../../../AGENTS.md).
 - `.github/workflows/*.yml`
 - `config/games.php`
 - `CONTRIBUTING.md`
-- `docs-internal/supported-versions.md`
+- `docs/supported-versions.md`
 - `LICENSE`
 
 ## Rules
@@ -22,7 +22,7 @@ Repository-wide conventions: [AGENTS.md](../../../AGENTS.md).
 3. State entertainment-only purpose; do not present the app as a forecasting tool.
 4. Include PHP + Composer setup (`composer install`, `php -S … -t public`, `vendor/bin/phpunit`, Pint).
 5. Note file-based storage (no database required for core features).
-6. Link to public docs in `docs/` and maintainer docs in `docs-internal/` where helpful.
+6. Link to the public site (`website/content/` or published URL) and maintainer docs in `docs/` where helpful.
 7. Use standard Markdown; UK English; PSR-12 style for PHP snippets.
 8. Do not name documentation frameworks in README prose.
 9. Do not add Spec Kit internals, `specs/`, or `.specify/` unless already present in README.

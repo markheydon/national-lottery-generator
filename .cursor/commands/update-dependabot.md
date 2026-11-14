@@ -17,6 +17,7 @@ For **national-lottery-generator**, typical ecosystems:
 | `npm` | Root `package.json` (Playwright E2E devDependencies) |
 | `github-actions` | Always |
 | `devcontainers` | `.devcontainer/devcontainer.json` exists |
+| `gomod` | `website/go.mod` (Hugo theme module) |
 
 Do not add ecosystems with no manifest in the repo.
 

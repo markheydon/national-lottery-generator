@@ -33,11 +33,11 @@ This project follows a simple code of conduct:
 Playwright E2E runs in GitHub Actions CI on pull requests; Node.js is not required for local development.
 
 Internal maintainer policy for supported versions and dependency update guardrails
-is documented in `docs-internal/supported-versions.md`.
+is documented in `docs/supported-versions.md`.
 
 ### Dev Container and Codespaces
 
-The Dev Container uses **`mcr.microsoft.com/devcontainers/php:8.5`** with features for GitHub CLI and maintainer tooling—no custom Dockerfile. Maintainer setup details (rebuild, ports, volumes) are in [`docs-internal/development-setup.md`](docs-internal/development-setup.md).
+The Dev Container uses **`mcr.microsoft.com/devcontainers/php:8.5`** with features for GitHub CLI, Docker (for Hugo site preview), and maintainer tooling—no custom Dockerfile. Maintainer setup details (rebuild, ports, volumes) are in [`docs/development-setup.md`](docs/development-setup.md).
 
 ### Setting Up Your Development Environment
 
@@ -296,14 +296,14 @@ If you use an AI coding agent (Cursor is the maintainer's primary choice; others
 - Start with [`AGENTS.md`](AGENTS.md) for project orientation, commands, and constraints
 - Follow `.specify/memory/constitution.md` for spec-driven development work
 - Spec Kit on Cursor: `.cursor/skills/speckit-*` (not `.github/agents/` or `.github/prompts/`)
-- To refresh `README.md` or public docs in `docs/`, use [`.agents/skills/project-documentation/SKILL.md`](.agents/skills/project-documentation/SKILL.md)
+- To refresh `README.md` or public site content in `website/content/`, use [`.agents/skills/project-documentation/SKILL.md`](.agents/skills/project-documentation/SKILL.md)
 
 ## Questions?
 
 If you have questions about contributing:
 - Open an issue with the `question` label
 - Check existing issues and discussions
-- Review the [main README](README.md) and [documentation](docs/)
+- Review the [main README](README.md), [maintainer documentation](docs/README.md), and the [public site](https://lottery.markheydon.me.uk/)
 
 ## License
 

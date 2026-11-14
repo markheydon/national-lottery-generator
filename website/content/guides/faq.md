@@ -1,9 +1,11 @@
 ---
-layout: default
 title: FAQ
+description: Common questions, responsible use, and what to do when draw data is unavailable.
+weight: 30
+aliases:
+  - /faq.html
+  - /faq.md
 ---
-
-# Frequently Asked Questions
 
 ## What is this app?
 
@@ -30,7 +32,7 @@ No. The app is for entertainment only. The suggestions are based on historical d
 
 ## How are the numbers generated?
 
-The app checks whether fresh draw-history data is available, downloads it if needed, and then builds a set of suggestion lines for the selected game. For more detail, see [How It Works](how-it-works.md).
+The app checks whether fresh draw-history data is available, downloads it if needed, and then builds a set of suggestion lines for the selected game. For more detail, see [How It Works](/guides/how-it-works/).
 
 ## Does the app need a database?
 
@@ -48,6 +50,6 @@ The app does not ask for personal information and does not rely on user accounts
 
 ## Where can I get help?
 
-- [Getting Started](getting-started.md)
-- [How It Works](how-it-works.md)
+- [Getting Started](/guides/getting-started/)
+- [How It Works](/guides/how-it-works/)
 - [GitHub issues](https://github.com/markheydon/national-lottery-generator/issues)
