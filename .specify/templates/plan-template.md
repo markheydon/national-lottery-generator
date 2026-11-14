@@ -12,35 +12,35 @@
 
 ## Technical Context
 
-**Language/Version**: PHP 8.3–8.5
+<!--
+  ACTION REQUIRED: Replace the content in this section with the technical details
+  for the project. The structure here is presented in advisory capacity to guide
+  the iteration process.
+-->
 
-**Primary Dependencies**: Guzzle (HTTP); committed Bootstrap/jQuery assets under `public/`
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
 
-**Storage**: Local filesystem under `storage/app/lottery/` (no database for core features)
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
 
-**Testing**: PHPUnit 12 (`vendor/bin/phpunit`)
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
 
-**Target Platform**: Linux (PHP built-in server / Azure App Service)
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
 
-**Project Type**: Minimal vanilla PHP front controller with plain PHP templates
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
 
-**Performance Goals**: Page load and number generation under 3 seconds for typical draw history files
+**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
 
-**Constraints**: No database dependency for core features; entertainment-only purpose; PSR-12 code style
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
 
-**Scale/Scope**: Single-server hobby project; 6 existing lottery games
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
+
+**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- [ ] Business logic stays in `src/Services/Lottery/`, not controllers
-- [ ] New games follow `*Download` + `*Generate` service pattern
-- [ ] Game config added to `config/games.php` if applicable
-- [ ] PHPUnit tests planned for lottery logic changes
-- [ ] No new database dependencies without justification
-- [ ] Entertainment-only disclaimer preserved in user-facing output
-- [ ] PSR-12 / Pint compliance expected
+[Gates determined based on constitution file]
 
 ## Project Structure
 
@@ -57,66 +57,51 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
+<!--
+  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+  for this feature. Delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). The delivered plan must
+  not include Option labels.
+-->
 
 ```text
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
-├── Http/
-│   ├── Application.php              # Front-controller routing
-│   ├── GameController.php           # Presentation + dispatch
-│   ├── Response.php
-│   └── View.php
-├── Game.php                         # Config-driven game registry
-└── Services/
-    └── Lottery/
-        ├── Downloader.php           # Shared CSV download/caching
-        ├── CsvDownloadService.php   # Download freshness checks
-        ├── Utils.php                # Shared lottery utilities
-        ├── {Game}Download.php       # Per-game download service
-        └── {Game}Generate.php       # Per-game generation service
-
-config/
-└── games.php                        # Game definitions (slug, name, logo)
-
-templates/
-├── layout.php
-└── games/
-    ├── index.php                    # Game selector
-    └── generate.php                 # Number display
-
-public/
-└── index.php                        # Front controller
+├── models/
+├── services/
+├── cli/
+└── lib/
 
 tests/
-├── Unit/
-│   └── Lottery/
-│       ├── GenerateTestCase.php
-│       ├── DownloaderTestCase.php
-│       ├── {Game}GenerateTest.php
-│       └── {Game}DownloadTest.php
-├── Feature/
-│   └── FileBasedStorageTest.php
-└── e2e/                             # Playwright UI tests
+├── contract/
+├── integration/
+└── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+backend/
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
+└── tests/
+
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+└── tests/
+
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: Vanilla PHP app. Feature code lives under `src/`, `config/`, `templates/`, and `public/` at the repository root.
-
-## Implementation Phases
-
-### Phase A: Lottery Services
-
-Implement or modify `*Download` and `*Generate` classes in `src/Services/Lottery/`. Shared logic goes in `Downloader`, `Utils`, or `CsvDownloadService`.
-
-### Phase B: Configuration & Routing
-
-Add game entries to `config/games.php`. Wire routes in `public/index.php` / `Application` and dispatch in `GameController`.
-
-### Phase C: Views & Assets
-
-Create or update PHP templates in `templates/games/`. Do not rebuild frontend assets unless the Mix/webpack issue is separately resolved.
-
-### Phase D: Tests & Quality
-
-Add PHPUnit tests in `tests/Unit/Lottery/`. Run `vendor/bin/phpunit` and `./vendor/bin/pint --test`.
+**Structure Decision**: [Document the selected structure and reference the real
+directories captured above]
 
 ## Complexity Tracking
 
@@ -124,4 +109,5 @@ Add PHPUnit tests in `tests/Unit/Lottery/`. Run `vendor/bin/phpunit` and `./vend
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| [e.g., database dependency] | [current need] | [why file storage insufficient] |
+| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
