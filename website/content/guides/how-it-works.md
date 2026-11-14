@@ -1,5 +1,6 @@
 ---
 title: How It Works
+description: How draw history is downloaded, cached, and turned into number suggestions.
 weight: 20
 aliases:
   - /how-it-works.html

@@ -1,6 +1,6 @@
 # Public documentation site
 
-User-facing documentation for the [National Lottery Number Generator](https://github.com/markheydon/national-lottery-generator), built with [Hugo](https://gohugo.io/) and the [Hextra](https://github.com/imfing/hextra) theme.
+User-facing documentation for the [National Lottery Number Generator](https://github.com/markheydon/national-lottery-generator), built with [Hugo](https://gohugo.io/) and the [Blowfish](https://blowfish.page/) theme.
 
 Published at [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk/).
 

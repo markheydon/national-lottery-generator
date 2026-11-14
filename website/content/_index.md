@@ -1,36 +1,44 @@
 ---
-title: National Lottery Number Generator
+title: Playful lottery suggestions for UK games
+description: Generate playful UK National Lottery number suggestions for entertainment only.
+heroCaption: For entertainment only
+heroLead: This small PHP app turns historical draw data into light-hearted number ideas — not predictions, just a bit of fun before you choose your own lines.
+heroButtons:
+  - label: Open the app
+    url: https://mheydon73-lottery-generator.azurewebsites.net/
+  - label: Guides
+    url: /guides/
+    style: outline
 ---
 
-This PHP app suggests lottery numbers for UK games **for entertainment only**. It uses historical draw data to create playful number suggestions.
+{{< feature-grid >}}
+{{< feature icon="wand-magic-sparkles" title="Getting started" url="/guides/getting-started/" >}}
+Open the app, pick a game, and generate your first suggestion in minutes.
+{{< /feature >}}
+{{< feature icon="chart-line" title="How it works" url="/guides/how-it-works/" >}}
+Draw history, caching, and how each suggestion is put together.
+{{< /feature >}}
+{{< feature icon="circle-question" title="FAQ" url="/guides/faq/" >}}
+Common questions, troubleshooting, and responsible use.
+{{< /feature >}}
+{{< /feature-grid >}}
 
-## Start here
+## Supported games
 
-1. Open the live app: [mheydon73-lottery-generator.azurewebsites.net](https://mheydon73-lottery-generator.azurewebsites.net/)
-2. Choose a game card on the home page.
-3. Click **Generate Numbers** to view suggested lines and the latest draw date.
+Lotto, EuroMillions, Thunderball, Set For Life, Lotto Hotpicks, and EuroMillions Hotpicks.
 
-The home page currently lists these games:
+{{< steps >}}
+{{< step number="1" title="Open the app" >}}
+Visit the [live generator](https://mheydon73-lottery-generator.azurewebsites.net/). No sign-up required.
+{{< /step >}}
+{{< step number="2" title="Choose a game" >}}
+Pick a card on the home page — each game has its own rules and ball pools.
+{{< /step >}}
+{{< step number="3" title="Generate numbers" >}}
+Hit **Generate Numbers** to see suggested lines and the latest draw date loaded for that game.
+{{< /step >}}
+{{< /steps >}}
 
-- Lotto
-- EuroMillions
-- Thunderball
-- Set For Life
-- Lotto Hotpicks
-- EuroMillions Hotpicks
-
-## What to expect
-
-- No sign-up is required.
-- The app uses historical draw data and a simple algorithm to generate suggestions.
-- The app is not a prediction tool and cannot improve your odds.
-
-Please gamble responsibly. If you need support, visit [BeGambleAware](https://www.begambleaware.org/) or call 0808 8020 133.
-
-## Guides
-
-| Guide | Description |
-|-------|-------------|
-| [Getting Started](/guides/getting-started/) | Step-by-step usage on the live app. |
-| [How It Works](/guides/how-it-works/) | Data refresh, caching, and how suggestions are built. |
-| [FAQ](/guides/faq/) | Common questions and troubleshooting. |
+{{< alert >}}
+**Gamble responsibly.** This site is not a forecasting tool and cannot improve your odds. If you need support, visit [BeGambleAware](https://www.begambleaware.org/) or call **0808 8020 133**.
+{{< /alert >}}

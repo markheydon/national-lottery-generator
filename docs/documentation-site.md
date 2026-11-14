@@ -1,6 +1,6 @@
 # Public documentation site (`website/`)
 
-The user-facing site is built with [Hugo](https://gohugo.io/) and the [Hextra](https://github.com/imfing/hextra) theme. Content lives in `website/content/`.
+The user-facing site is built with [Hugo](https://gohugo.io/) and the [Blowfish](https://blowfish.page/) theme. Content lives in `website/content/`.
 
 ## Edit content
 

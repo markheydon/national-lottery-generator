@@ -1,5 +1,6 @@
 ---
 title: FAQ
+description: Common questions, responsible use, and what to do when draw data is unavailable.
 weight: 30
 aliases:
   - /faq.html

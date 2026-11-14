@@ -1,4 +1,11 @@
-/* Subtle highlight for the Open app action in the navbar. */
-a[href="https://mheydon73-lottery-generator.azurewebsites.net/"] {
-  font-weight: 600;
+/* Landing layout centres prose on wider viewports; keep lists and shortcodes left-aligned. */
+.landing-rise-4 {
+  text-align: left;
+}
+
+/* Room for numbered step markers (absolute -start-10) inside centred landing layout. */
+.landing-rise-4 ol.not-prose {
+  margin-inline: auto;
+  max-width: 36rem;
+  padding-left: 2.75rem;
 }

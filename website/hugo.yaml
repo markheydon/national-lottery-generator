@@ -1,17 +1,28 @@
 # Hugo configuration for the National Lottery Number Generator public site.
 baseURL: https://lottery.markheydon.me.uk/
 defaultContentLanguage: en
+title: National Lottery Number Generator
+enableGitInfo: true
+enableEmoji: true
+disableKinds:
+  - taxonomy
+  - term
+
 languages:
   en:
     label: English (UK)
     locale: en-GB
     weight: 1
-title: National Lottery Number Generator
-enableGitInfo: true
 
 module:
   imports:
-    - path: github.com/imfing/hextra
+    - path: github.com/nunocoracao/blowfish/v3
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
 
 markup:
   goldmark:
@@ -20,41 +31,55 @@ markup:
   highlight:
     noClasses: false
 
-caches:
-  images:
-    dir: :cacheDir/images
-
-menu:
+menus:
   main:
     - name: Guides
       pageRef: /guides
       weight: 1
-    - name: Search
-      weight: 2
-      params:
-        type: search
     - name: Open app
-      weight: 3
       url: https://mheydon73-lottery-generator.azurewebsites.net/
-      params:
-        icon: external-link
+      weight: 2
+      pre: arrow-up-right-from-square
     - name: GitHub
-      weight: 4
       url: https://github.com/markheydon/national-lottery-generator
-      params:
-        icon: github
+      weight: 3
+      pre: github
 
 params:
   description: Generate playful UK National Lottery number suggestions for entertainment only.
+  colorScheme: ocean
+  enableSearch: true
+  enableCodeCopy: true
+  mainSections:
+    - guides
 
-  navbar:
-    displayTitle: true
-    displayLogo: false
+  header:
+    layout: floating
 
   footer:
-    displayCopyright: true
-    displayPoweredBy: true
+    showCopyright: true
+    showThemeAttribution: true
+    showAppearanceSwitcher: true
+    showScrollToTop: true
 
-  editURL:
-    enable: true
-    base: https://github.com/markheydon/national-lottery-generator/edit/main/website/content
+  homepage:
+    layout: landing
+    showRecent: false
+
+  list:
+    showBreadcrumbs: true
+    showSummary: false
+    cardView: true
+    orderByWeight: true
+
+  article:
+    showDate: false
+    showReadingTime: false
+    showWordCount: false
+    showTaxonomies: false
+    showBreadcrumbs: true
+    showTableOfContents: true
+    showEdit: true
+    editURL: https://github.com/markheydon/national-lottery-generator/edit/main/website/content
+    editAppendPath: true
+    showPagination: true

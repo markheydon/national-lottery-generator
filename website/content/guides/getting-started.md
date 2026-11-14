@@ -1,5 +1,6 @@
 ---
 title: Getting Started
+description: Open the app, choose a game, and generate playful number suggestions in a few steps.
 weight: 10
 aliases:
   - /getting-started.html

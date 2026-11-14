@@ -65,7 +65,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SITE_DIR="$REPO_ROOT/website"
 PUBLIC_PATH="$SITE_DIR/public"
-HUGO_IMAGE="docker.io/hugomods/hugo:latest"
+HUGO_IMAGE="ghcr.io/gohugoio/hugo:v0.169.0"
+HUGO_ENTRYPOINT=(--entrypoint hugo)
 NGINX_IMAGE="docker.io/library/nginx:alpine"
 
 tcp_port_taken() {
@@ -159,10 +160,11 @@ docker_bind_mount_works() {
     local test_file="$3"
 
     "$RUNTIME" run --rm \
+        --entrypoint sh \
         -v "$(volume_mount "$host_path" /src)" \
         -w "$workdir" \
         "$HUGO_IMAGE" \
-        test -f "$test_file"
+        -c "test -f \"$test_file\""
 }
 
 hugo_extended_available() {
@@ -178,22 +180,23 @@ assert_public_index() {
 
 hugo_build_bind_mount() {
     local base_url="${1:-}"
-    local -a hugo_args=(--minify)
+    local -a hugo_args=(build --minify)
 
     if [[ -n "$base_url" ]]; then
         hugo_args+=(--baseURL "$base_url")
     fi
 
     "$RUNTIME" run --rm \
+        "${HUGO_ENTRYPOINT[@]}" \
         -v "$(volume_mount "$REPO_ROOT" /src)" \
         -w /src/website \
         "$HUGO_IMAGE" \
-        hugo "${hugo_args[@]}"
+        "${hugo_args[@]}"
 }
 
 hugo_build_local() {
     local base_url="${1:-}"
-    local -a hugo_args=(--minify)
+    local -a hugo_args=(build --minify)
 
     if [[ -n "$base_url" ]]; then
         hugo_args+=(--baseURL "$base_url")
@@ -209,19 +212,22 @@ hugo_build_streamed() {
     local base_url="${1:-}"
     local container_name="lottery-hugo-build-$$"
     local -a docker_env=()
-    local container_cmd="cd /site && hugo --minify"
+    # docker cp leaves /site root-owned; the official Hugo image runs as non-root by default.
+    # Copied tree has no .git; enableGitInfo would fail the build.
+    docker_env+=(-e HUGO_ENABLEGITINFO=false)
+    local container_cmd="cd /site && hugo build --minify"
 
     if [[ -n "$base_url" ]]; then
         docker_env+=(-e "HUGO_BASE_URL=$base_url")
         # shellcheck disable=SC2016
-        container_cmd='cd /site && hugo --minify --baseURL "$HUGO_BASE_URL"'
+        container_cmd='cd /site && hugo build --minify --baseURL "$HUGO_BASE_URL"'
     fi
 
     echo "note: using docker cp build (bind mounts unavailable on this Docker host)" >&2
 
     rm -rf "$PUBLIC_PATH"
 
-    "$RUNTIME" create "${docker_env[@]}" --name "$container_name" -w /site \
+    "$RUNTIME" create "${docker_env[@]}" --user 0 --name "$container_name" -w /site \
         --entrypoint sh "$HUGO_IMAGE" -c "${container_cmd}"
     "$RUNTIME" cp "$SITE_DIR/." "$container_name:/site"
     if ! "$RUNTIME" start -a "$container_name"; then
@@ -270,10 +276,11 @@ serve_static_preview() {
 hugo_serve() {
     if docker_bind_mount_works "$REPO_ROOT" /src/website hugo.yaml; then
         "$RUNTIME" run --rm -p "${SERVE_PORT}:1313" \
+            "${HUGO_ENTRYPOINT[@]}" \
             -v "$(volume_mount "$REPO_ROOT" /src)" \
             -w /src/website \
             "$HUGO_IMAGE" \
-            hugo server --bind 0.0.0.0 --baseURL "http://localhost:${SERVE_PORT}"
+            server --bind 0.0.0.0 --baseURL "http://localhost:${SERVE_PORT}"
         return
     fi
 

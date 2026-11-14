@@ -17,6 +17,7 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $rootForMount = $repoRoot -replace '\\', '/'
 $siteDir = Join-Path $repoRoot "website"
 $publicPath = Join-Path $siteDir "public"
+$hugoImage = "ghcr.io/gohugoio/hugo:v0.169.0"
 
 function Test-ContainerRuntime {
     param([string]$Name)
@@ -30,16 +31,16 @@ function Invoke-HugoBuild {
         [string]$BaseURL
     )
 
-    $hugoArgs = @("--minify")
+    $hugoArgs = @("build", "--minify")
     if ($BaseURL) {
         $hugoArgs += @("--baseURL", $BaseURL)
     }
 
-    & $Runtime run --rm `
+    & $Runtime run --rm --entrypoint hugo `
         -v "${rootForMount}:/src:Z" `
         -w /src/website `
-        docker.io/hugomods/hugo:latest `
-        hugo @hugoArgs
+        $hugoImage `
+        @hugoArgs
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Hugo build failed (exit $LASTEXITCODE). Fix errors above before previewing."
     }
@@ -59,11 +60,11 @@ switch ($Command) {
 
     "serve" {
         Write-Host "Starting Hugo dev server at http://localhost:$ServePort ..." -ForegroundColor Cyan
-        & $Runtime run --rm -p "${ServePort}:1313" `
+        & $Runtime run --rm --entrypoint hugo -p "${ServePort}:1313" `
             -v "${rootForMount}:/src:Z" `
             -w /src/website `
-            docker.io/hugomods/hugo:latest `
-            hugo server --bind 0.0.0.0 --baseURL "http://localhost:$ServePort"
+            $hugoImage `
+            server --bind 0.0.0.0 --baseURL "http://localhost:$ServePort"
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 
