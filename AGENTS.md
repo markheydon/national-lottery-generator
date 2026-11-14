@@ -70,7 +70,7 @@ git commit --allow-empty -S -m "signing test"
 git reset HEAD~1              # discard test commit
 ```
 
-This repo typically uses SSH commit signing (`gpg.format=ssh`, `user.signingkey` set to the SSH public key). If Spec Kit auto-commit or another tool fails on `git commit` because of signing, treat that as a hard failure — do not disable signing to make it pass.
+This repo typically uses SSH commit signing (`gpg.format=ssh`, `user.signingkey` set to the SSH public key). If `git commit` fails because of signing, treat that as a hard failure — do not disable signing to make it pass.
 
 ## Spec Kit / SDD
 
@@ -97,9 +97,13 @@ This project uses [Spec Kit](https://github.com/github/spec-kit) for spec-driven
 
 New features: use `/speckit-specify` on a Spec Kit numbered branch (`001-slug`).
 
-Spec Kit commands for Cursor live under `.cursor/skills/speckit-*`. This repository does not maintain GitHub Copilot agent or prompt files under `.github/agents/` or `.github/prompts/`. Supported Spec Kit integration: **cursor-agent** (see `.specify/integrations/cursor-agent.manifest.json`).
+Spec Kit commands for Cursor live under `.cursor/skills/speckit-*`. This repository does not maintain GitHub Copilot agent or prompt files under `.github/agents/` or `.github/prompts/`. Supported Spec Kit integration: **cursor-agent** (see `.specify/integrations/cursor-agent.manifest.json`). Upgrade or refresh bundled skills and `.specify/` scripts with:
 
-The repo tracks **Spec Kit 1.4.0 core** only: `.specify/extensions.yml` has no vendored extensions (previous git and brownfield packs and their hooks were removed on upgrade). Optional catalog extensions (see `.specify/extensions/.cache/`) can be reinstalled when needed; brownfield scan/migrate flows are not wired in by default. The optional `speckit-taskstoissues` skill is retained for exporting `tasks.md` to GitHub issues but is not part of the upstream 1.4.0 command set.
+```bash
+specify init --here --force --integration cursor-agent --script sh
+```
+
+Existing `.specify/memory/constitution.md` is preserved on upgrade; review diffs before committing.
 
 ## Documentation conventions
 

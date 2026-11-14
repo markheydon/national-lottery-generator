@@ -275,7 +275,7 @@ Report completion to the user with:
 - Checklist results summary
 - Readiness for the next phase (`/speckit-clarify` or `/speckit-plan`)
 
-**NOTE:** Branch creation is handled by the `before_specify` hook (git extension). Spec directory and file creation are always handled by this core command.
+**NOTE:** Create feature branches with your usual git workflow before `/speckit-specify`. Spec directory and file creation are handled by this command.
 
 ## Quick Guidelines
 
