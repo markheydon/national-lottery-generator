@@ -99,6 +99,8 @@ New features: use `/speckit-specify` on a Spec Kit numbered branch (`001-slug`).
 
 Spec Kit commands for Cursor live under `.cursor/skills/speckit-*`. This repository does not maintain GitHub Copilot agent or prompt files under `.github/agents/` or `.github/prompts/`. Supported Spec Kit integration: **cursor-agent** (see `.specify/integrations/cursor-agent.manifest.json`).
 
+The repo tracks **Spec Kit 1.4.0 core** only: `.specify/extensions.yml` has no vendored extensions (previous git and brownfield packs and their hooks were removed on upgrade). Optional catalog extensions (see `.specify/extensions/.cache/`) can be reinstalled when needed; brownfield scan/migrate flows are not wired in by default. The optional `speckit-taskstoissues` skill is retained for exporting `tasks.md` to GitHub issues but is not part of the upstream 1.4.0 command set.
+
 ## Documentation conventions
 
 - Keep `README.md` suitable for contributors and quick evaluation.
@@ -146,7 +148,7 @@ Skills live in `.agents/skills/<skill-name>/SKILL.md` (agent-agnostic). Cursor s
 - Maintainer setup: `docs-internal/development-setup.md`
 - Supported PHP versions: `docs-internal/supported-versions.md`
 - Public user docs: `docs/`
-- Open follow-ups: #187 (Set For Life tests), #188 (constitution hotpicks note), #190 (HTTP feature test)
+- Open follow-ups: #187 (Set For Life tests), #190 (HTTP feature test)
 
 ## Cursor Cloud specific instructions
 
