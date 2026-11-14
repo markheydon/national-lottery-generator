@@ -1,9 +1,10 @@
 ---
-layout: default
 title: Getting Started
+weight: 10
+aliases:
+  - /getting-started.html
+  - /getting-started.md
 ---
-
-# Getting Started
 
 Use this guide when you want to generate a set of lottery suggestions in a few steps.
 
@@ -15,7 +16,7 @@ No account is required.
 
 ## 2. Choose a game
 
-The home page shows a card for each supported game. Select the one you want to use and click "Generate Numbers".
+The home page shows a card for each supported game. Select the one you want to use and click **Generate Numbers**.
 
 The current games are:
 
@@ -34,11 +35,11 @@ Each game page shows:
 - Additional suggestions to compare
 - The latest draw date that the app has loaded
 
-If draw history cannot be loaded yet, the page explains that the data feed may be temporarily unavailable and asks you to try again shortly (see [FAQ](faq.md)).
+If draw history cannot be loaded yet, the page explains that the data feed may be temporarily unavailable and asks you to try again shortly (see [FAQ](/guides/faq/)).
 
 ## 4. Switch games if you want to compare options
 
-Use the "Other Games" menu at the top of the page to move to another game without returning to the home page.
+Use the **Other Games** menu at the top of the page to move to another game without returning to the home page.
 
 ## Keep in mind
 
@@ -46,6 +47,6 @@ The app is for entertainment only. The suggestions are based on historical draw 
 
 ## Next steps
 
-- [How It Works](how-it-works.md)
-- [FAQ](faq.md)
-- [Back to home](index.md)
+- [How It Works](/guides/how-it-works/)
+- [FAQ](/guides/faq/)
+- [Back to home](/)

@@ -8,7 +8,7 @@ This page collects the practical setup and maintenance guidance that is useful f
 - Composer
 - Git
 
-No database, Docker, or Node.js is required for the core application or local development. Playwright E2E specs in `tests/e2e/` run in GitHub Actions CI on pull requests (see [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
+No database or Node.js is required for the core PHP application. Docker (or Podman) is optional: the Dev Container feature **docker-outside-of-docker** supports previewing the Hugo public site without installing Hugo locally. Playwright E2E specs in `tests/e2e/` run in GitHub Actions CI on pull requests (see [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
 
 ## Dev Container / Codespaces (recommended)
 
@@ -23,6 +23,16 @@ php -S 0.0.0.0:8000 -t public
 ```
 
 Open the forwarded port from the Ports panel.
+
+### Preview the public documentation site
+
+From the repository root:
+
+```bash
+./scripts/invoke-hugo-site.sh preview
+```
+
+See [documentation-site.md](documentation-site.md) and [website/README.md](../website/README.md).
 
 ## Local development (no container)
 

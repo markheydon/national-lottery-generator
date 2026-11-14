@@ -3,6 +3,9 @@
     "image": "mcr.microsoft.com/devcontainers/php:8.5",
     "features": {
         "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+            "moby": "false"
+        },
         "ghcr.io/markheydon/devcontainer-features/spec-kit:1": {},
         "ghcr.io/markheydon/devcontainer-features/dev-agent-tools:1": {},
         "ghcr.io/stu-bell/devcontainer-features/cursor-cli:0": {}
@@ -22,15 +25,26 @@
     },
     "containerEnv": {
         "COMPOSER_VENDOR_DIR": "/home/vscode/.composer-vendor",
-        "XDEBUG_MODE": "off"
+        "XDEBUG_MODE": "off",
+        "LOTTERY_HUGO_PREVIEW_PORT": "1314"
     },
     "forwardPorts": [
-        8000
+        8000,
+        1313,
+        1314
     ],
     "portsAttributes": {
         "8000": {
             "label": "PHP built-in server",
             "onAutoForward": "openPreview"
+        },
+        "1313": {
+            "label": "Hugo dev server",
+            "onAutoForward": "notify"
+        },
+        "1314": {
+            "label": "Hugo static preview",
+            "onAutoForward": "notify"
         }
     },
     "mounts": [

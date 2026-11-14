@@ -1,0 +1,4 @@
+/* Subtle highlight for the Open app action in the navbar. */
+a[href="https://mheydon73-lottery-generator.azurewebsites.net/"] {
+  font-weight: 600;
+}

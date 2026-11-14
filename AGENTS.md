@@ -108,10 +108,10 @@ Existing `.specify/memory/constitution.md` is preserved on upgrade; review diffs
 ## Documentation conventions
 
 - Keep `README.md` suitable for contributors and quick evaluation.
-- Public user docs live in `docs/` (GitHub Pages / Jekyll).
-- Maintainer notes live in `docs-internal/`.
+- Public user docs live in `website/content/` (Hugo site on GitHub Pages at `lottery.markheydon.me.uk`).
+- Maintainer notes live in `docs/`.
 - Use concise UK English.
-- User-facing copy in `README.md` and `docs/` should not explain documentation methodology or name authoring frameworks; use agent skills and `docs-internal/` for methodology.
+- User-facing copy in `README.md` and `website/content/` should not explain documentation methodology or name authoring frameworks; use agent skills and `docs/` for methodology.
 - Preserve the entertainment-only disclaimer on user-facing pages; do not present the app as a forecasting tool.
 
 ## Repository source of truth
@@ -122,16 +122,17 @@ When writing or updating code or documentation, prioritise:
 - `config/games.php` for supported games
 - `src/` and `tests/` for behaviour and usage evidence
 - `.github/workflows/ci.yml` for CI and PHP matrix
-- `docs-internal/supported-versions.md` for version policy
-- `docs-internal/development-setup.md` for maintainer setup
+- `docs/supported-versions.md` for version policy
+- `docs/development-setup.md` for maintainer setup
+- `website/hugo.yaml` and `.github/workflows/hugo.yml` for public site build and deploy
 
 Do not invent behaviour, compatibility claims, or roadmap commitments unsupported by repository files.
 
 ## Task routing
 
 - **Code** (`src/`, `tests/`, `templates/`): PHP conventions and change discipline in this file.
-- **User documentation** (`README.md`, `docs/`): `project-documentation` skill.
-- **Maintainer markdown** (`docs-internal/**/*.md`): `project-documentation` skill when explicitly in scope.
+- **User documentation** (`README.md`, `website/content/`): `project-documentation` skill.
+- **Maintainer markdown** (`docs/**/*.md`): `project-documentation` skill when explicitly in scope.
 - **Pre-merge review**: `code-review` skill or `/loop-code-review`.
 - **Dependabot config**: `/update-dependabot` (`.cursor/commands/update-dependabot.md`).
 
@@ -141,7 +142,7 @@ Use these skills for specialised workflows:
 
 | Skill | When to use |
 |-------|-------------|
-| `project-documentation` | README, `docs/`, maintainer docs when requested (Diátaxis placement via skill) |
+| `project-documentation` | README, `website/content/`, `docs/` when requested (Diátaxis placement via skill) |
 | `code-review` | Branch, PR, or local diff review before merge |
 
 Skills live in `.agents/skills/<skill-name>/SKILL.md` (agent-agnostic). Cursor slash commands live in `.cursor/commands/`.
@@ -149,9 +150,10 @@ Skills live in `.agents/skills/<skill-name>/SKILL.md` (agent-agnostic). Cursor s
 ## Pointers
 
 - Human contributors: `CONTRIBUTING.md`
-- Maintainer setup: `docs-internal/development-setup.md`
-- Supported PHP versions: `docs-internal/supported-versions.md`
-- Public user docs: `docs/`
+- Maintainer setup: `docs/development-setup.md`
+- Supported PHP versions: `docs/supported-versions.md`
+- Public user site: `website/` (preview: `./scripts/invoke-hugo-site.sh preview`)
+- Maintainer docs: `docs/`
 - Open follow-ups: #187 (Set For Life tests), #190 (HTTP feature test)
 
 ## Cursor Cloud specific instructions
@@ -169,3 +171,4 @@ Non-obvious caveats:
   first use (outbound HTTPS required), caching them to `storage/app/lottery/` for 24h. After the cache
   is warm the pages render offline.
 - Playwright E2E specs live in `tests/e2e/`; CI runs `npm run test:e2e` — not in the Dev Container.
+- Preview the public Hugo site with `./scripts/invoke-hugo-site.sh preview` (Docker/Podman via devcontainer Docker feature).

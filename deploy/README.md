@@ -12,7 +12,7 @@ cp .env.example .env   # optional
 php -S localhost:8000 -t public
 ```
 
-Open http://localhost:8000. See [QUICKSTART.md](../QUICKSTART.md) and [docs-internal/development-setup.md](../docs-internal/development-setup.md).
+Open http://localhost:8000. See [QUICKSTART.md](../QUICKSTART.md) and [docs/development-setup.md](../docs/development-setup.md).
 
 ## Local Apache
 

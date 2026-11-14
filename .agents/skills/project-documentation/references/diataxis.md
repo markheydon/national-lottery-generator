@@ -2,7 +2,7 @@
 
 Technical documentation follows the [Diátaxis framework](https://diataxis.fr/). Use UK English and repository rules in [AGENTS.md](../../../AGENTS.md).
 
-Diátaxis guides **authoring and placement** for agents and maintainers. Do not name the framework in user-facing `docs/` or `README.md` prose.
+Diátaxis guides **authoring and placement** for agents and maintainers. Do not name the framework in user-facing `website/content/` or `README.md` prose.
 
 ## Guiding principles
 

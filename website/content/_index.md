@@ -1,17 +1,14 @@
 ---
-layout: default
-title: Home
+title: National Lottery Number Generator
 ---
 
-# Welcome to the National Lottery Number Generator
-
-This PHP app suggests lottery numbers for UK games for entertainment only. It uses historical draw data to create a set of playful number suggestions.
+This PHP app suggests lottery numbers for UK games **for entertainment only**. It uses historical draw data to create playful number suggestions.
 
 ## Start here
 
 1. Open the live app: [mheydon73-lottery-generator.azurewebsites.net](https://mheydon73-lottery-generator.azurewebsites.net/)
 2. Choose a game card on the home page.
-3. Click "Generate Numbers" to view suggested lines and the latest draw date.
+3. Click **Generate Numbers** to view suggested lines and the latest draw date.
 
 The home page currently lists these games:
 
@@ -30,8 +27,10 @@ The home page currently lists these games:
 
 Please gamble responsibly. If you need support, visit [BeGambleAware](https://www.begambleaware.org/) or call 0808 8020 133.
 
-## Next steps
+## Guides
 
-- [Getting Started](getting-started.md)
-- [How It Works](how-it-works.md)
-- [FAQ](faq.md)
+| Guide | Description |
+|-------|-------------|
+| [Getting Started](/guides/getting-started/) | Step-by-step usage on the live app. |
+| [How It Works](/guides/how-it-works/) | Data refresh, caching, and how suggestions are built. |
+| [FAQ](/guides/faq/) | Common questions and troubleshooting. |

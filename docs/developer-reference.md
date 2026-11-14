@@ -1,15 +1,22 @@
 # Developer Reference
 
-This page is a reference for maintaining public documentation in this repository.
+This page is a reference for maintaining documentation in this repository.
 
 ## Purpose
 
-The `docs/` folder contains GitHub Pages content aimed at end users. Keep pages concise and focused on one purpose.
+| Location | Audience |
+|----------|----------|
+| `website/content/` | End users (published at [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk/)) |
+| `docs/` | Maintainers and coding agents |
 
-- **Tutorial/start page**: [index.md](index.md)
-- **How-to task guide**: [getting-started.md](getting-started.md)
-- **Explanation**: [how-it-works.md](how-it-works.md)
-- **FAQ/troubleshooting**: [faq.md](faq.md)
+Keep public pages concise and focused on one purpose.
+
+Public guide sources:
+
+- **Home**: `website/content/_index.md`
+- **Getting started**: `website/content/guides/getting-started.md`
+- **Explanation**: `website/content/guides/how-it-works.md`
+- **FAQ**: `website/content/guides/faq.md`
 
 ## Source of Truth Files
 
@@ -31,33 +38,42 @@ When updating public docs, align wording with:
 
 ## Organisation
 
-Current public docs structure:
-
 ```
+website/content/
+├── _index.md
+└── guides/
+    ├── _index.md
+    ├── getting-started.md
+    ├── how-it-works.md
+    └── faq.md
+
 docs/
-├── index.md               (start-here page)
-├── getting-started.md     (how-to)
-├── how-it-works.md        (explanation)
-├── faq.md                 (reference/FAQ)
+├── README.md
+├── development-setup.md
+├── supported-versions.md
+├── dependency-update-commands.md
+├── documentation-site.md
 └── developer-reference.md (this file)
 ```
 
 ## Contributing to Documentation
 
-Documentation contributions are welcome. When editing docs:
+Documentation contributions are welcome. When editing user-facing pages:
 
 1. Use UK English and plain language.
 2. Keep claims evidence-based and repository-native.
-3. Use relative links for in-repository pages.
+3. Use site-relative links in Hugo content (for example `/guides/faq/`).
 4. Keep one clear purpose per page.
 5. Avoid mixing developer setup into end-user pages.
 
+For Hugo authoring conventions, see [documentation-site.md](documentation-site.md).
+
 ## Quick Links
 
-- [Main README](../README.md) - Project overview and quick start
-- [Contributing Guidelines](../CONTRIBUTING.md) - How to contribute to the project
-- [Licence](../LICENSE) - Project licence information
+- [Main README](../README.md) — project overview and quick start
+- [Contributing guidelines](../CONTRIBUTING.md)
+- [Licence](../LICENSE)
 
 ## Questions or Feedback?
 
-If you have questions about the documentation or suggestions for improvements, please open an issue on the GitHub repository.
+Open an issue on the GitHub repository.

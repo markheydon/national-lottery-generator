@@ -1,12 +1,20 @@
-# Documentation
+# Maintainer documentation
 
-This folder contains the public documentation for the National Lottery Number Generator.
+Internal and technical reference notes for maintainers and coding agents.
 
-Use the pages below depending on what you want to do:
+Use this folder for:
 
-- [Home](index.md) for a quick overview and links to the live app
-- [Getting Started](getting-started.md) for step-by-step usage guidance
-- [How It Works](how-it-works.md) for an explanation of the app behaviour and storage model
-- [FAQ](faq.md) for common questions and troubleshooting
+- Operational decisions and rationale
+- Supported versions and dependency update procedures
+- Development setup and deployment notes
+- Guidance for maintaining the public Hugo site in `website/`
 
-For project setup, development, and deployment details, see the [main README](../README.md).
+## Index
+
+- [Development setup and workflow](development-setup.md)
+- [Supported versions policy](supported-versions.md)
+- [Dependency update commands](dependency-update-commands.md)
+- [Public documentation site](documentation-site.md)
+- [Developer reference](developer-reference.md) — source-of-truth files and doc placement
+
+Public user documentation is published from [`website/content/`](../website/content/) at [lottery.markheydon.me.uk](https://lottery.markheydon.me.uk/).

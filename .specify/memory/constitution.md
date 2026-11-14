@@ -63,8 +63,8 @@ User-facing features MUST include or preserve the entertainment-only disclaimer.
 | `tests/Unit/Lottery/` | Per-game unit tests | Application services |
 | `tests/Feature/` | Integration/feature tests | Application |
 | `tests/e2e/` | Playwright UI tests | Running app |
-| `docs/` | Public user documentation | — |
-| `docs-internal/` | Maintainer documentation | — |
+| `website/` | Public user site (Hugo) | — |
+| `docs/` | Maintainer documentation | — |
 | `deploy/` | Azure/nginx deploy helpers | — |
 
 ## Naming Conventions

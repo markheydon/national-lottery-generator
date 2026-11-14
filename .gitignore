@@ -21,3 +21,4 @@ npm-debug.log
 
 # Build artifacts
 *.LICENSE.txt
+/website/public/

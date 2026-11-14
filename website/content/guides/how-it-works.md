@@ -1,9 +1,10 @@
 ---
-layout: default
 title: How It Works
+weight: 20
+aliases:
+  - /how-it-works.html
+  - /how-it-works.md
 ---
-
-# How It Works
 
 The app follows a simple workflow. A visitor chooses a game, the app checks whether fresh draw history is available, and then it generates a set of number suggestions for that game.
 
