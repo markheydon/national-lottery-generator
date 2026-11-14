@@ -7,16 +7,7 @@ namespace App\Http;
 use App\Game;
 use App\Services\Lottery\CsvDownloadService;
 use App\Services\Lottery\DrawHistoryService;
-use App\Services\Lottery\EuromillionsDownload;
-use App\Services\Lottery\EuromillionsGenerate;
-use App\Services\Lottery\EuromillionsHotpicksGenerate;
-use App\Services\Lottery\LottoDownload;
-use App\Services\Lottery\LottoGenerate;
-use App\Services\Lottery\LottoHotpicksGenerate;
-use App\Services\Lottery\SetForLifeDownload;
-use App\Services\Lottery\SetForLifeGenerate;
-use App\Services\Lottery\ThunderballDownload;
-use App\Services\Lottery\ThunderballGenerate;
+use App\Services\Lottery\GameGenerateRegistry;
 
 class GameController
 {
@@ -48,7 +39,7 @@ class GameController
 
         $downloadRequired = $this->isDownloadRequiredForGame($game);
 
-        $generate = self::dispatchGenerate($game, $downloadRequired);
+        $generate = GameGenerateRegistry::generate($game->getSlug(), $downloadRequired);
 
         if ($generate === null) {
             return new Response('Unsupported game: ' . $game->getSlug(), 500);
@@ -72,94 +63,6 @@ class GameController
         }
 
         return CsvDownloadService::isDownloadRequired($downloader->filePath());
-    }
-
-    /**
-     * @return array<string, mixed>|null
-     */
-    private static function dispatchGenerate(Game $game, bool $downloadNeeded): ?array
-    {
-        return match ($game->getSlug()) {
-            'lotto' => self::generateLotto($downloadNeeded),
-            'euromillions' => self::generateEuroMillions($downloadNeeded),
-            'thunderball' => self::generateThunderball($downloadNeeded),
-            'lotto-hotpicks' => self::generateLottoHotpicks($downloadNeeded),
-            'euromillions-hotpicks' => self::generateEuroMillionsHotpicks($downloadNeeded),
-            'set-for-life' => self::generateSetForLife($downloadNeeded),
-            default => null,
-        };
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateLotto(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            LottoDownload::download();
-        }
-
-        return LottoGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateEuroMillions(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            EuromillionsDownload::download();
-        }
-
-        return EuromillionsGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateThunderball(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            ThunderballDownload::download();
-        }
-
-        return ThunderballGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateLottoHotpicks(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            LottoDownload::download();
-        }
-
-        return LottoHotpicksGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateEuroMillionsHotpicks(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            EuromillionsDownload::download();
-        }
-
-        return EuromillionsHotpicksGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateSetForLife(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            SetForLifeDownload::download();
-        }
-
-        return SetForLifeGenerate::generate();
     }
 
     /**

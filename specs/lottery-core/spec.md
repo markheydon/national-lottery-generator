@@ -95,4 +95,4 @@ While viewing generated numbers, a user can navigate to another game via the "Ot
 
 ## Gaps Identified
 
-- Resolved: slug-based dispatch in `GameController`, HTTP generate coverage in `tests/Feature/FileBasedStorageTest.php`, and unavailable draw-history UI (`templates/games/unavailable.php`).
+- Resolved: `GameGenerateRegistry` maps slugs to download/generate services; `GameController` orchestrates HTTP and view assembly only. HTTP generate coverage in `tests/Feature/FileBasedStorageTest.php`; unavailable draw-history UI in `templates/games/unavailable.php`.

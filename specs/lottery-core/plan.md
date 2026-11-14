@@ -22,21 +22,23 @@ Core platform providing game configuration, CSV download infrastructure, web rou
 
 ## Constitution Check
 
-- [x] Business logic delegated to `src/Services/Lottery/` (partial — dispatch logic remains in controller)
+- [x] Business logic delegated to `src/Services/Lottery/` including dispatch via `GameGenerateRegistry`
 - [x] File-based storage, no database for core features
 - [x] Entertainment disclaimer on generate pages
-- [ ] Thin controllers — `GameController` is 304 lines with inline dispatch (violation noted)
+- [x] Thin controllers — `GameController` handles HTTP orchestration and view formatting only
 
 ## Project Structure
 
 ```text
 src/
-├── Http/GameController.php                # index + generate orchestration
+├── Http/GameController.php                # index + generate HTTP orchestration
 ├── Http/Application.php                   # front-controller routing
 ├── Game.php                               # Config-driven game model
 └── Services/Lottery/
     ├── Downloader.php                     # Shared CSV download
     ├── CsvDownloadService.php             # Freshness checks
+    ├── GameGenerateRegistry.php           # Slug → download/read/generate dispatch
+    ├── DrawHistoryService.php             # CSV availability before generate
     └── Utils.php                          # CSV parsing, frequency analysis
 
 config/games.php                           # 6 game definitions
@@ -68,12 +70,12 @@ tests/
 
 `public/index.php` defines 2 routes. `GameController` handles index and generate. PHP templates render game cards and formatted number tables.
 
-### Phase D: Tests — DONE (partial)
+### Phase D: Tests — DONE
 
-`FileBasedStorageTest` covers config loading and storage. `UtilsTest` covers utility methods. No full HTTP feature test for generate flow.
+`FileBasedStorageTest` covers HTTP routes and storage. `GameGenerateRegistryTest` and per-game unit tests cover dispatch and generation.
 
 ## Complexity Tracking
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| Game dispatch switch in controller | Historical implementation | Per-game services exist but orchestration was never extracted |
+| _(none)_ | — | Game dispatch extracted to `GameGenerateRegistry` |

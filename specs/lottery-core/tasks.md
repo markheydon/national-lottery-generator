@@ -32,5 +32,5 @@
 ## Gaps (resolved)
 
 - [x] T014 Feature test for full HTTP generate flow (`/game/{slug}/generate`) — `FileBasedStorageTest::test_game_generate_route_returns_200`
-- [x] T015 Game dispatch in `GameController` uses slug-based `match` (dedicated registry optional)
+- [x] T015 Extract game dispatch to `GameGenerateRegistry` in `src/Services/Lottery/`
 - [x] T016 Error handling UI for failed CSV downloads — `DrawHistoryService`, `templates/games/unavailable.php`, 503 responses
