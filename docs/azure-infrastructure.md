@@ -38,14 +38,16 @@ For Bicep **workflow_dispatch**, federated credentials must match `repo:…:ref:
 | `parameters_file` | `deploy/bicep/main.bicepparam` | Bicep parameters file |
 | `what_if_only` | `true` | When `true`, run `az deployment group what-if` only; set `false` to apply (`Incremental`) |
 
-## GitHub environments
+## OIDC and GitHub environments
 
-| Environment | Used by | Identity |
-|-------------|---------|----------|
-| (repository secrets) | Application CD | User-assigned MI with **Website Contributor** on the web app |
-| `azure-infrastructure` | Bicep deploy workflow | Identity with **Contributor** (or equivalent) on the target resource group |
+Both workflows use the **same repository secrets** and the federated credential subject `repo:…:ref:refs/heads/main`. Do not attach a GitHub **environment** to the Bicep workflow unless you add a matching federated credential (for example `repo:…:environment:azure-infrastructure`) on the managed identity.
 
-Create the `azure-infrastructure` environment in GitHub and set `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID` there when the infra identity differs from application deploy.
+| Identity needs | Application CD | Bicep what-if / deploy |
+|----------------|----------------|-------------------------|
+| **Website Contributor** on the web app | Yes | Yes (same MI today) |
+| **Contributor** on the resource group | No | Yes |
+
+Grant **Contributor** on `rg-mheydon73-lottery-generator` to `oidc-msi-8d9c` if Bicep fails with authorization errors after login.
 
 ## App settings and Bicep
 
