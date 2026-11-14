@@ -9,7 +9,9 @@ Maintainer notes for repeatable App Service deployment. Closes the gap described
 | [deploy-azure-webapp.yml](../.github/workflows/deploy-azure-webapp.yml) | Every push to `main` | Build PHP and deploy application code (no Bicep) |
 | [deploy-azure-infrastructure.yml](../.github/workflows/deploy-azure-infrastructure.yml) | Manual **workflow_dispatch** only | Create or update Azure resources from `deploy/bicep/` |
 
-Pull requests that touch `deploy/bicep/**` run [bicep.yml](../.github/workflows/bicep.yml) (`az bicep build`) — compile only, no subscription access.
+Changes under `deploy/bicep/**` trigger [bicep.yml](../.github/workflows/bicep.yml) on pull requests and on pushes to `main`. The job runs `az bicep build` and `az bicep build-params` — compile only, no subscription access.
+
+The infrastructure workflow job runs only when the workflow is started from the `main` branch (`github.ref == 'refs/heads/main'`).
 
 ## Production subscription
 
@@ -28,6 +30,14 @@ Configure these **before merging** the OIDC application CD workflow — the next
 
 For Bicep **workflow_dispatch**, federated credentials must match `repo:…:ref:refs/heads/main` — run the infrastructure workflow from the `main` branch only.
 
+### Infrastructure workflow inputs
+
+| Input | Default | Purpose |
+|-------|---------|---------|
+| `resource_group` | `rg-mheydon73-lottery-generator` | Target resource group (created in UK South if missing) |
+| `parameters_file` | `deploy/bicep/main.bicepparam` | Bicep parameters file |
+| `what_if_only` | `true` | When `true`, run `az deployment group what-if` only; set `false` to apply (`Incremental`) |
+
 ## GitHub environments
 
 | Environment | Used by | Identity |
@@ -41,7 +51,20 @@ Create the `azure-infrastructure` environment in GitHub and set `AZURE_CLIENT_ID
 
 Production `main.bicepparam` keeps `manageAppSettings = false` so incremental Bicep deploys do not replace the full app settings map in the portal. Set `manageAppSettings = true` only for green-field deployments.
 
+Brown-field production uses `adoptExistingOidcIdentity = true` so Bicep references the existing user-assigned identity and manages the federated credential plus **Website Contributor** on the web app (see `deploy/bicep/modules/githubOidc.bicep`). Forks that create a new identity set `adoptExistingOidcIdentity = false` in `main.bicepparam.example`.
+
+Optional Log Analytics and Application Insights deploy when `enableMonitoring = true` in parameters (`deploy/bicep/modules/monitoring.bicep`).
+
 The application deploy identity needs **Website Contributor** on the web app. After OIDC CD succeeds, remove the legacy publish-profile secret if it is still present.
+
+## Bicep modules
+
+| Module | Role |
+|--------|------|
+| `appServicePlan.bicep` | Linux App Service plan (SKU from parameters) |
+| `webApp.bicep` | PHP web app (`linuxFxVersion`, optional app settings when `manageAppSettings` is true) |
+| `githubOidc.bicep` | User-assigned identity, GitHub federated credential, Website Contributor on the web app |
+| `monitoring.bicep` | Log Analytics and Application Insights (when `enableMonitoring` is true) |
 
 ## First Bicep deploy
 

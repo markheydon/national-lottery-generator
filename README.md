@@ -64,7 +64,7 @@ The live site is deployed to Azure App Service on push to `main` (application CD
 | `storage/app/lottery/` | Cached draw-history CSVs |
 | `tests/Unit/`, `tests/Feature/` | PHPUnit |
 | `tests/e2e/` | Playwright UI tests |
-| `deploy/` | Optional nginx / Azure helpers (local or cloud) |
+| `deploy/` | Azure Bicep (`bicep/`), nginx helper, local server notes |
 
 ## Development
 

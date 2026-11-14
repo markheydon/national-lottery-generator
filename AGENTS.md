@@ -17,6 +17,7 @@ Minimal PHP front controller with plain PHP templates and file-based storage (no
 | Unit tests | `tests/Unit/Lottery/` |
 | Feature tests | `tests/Feature/` |
 | E2E tests | `tests/e2e/` (Playwright) |
+| Azure deploy | `deploy/bicep/` (Bicep), `deploy/README.md`, `docs/azure-infrastructure.md`; app CD `.github/workflows/deploy-azure-webapp.yml`; infra `.github/workflows/deploy-azure-infrastructure.yml` (manual) |
 | Azure nginx helper | `deploy/nginx-default` (also adaptable for local nginx; see `deploy/README.md`) |
 
 Hotpicks variants (`lotto-hotpicks`, `euromillions-hotpicks`) share their parent game's download service. See `src/Game.php::getDownloader()`.
@@ -122,6 +123,8 @@ When writing or updating code or documentation, prioritise:
 - `config/games.php` for supported games
 - `src/` and `tests/` for behaviour and usage evidence
 - `.github/workflows/ci.yml` for CI and PHP matrix
+- `.github/workflows/deploy-azure-webapp.yml` and `deploy/bicep/main.bicepparam` for production PHP runtime on Azure
+- `docs/azure-infrastructure.md` and `deploy/README.md` for Azure deploy and Bicep
 - `docs/supported-versions.md` for version policy
 - `docs/development-setup.md` for maintainer setup
 - `website/hugo.yaml` and `.github/workflows/hugo.yml` for public site build and deploy

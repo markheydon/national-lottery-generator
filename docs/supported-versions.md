@@ -40,6 +40,7 @@ verified in this repository.
 - `composer.lock`
 - `.github/workflows/ci.yml`
 - `.github/workflows/deploy-azure-webapp.yml`
+- `.github/workflows/bicep.yml` and `deploy/bicep/main.bicep` (`phpVersion` parameter)
 - `.github/workflows/phpmd.yml`
 - `.devcontainer/devcontainer.json` (`mcr.microsoft.com/devcontainers/php:8.5`)
 - `AGENTS.md`
@@ -52,6 +53,6 @@ When changing the supported PHP version:
 2. Update `composer.json` PHP requirement and platform config
 3. Update `.devcontainer/devcontainer.json` image tag if applicable
 4. Update `README.md` version badges and requirements
-5. Update GitHub workflow PHP versions in `ci.yml`, `deploy-azure-webapp.yml`, and `phpmd.yml`
+5. Update GitHub workflow PHP versions in `ci.yml`, `deploy-azure-webapp.yml`, and `phpmd.yml`, and `phpVersion` in `deploy/bicep/main.bicep` / `main.bicepparam`
 6. Update `AGENTS.md` if version statements are present
 7. Run the full test suite on the lowest and highest supported PHP versions

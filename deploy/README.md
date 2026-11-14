@@ -43,11 +43,11 @@ OIDC login uses repository secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_
 
 ### Bicep (`deploy/bicep/`)
 
-- `main.bicep` — Linux App Service plan, PHP web app, GitHub OIDC managed identity (federated credential + Website Contributor).
-- `main.bicepparam` — production-aligned names for incremental adoption.
-- `main.bicepparam.example` — template for forks (unique app and identity names).
+- `main.bicep` — orchestrates plan, web app, OIDC identity, and optional monitoring modules.
+- `main.bicepparam` — production-aligned names for incremental adoption (`manageAppSettings = false`, `adoptExistingOidcIdentity = true`).
+- `main.bicepparam.example` — template for forks (unique app and identity names; creates a new OIDC identity).
 
-CI runs `az bicep build` when `deploy/bicep/**` changes (`.github/workflows/bicep.yml`).
+CI runs `az bicep build` and `az bicep build-params` when `deploy/bicep/**` changes (`.github/workflows/bicep.yml`).
 
 ### Runtime on App Service
 

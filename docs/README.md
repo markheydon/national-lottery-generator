@@ -12,6 +12,7 @@ Use this folder for:
 ## Index
 
 - [Development setup and workflow](development-setup.md)
+- [Azure infrastructure (Bicep)](azure-infrastructure.md)
 - [Supported versions policy](supported-versions.md)
 - [Dependency update commands](dependency-update-commands.md)
 - [Public documentation site](documentation-site.md)

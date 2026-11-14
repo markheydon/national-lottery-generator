@@ -33,6 +33,11 @@ When updating public docs, align wording with:
 - [templates/games/unavailable.php](../templates/games/unavailable.php)
 - [deploy/README.md](../deploy/README.md) — local Apache/nginx and Azure notes
 - [deploy/nginx-default](../deploy/nginx-default) (nginx helper for Azure or local)
+- [deploy/bicep/](../deploy/bicep/) — App Service Bicep modules and parameters
+- [docs/azure-infrastructure.md](azure-infrastructure.md) — OIDC, GitHub environments, and infra deploy workflow
+- `.github/workflows/deploy-azure-webapp.yml` — application CD (push to `main`)
+- `.github/workflows/deploy-azure-infrastructure.yml` — manual Bicep deploy
+- `.github/workflows/bicep.yml` — compile Bicep on PR / `main` when `deploy/bicep/**` changes
 - [README.md](../README.md)
 - [CONTRIBUTING.md](../CONTRIBUTING.md)
 
@@ -50,6 +55,7 @@ website/content/
 docs/
 ├── README.md
 ├── development-setup.md
+├── azure-infrastructure.md
 ├── supported-versions.md
 ├── dependency-update-commands.md
 ├── documentation-site.md
