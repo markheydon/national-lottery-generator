@@ -38,8 +38,14 @@ param logAnalyticsWorkspaceName string = 'law-${webAppName}'
 @description('Application Insights name when monitoring is enabled.')
 param applicationInsightsName string = 'appi-${webAppName}'
 
-@description('Extra web app settings merged with defaults.')
+@description('When true, Bicep manages the web app settings map (green-field). Keep false for brown-field to avoid replacing portal settings.')
+param manageAppSettings bool = false
+
+@description('Extra web app settings merged with defaults when manageAppSettings is true.')
 param appSettings object = {}
+
+@description('Reference an existing OIDC user-assigned identity instead of creating one.')
+param adoptExistingOidcIdentity bool = true
 
 var alwaysOn = appServicePlanSku.tier != 'Free'
 
@@ -60,6 +66,7 @@ module webApp 'modules/webApp.bicep' = {
     appServicePlanId: appServicePlan.outputs.appServicePlanId
     phpVersion: phpVersion
     alwaysOn: alwaysOn
+    manageAppSettings: manageAppSettings
     appSettings: appSettings
   }
 }
@@ -70,6 +77,7 @@ module githubOidc 'modules/githubOidc.bicep' = {
     location: location
     oidcIdentityName: oidcIdentityName
     federatedCredentialName: federatedCredentialName
+    adoptExistingOidcIdentity: adoptExistingOidcIdentity
     githubOidcSubject: githubOidcSubject
     webAppName: webAppName
   }

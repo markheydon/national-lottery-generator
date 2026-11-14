@@ -40,5 +40,17 @@ resource appInsightsConnection 'Microsoft.Web/sites/siteextensions@2024-11-01' =
   name: 'Microsoft.ApplicationInsights.AzureWebSites'
 }
 
+var existingAppSettings = list('${webApp.id}/config/appsettings', '2024-11-01').properties
+
+var appSettingsWithInsights = union(existingAppSettings, {
+  APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString
+})
+
+resource webAppAppSettings 'Microsoft.Web/sites/config@2024-11-01' = {
+  parent: webApp
+  name: 'appsettings'
+  properties: appSettingsWithInsights
+}
+
 output applicationInsightsConnectionString string = applicationInsights.properties.ConnectionString
 output logAnalyticsWorkspaceId string = logAnalytics.id

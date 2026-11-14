@@ -29,6 +29,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: azure-infrastructure
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v7

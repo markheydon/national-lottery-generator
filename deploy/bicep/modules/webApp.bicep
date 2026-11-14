@@ -16,7 +16,10 @@ param alwaysOn bool
 @description('Startup command for nginx on Linux App Service.')
 param startupCommand string = 'cp /home/site/wwwroot/deploy/nginx-default /etc/nginx/sites-available/default && service nginx reload'
 
-@description('Optional app settings (no legacy Laravel keys).')
+@description('When true, set app settings from this template. Default false so incremental deploys do not replace portal settings.')
+param manageAppSettings bool = false
+
+@description('Optional app settings merged with defaults when manageAppSettings is true (no legacy Laravel keys).')
 param appSettings object = {}
 
 var defaultSettings = {
@@ -55,7 +58,7 @@ resource webAppConfigWeb 'Microsoft.Web/sites/config@2024-11-01' = {
   }
 }
 
-resource webAppAppSettings 'Microsoft.Web/sites/config@2024-11-01' = {
+resource webAppAppSettings 'Microsoft.Web/sites/config@2024-11-01' = if (manageAppSettings) {
   parent: webApp
   name: 'appsettings'
   properties: mergedSettings

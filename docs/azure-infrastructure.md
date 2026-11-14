@@ -13,11 +13,11 @@ Pull requests that touch `deploy/bicep/**` run [bicep.yml](../.github/workflows/
 
 ## Production subscription
 
-The live web app is in subscription **mhcg-shared-001** (`d2626ad0-5fb0-45ba-8746-602220257bc6`), resource group `rg-mheydon73-lottery-generator`, UK South.
+The live web app is in subscription **mhcg-shared-001** (set `AZURE_SUBSCRIPTION_ID` from your tenant; do not commit subscription GUIDs), resource group `rg-mheydon73-lottery-generator`, UK South.
 
 ## GitHub repository configuration
 
-Configure these before OIDC app deploy or Bicep (if not already set):
+Configure these **before merging** the OIDC application CD workflow — the next push to `main` uses OIDC only (no publish profile fallback):
 
 | Name | Type | Example / notes |
 |------|------|------------------|
@@ -26,9 +26,22 @@ Configure these before OIDC app deploy or Bicep (if not already set):
 | `AZURE_SUBSCRIPTION_ID` | Secret | Target subscription ID |
 | `AZURE_WEBAPP_NAME` | Variable | `mheydon73-lottery-generator` |
 
-The deploy identity needs **Website Contributor** on the web app. The infrastructure workflow identity needs **Contributor** (or equivalent) on the target resource group to run Bicep — the deploy MI alone may be insufficient for infra deploys.
+For Bicep **workflow_dispatch**, federated credentials must match `repo:…:ref:refs/heads/main` — run the infrastructure workflow from the `main` branch only.
 
-After OIDC CD succeeds, remove the legacy publish-profile secret if it is still present.
+## GitHub environments
+
+| Environment | Used by | Identity |
+|-------------|---------|----------|
+| (repository secrets) | Application CD | User-assigned MI with **Website Contributor** on the web app |
+| `azure-infrastructure` | Bicep deploy workflow | Identity with **Contributor** (or equivalent) on the target resource group |
+
+Create the `azure-infrastructure` environment in GitHub and set `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID` there when the infra identity differs from application deploy.
+
+## App settings and Bicep
+
+Production `main.bicepparam` keeps `manageAppSettings = false` so incremental Bicep deploys do not replace the full app settings map in the portal. Set `manageAppSettings = true` only for green-field deployments.
+
+The application deploy identity needs **Website Contributor** on the web app. After OIDC CD succeeds, remove the legacy publish-profile secret if it is still present.
 
 ## First Bicep deploy
 

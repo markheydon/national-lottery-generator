@@ -17,4 +17,6 @@ param oidcIdentityName = 'oidc-msi-8d9c'
 param federatedCredentialName = 'oidc-credential-8468'
 param githubOidcSubject = 'repo:markheydon/national-lottery-generator:ref:refs/heads/main'
 param enableMonitoring = false
+param manageAppSettings = false
 param appSettings = {}
+param adoptExistingOidcIdentity = true
