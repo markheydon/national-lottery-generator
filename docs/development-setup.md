@@ -89,6 +89,8 @@ See [deploy/README.md](../deploy/README.md) for Apache/nginx notes.
 
 Application code deploys via GitHub Actions on each push to `main` (OIDC to Azure). Bicep infrastructure deploy is **manual** and separate — see [azure-infrastructure.md](azure-infrastructure.md). Pull requests that change `deploy/bicep/**` only compile Bicep in CI; they do not touch your subscription.
 
+GitHub **releases** and version tags are optional milestones for humans (changelog bookmarks). They do not gate or trigger production deploy; what runs in Azure always tracks `main`.
+
 The application is deployed to Azure App Service with file-based storage. Production does not require Laravel environment variables (`APP_KEY`, `CACHE_DRIVER`, etc.). Optional:
 
 - `LOTTERY_DOWNLOAD_TIMEOUT` (default 30)
