@@ -1,0 +1,32 @@
+name: Bicep
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'deploy/bicep/**'
+      - '.github/workflows/bicep.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'deploy/bicep/**'
+      - '.github/workflows/bicep.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: Build Bicep
+        run: |
+          az bicep build --file deploy/bicep/main.bicep
+          az bicep build-params --file deploy/bicep/main.bicepparam

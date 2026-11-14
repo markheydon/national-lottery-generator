@@ -32,12 +32,29 @@ Keep the front-controller `try_files` / PHP-FPM location blocks.
 
 ## Azure App Service (production)
 
-Production deploy is automated by `.github/workflows/deploy-azure-webapp.yml` (`composer install --no-dev`, artifact upload).
+### Two workflows
 
-A typical App Service startup command copies this nginx config into place:
+| Workflow | Trigger | Role |
+|----------|---------|------|
+| `.github/workflows/deploy-azure-webapp.yml` | Push to `main` | Ship PHP — **does not** run Bicep |
+| `.github/workflows/deploy-azure-infrastructure.yml` | Manual only | Provision or update Azure from `deploy/bicep/` |
+
+OIDC login uses repository secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, and variable `AZURE_WEBAPP_NAME`. Details: [docs/azure-infrastructure.md](../docs/azure-infrastructure.md).
+
+### Bicep (`deploy/bicep/`)
+
+- `main.bicep` — Linux App Service plan, PHP web app, GitHub OIDC managed identity (federated credential + Website Contributor).
+- `main.bicepparam` — production-aligned names for incremental adoption.
+- `main.bicepparam.example` — template for forks (unique app and identity names).
+
+CI runs `az bicep build` when `deploy/bicep/**` changes (`.github/workflows/bicep.yml`).
+
+### Runtime on App Service
+
+Startup command (nginx on port 8080):
 
 ```bash
 cp /home/site/wwwroot/deploy/nginx-default /etc/nginx/sites-available/default && service nginx reload
 ```
 
-Optional env: `LOTTERY_DOWNLOAD_TIMEOUT` (default 30), `LOTTERY_BACKUP_MAX` (default 5). No `APP_KEY` or database settings are required.
+Optional app settings: `LOTTERY_DOWNLOAD_TIMEOUT` (default 30), `LOTTERY_BACKUP_MAX` (default 5). Do not add legacy `APP_KEY` / Laravel settings — this app is vanilla PHP.

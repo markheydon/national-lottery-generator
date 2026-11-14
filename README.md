@@ -51,7 +51,7 @@ You can also serve `public/` with Apache (`public/.htaccess`) or nginx — see [
 
 ### Azure App Service (production)
 
-The live site is deployed to Azure App Service. The workflow runs `composer install --no-dev` and uses `public/` as the web root. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`, `LOTTERY_BACKUP_MAX`. Nginx helper: [deploy/nginx-default](deploy/nginx-default).
+The live site is deployed to Azure App Service on push to `main` (application CD only). Infrastructure is defined in Bicep under [deploy/bicep/](deploy/bicep/) and deployed manually when needed — see [deploy/README.md](deploy/README.md) and [docs/azure-infrastructure.md](docs/azure-infrastructure.md). Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`, `LOTTERY_BACKUP_MAX`. Nginx helper: [deploy/nginx-default](deploy/nginx-default).
 
 ## Project layout
 
