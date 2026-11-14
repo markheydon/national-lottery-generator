@@ -19,14 +19,14 @@ final class DrawHistoryService
             return false;
         }
 
-        if (CsvDownloadService::isDownloadRequired($downloader->filePath())) {
-            $error = GameGenerateRegistry::refreshDownload($game->getSlug());
+        $slug = $game->getSlug();
+        $downloadRequired = CsvDownloadService::isDownloadRequired($downloader->filePath());
+        $hasReadableDraws = GameGenerateRegistry::drawCount($slug) >= 1;
 
-            if ($error !== '') {
-                return false;
-            }
+        if ($downloadRequired || ! $hasReadableDraws) {
+            GameGenerateRegistry::refreshDownload($slug);
         }
 
-        return GameGenerateRegistry::drawCount($game->getSlug()) >= 1;
+        return GameGenerateRegistry::drawCount($slug) >= 1;
     }
 }

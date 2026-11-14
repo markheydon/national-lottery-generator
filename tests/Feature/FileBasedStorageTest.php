@@ -11,6 +11,31 @@ use PHPUnit\Framework\TestCase;
 
 class FileBasedStorageTest extends TestCase
 {
+    private ?string $savedLottoDownloadUrl = null;
+
+    private ?string $savedDownloadTimeout = null;
+
+    protected function tearDown(): void
+    {
+        if ($this->savedLottoDownloadUrl !== null) {
+            putenv('LOTTERY_DOWNLOAD_URL_LOTTO=' . $this->savedLottoDownloadUrl);
+            $_ENV['LOTTERY_DOWNLOAD_URL_LOTTO'] = $this->savedLottoDownloadUrl;
+        } else {
+            putenv('LOTTERY_DOWNLOAD_URL_LOTTO');
+            unset($_ENV['LOTTERY_DOWNLOAD_URL_LOTTO']);
+        }
+
+        if ($this->savedDownloadTimeout !== null) {
+            putenv('LOTTERY_DOWNLOAD_TIMEOUT=' . $this->savedDownloadTimeout);
+            $_ENV['LOTTERY_DOWNLOAD_TIMEOUT'] = $this->savedDownloadTimeout;
+        } else {
+            putenv('LOTTERY_DOWNLOAD_TIMEOUT');
+            unset($_ENV['LOTTERY_DOWNLOAD_TIMEOUT']);
+        }
+
+        parent::tearDown();
+    }
+
     public function test_games_load_from_config(): void
     {
         $games = Game::all();
@@ -97,6 +122,13 @@ class FileBasedStorageTest extends TestCase
             unlink($historyPath);
         }
 
+        $this->savedLottoDownloadUrl = getenv('LOTTERY_DOWNLOAD_URL_LOTTO') !== false
+            ? (string) getenv('LOTTERY_DOWNLOAD_URL_LOTTO')
+            : '';
+        $this->savedDownloadTimeout = getenv('LOTTERY_DOWNLOAD_TIMEOUT') !== false
+            ? (string) getenv('LOTTERY_DOWNLOAD_TIMEOUT')
+            : '';
+
         putenv('LOTTERY_DOWNLOAD_URL_LOTTO=http://127.0.0.1:9/unreachable');
         $_ENV['LOTTERY_DOWNLOAD_URL_LOTTO'] = 'http://127.0.0.1:9/unreachable';
         putenv('LOTTERY_DOWNLOAD_TIMEOUT=1');
@@ -112,6 +144,31 @@ class FileBasedStorageTest extends TestCase
         );
 
         seed_lottery_fixtures();
+    }
+
+    public function test_generate_serves_stale_cache_when_refresh_fails(): void
+    {
+        $historyPath = storage_path('lottery/lotto-draw-history.csv');
+        $this->assertFileExists($historyPath);
+
+        touch($historyPath, time() - (25 * 60 * 60));
+
+        $this->savedLottoDownloadUrl = getenv('LOTTERY_DOWNLOAD_URL_LOTTO') !== false
+            ? (string) getenv('LOTTERY_DOWNLOAD_URL_LOTTO')
+            : '';
+        $this->savedDownloadTimeout = getenv('LOTTERY_DOWNLOAD_TIMEOUT') !== false
+            ? (string) getenv('LOTTERY_DOWNLOAD_TIMEOUT')
+            : '';
+
+        putenv('LOTTERY_DOWNLOAD_URL_LOTTO=http://127.0.0.1:9/unreachable');
+        $_ENV['LOTTERY_DOWNLOAD_URL_LOTTO'] = 'http://127.0.0.1:9/unreachable';
+        putenv('LOTTERY_DOWNLOAD_TIMEOUT=1');
+        $_ENV['LOTTERY_DOWNLOAD_TIMEOUT'] = '1';
+
+        $response = (new Application())->handle('GET', '/game/lotto/generate');
+
+        $this->assertSame(200, $response->getStatus());
+        $this->assertStringContainsString('Suggested Lines', $response->getBody());
     }
 
     public function test_non_get_method_returns_405_with_allow_header(): void

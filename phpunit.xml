@@ -25,6 +25,5 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="LOTTERY_DOWNLOAD_TIMEOUT" value="30"/>
-        <env name="LOTTERY_USE_FIXTURES" value="1"/>
     </php>
 </phpunit>

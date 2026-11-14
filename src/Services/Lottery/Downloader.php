@@ -76,6 +76,7 @@ class Downloader
             if (! $failRename) {
                 try {
                     $this->copyLocalFile($storagePath, $backupPath);
+                    $this->pruneOldBackups();
                 } catch (\Exception $e) {
                     $this->safeLog('Failed to backup old history file: ' . $e->getMessage());
 
