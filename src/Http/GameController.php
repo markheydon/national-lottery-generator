@@ -6,16 +6,8 @@ namespace App\Http;
 
 use App\Game;
 use App\Services\Lottery\CsvDownloadService;
-use App\Services\Lottery\EuromillionsDownload;
-use App\Services\Lottery\EuromillionsGenerate;
-use App\Services\Lottery\EuromillionsHotpicksGenerate;
-use App\Services\Lottery\LottoDownload;
-use App\Services\Lottery\LottoGenerate;
-use App\Services\Lottery\LottoHotpicksGenerate;
-use App\Services\Lottery\SetForLifeDownload;
-use App\Services\Lottery\SetForLifeGenerate;
-use App\Services\Lottery\ThunderballDownload;
-use App\Services\Lottery\ThunderballGenerate;
+use App\Services\Lottery\DrawHistoryService;
+use App\Services\Lottery\GameGenerateRegistry;
 
 class GameController
 {
@@ -35,20 +27,24 @@ class GameController
             return new Response('Game not found', 404);
         }
 
-        $downloadRequired = $this->isDownloadRequiredForGame($game);
+        if (! DrawHistoryService::ensureAvailable($game)) {
+            return new Response(View::render('games/unavailable', [
+                'title' => $game->getGameName(),
+                'gameName' => $game->getGameName(),
+                'gameLogo' => $game->getGameLogo(),
+                'currentSlug' => $slug,
+                'allGames' => Game::all(),
+            ]), 503);
+        }
 
-        $generate = match (strtolower($game->getGameName())) {
-            'euromillions' => self::generateEuroMillions($downloadRequired),
-            'lotto' => self::generateLotto($downloadRequired),
-            'thunderball' => self::generateThunderball($downloadRequired),
-            'lotto hotpicks' => self::generateLottoHotpicks($downloadRequired),
-            'euromillions hotpicks' => self::generateEuroMillionsHotpicks($downloadRequired),
-            'set for life' => self::generateSetForLife($downloadRequired),
-            default => null,
-        };
+        $slug = $game->getSlug();
+        $downloadRequired = $this->isDownloadRequiredForGame($game)
+            && GameGenerateRegistry::drawCount($slug) < 1;
+
+        $generate = GameGenerateRegistry::generate($slug, $downloadRequired);
 
         if ($generate === null) {
-            return new Response('Unsupported Game Name: ' . $game->getGameName(), 500);
+            return new Response('Unsupported game: ' . $game->getSlug(), 500);
         }
 
         $viewData = self::buildViewDataArray($generate);
@@ -69,78 +65,6 @@ class GameController
         }
 
         return CsvDownloadService::isDownloadRequired($downloader->filePath());
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateLotto(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            LottoDownload::download();
-        }
-
-        return LottoGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateEuroMillions(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            EuromillionsDownload::download();
-        }
-
-        return EuromillionsGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateThunderball(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            ThunderballDownload::download();
-        }
-
-        return ThunderballGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateLottoHotpicks(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            LottoDownload::download();
-        }
-
-        return LottoHotpicksGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateEuroMillionsHotpicks(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            EuromillionsDownload::download();
-        }
-
-        return EuromillionsHotpicksGenerate::generate();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function generateSetForLife(bool $downloadNeeded): array
-    {
-        if ($downloadNeeded) {
-            SetForLifeDownload::download();
-        }
-
-        return SetForLifeGenerate::generate();
     }
 
     /**

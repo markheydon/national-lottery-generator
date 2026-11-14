@@ -22,7 +22,7 @@ composer install
 php -S localhost:8000 -t public
 ```
 
-Optional: copy `.env.example` to `.env` if you need to tune CSV download timeouts or test URL overrides.
+Optional: copy `.env.example` to `.env` if you need to tune CSV download timeouts, backup retention (`LOTTERY_BACKUP_MAX`), or test URL overrides.
 
 Then open the app at http://localhost:8000.
 
@@ -51,7 +51,7 @@ You can also serve `public/` with Apache (`public/.htaccess`) or nginx — see [
 
 ### Azure App Service (production)
 
-The live site is deployed to Azure App Service. The workflow runs `composer install --no-dev` and uses `public/` as the web root. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`. Nginx helper: [deploy/nginx-default](deploy/nginx-default).
+The live site is deployed to Azure App Service. The workflow runs `composer install --no-dev` and uses `public/` as the web root. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT`, `LOTTERY_BACKUP_MAX`. Nginx helper: [deploy/nginx-default](deploy/nginx-default).
 
 ## Project layout
 

@@ -27,18 +27,36 @@ class Utils
      */
     public static function csvToArray($filename = '', $delimiter = ','): array
     {
+        if ($filename === '' || ! is_readable($filename)) {
+            return [];
+        }
+
         $header = null;
         $data = [];
-        if (($handle = fopen($filename, 'r')) !== false) {
+        $handle = fopen($filename, 'r');
+
+        if ($handle === false) {
+            return [];
+        }
+
+        try {
             while (($row = fgetcsv($handle, 1000, $delimiter, '"', '\\')) !== false) {
-                if (!$header) {
+                if (! $header) {
                     $header = $row;
-                } else {
-                    $data[] = array_combine($header, $row);
+
+                    continue;
                 }
+
+                if (count($header) !== count($row)) {
+                    continue;
+                }
+
+                $data[] = array_combine($header, $row);
             }
+        } finally {
             fclose($handle);
         }
+
         return $data;
     }
 

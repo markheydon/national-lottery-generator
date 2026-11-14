@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Lottery;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 abstract class DownloaderTestCase extends TestCase
@@ -13,6 +14,7 @@ abstract class DownloaderTestCase extends TestCase
      */
     abstract protected function download($failDownload = false, $failRename = false): string;
 
+    #[Group('integration')]
     public function testDownloadOK(): void
     {
         $result = $this->download();

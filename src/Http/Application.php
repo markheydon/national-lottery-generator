@@ -12,7 +12,10 @@ final class Application
     public function handle(string $method, string $path): Response
     {
         if ($method !== 'GET') {
-            return new Response('Method Not Allowed', 405);
+            return new Response('Method Not Allowed', 405, [
+                'Content-Type' => 'text/html; charset=UTF-8',
+                'Allow' => 'GET',
+            ]);
         }
 
         $path = rtrim($path, '/') ?: '/';

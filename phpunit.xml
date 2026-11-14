@@ -17,6 +17,11 @@
             <directory>src</directory>
         </include>
     </source>
+    <groups>
+        <exclude>
+            <group>integration</group>
+        </exclude>
+    </groups>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="LOTTERY_DOWNLOAD_TIMEOUT" value="30"/>

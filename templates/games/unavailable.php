@@ -1,0 +1,54 @@
+<?php
+
+ob_start();
+?>
+<nav class="game-nav mt-3 mt-md-0">
+    <div class="dropdown">
+        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="gameMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Other Games
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gameMenuDropdown">
+            <a class="dropdown-item" href="/">← All Games</a>
+            <div class="dropdown-divider"></div>
+            <?php foreach ($allGames as $game) : ?>
+                <?php if ($game->getSlug() !== $currentSlug) : ?>
+                    <a class="dropdown-item" href="/game/<?= htmlspecialchars($game->getSlug(), ENT_QUOTES, 'UTF-8') ?>/generate"><?= htmlspecialchars($game->getGameName(), ENT_QUOTES, 'UTF-8') ?></a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</nav>
+<?php
+$navigation = ob_get_clean();
+
+ob_start();
+?>
+    <div class="alert alert-danger" role="alert">
+        <p class="lead mb-0">
+            <em>
+                While the numbers generated using this just-for-fun tool are not random, they are highly unlikely to actually win you any money!  The National Lottery IS totally random!
+                Use at your own risk.  I am in no way affiliated with the National Lottery.
+            </em>
+        </p>
+    </div>
+
+    <div class="row align-items-center">
+        <div class="col-sm-12 col-md-4 mb-4">
+            <div class="card mx-auto" style="max-width: 18rem;">
+                <img class="card-img-top"
+                     src="<?= htmlspecialchars(asset('img/' . $gameLogo), ENT_QUOTES, 'UTF-8') ?>"
+                     alt="<?= htmlspecialchars($gameName, ENT_QUOTES, 'UTF-8') ?>"/>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <h2 class="h3 mb-3"><?= htmlspecialchars($gameName, ENT_QUOTES, 'UTF-8') ?></h2>
+            <p class="lead">
+                Draw history is not available right now. The National Lottery data feed may be temporarily unreachable, or this is the first visit before a successful download.
+            </p>
+            <p class="mb-0">Please try again in a few minutes.</p>
+        </div>
+    </div>
+<?php
+$content = ob_get_clean();
+
+include project_root() . '/templates/layout.php';

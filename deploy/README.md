@@ -40,4 +40,4 @@ A typical App Service startup command copies this nginx config into place:
 cp /home/site/wwwroot/deploy/nginx-default /etc/nginx/sites-available/default && service nginx reload
 ```
 
-Optional env: `LOTTERY_DOWNLOAD_TIMEOUT` (default 30). No `APP_KEY` or database settings are required.
+Optional env: `LOTTERY_DOWNLOAD_TIMEOUT` (default 30), `LOTTERY_BACKUP_MAX` (default 5). No `APP_KEY` or database settings are required.

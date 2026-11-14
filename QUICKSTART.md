@@ -107,7 +107,7 @@ ln -sfn /home/vscode/.cache/national-lottery-generator-vendor vendor
 
 ### Optional environment file
 
-Copy `.env.example` to `.env` only if you need to tune `LOTTERY_DOWNLOAD_TIMEOUT` or test URL overrides. The app runs without it.
+Copy `.env.example` to `.env` only if you need to tune `LOTTERY_DOWNLOAD_TIMEOUT`, `LOTTERY_BACKUP_MAX`, or test URL overrides. The app runs without it.
 
 ### Permission errors in `storage/`
 

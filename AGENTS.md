@@ -8,7 +8,7 @@ Minimal PHP front controller with plain PHP templates and file-based storage (no
 
 | Area | Path |
 |------|------|
-| Lottery services | `src/Services/Lottery/` — per-game `*Download` and `*Generate` classes |
+| Lottery services | `src/Services/Lottery/` — per-game `*Download` and `*Generate` classes; `GameGenerateRegistry` (slug dispatch); `DrawHistoryService` (CSV availability) |
 | HTTP layer | `src/Http/GameController.php`, `src/Http/Application.php` |
 | Front controller | `public/index.php` |
 | Game config | `config/games.php` — slug, name, logo per game |
@@ -21,7 +21,7 @@ Minimal PHP front controller with plain PHP templates and file-based storage (no
 
 Hotpicks variants (`lotto-hotpicks`, `euromillions-hotpicks`) share their parent game's download service. See `src/Game.php::getDownloader()`.
 
-Draw history CSVs are stored in `storage/app/lottery/`. Downloads refresh when files are older than 24 hours (`CsvDownloadService`). Optional env: `LOTTERY_DOWNLOAD_TIMEOUT` (default 30s).
+Draw history CSVs are stored in `storage/app/lottery/`. Downloads refresh when files are older than 24 hours (`CsvDownloadService`). Refreshes back up the current file before replace; failed downloads leave the previous file in place when possible. Optional env: `LOTTERY_DOWNLOAD_TIMEOUT` (default 30s), `LOTTERY_BACKUP_MAX` (default 5). Unavailable draw history renders `templates/games/unavailable.php` (HTTP 503).
 
 ## Essential Commands
 
@@ -40,7 +40,7 @@ Playwright E2E (`tests/e2e/`): runs in GitHub Actions CI on pull requests only (
 1. Add entry to `config/games.php` (slug, name, logo)
 2. Create `src/Services/Lottery/{Game}Download.php` and `{Game}Generate.php`
 3. Add unit tests in `tests/Unit/Lottery/`
-4. Wire dispatch in `GameController` (refactor tracked in #189)
+4. Register the slug in `GameGenerateRegistry` (`src/Services/Lottery/GameGenerateRegistry.php`)
 
 ## Constraints
 
@@ -146,7 +146,7 @@ Skills live in `.agents/skills/<skill-name>/SKILL.md` (agent-agnostic). Cursor s
 - Maintainer setup: `docs-internal/development-setup.md`
 - Supported PHP versions: `docs-internal/supported-versions.md`
 - Public user docs: `docs/`
-- Open follow-ups: #187 (Set For Life tests), #188 (constitution hotpicks note), #189 (GameController refactor), #190 (HTTP feature test)
+- Open follow-ups: #187 (Set For Life tests), #188 (constitution hotpicks note), #190 (HTTP feature test)
 
 ## Cursor Cloud specific instructions
 
