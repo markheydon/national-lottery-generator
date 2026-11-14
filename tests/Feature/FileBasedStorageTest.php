@@ -33,6 +33,8 @@ class FileBasedStorageTest extends TestCase
             unset($_ENV['LOTTERY_DOWNLOAD_TIMEOUT']);
         }
 
+        seed_lottery_fixtures();
+
         parent::tearDown();
     }
 

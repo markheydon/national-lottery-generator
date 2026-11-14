@@ -37,9 +37,11 @@ class GameController
             ]), 503);
         }
 
-        $downloadRequired = $this->isDownloadRequiredForGame($game);
+        $slug = $game->getSlug();
+        $downloadRequired = $this->isDownloadRequiredForGame($game)
+            && GameGenerateRegistry::drawCount($slug) < 1;
 
-        $generate = GameGenerateRegistry::generate($game->getSlug(), $downloadRequired);
+        $generate = GameGenerateRegistry::generate($slug, $downloadRequired);
 
         if ($generate === null) {
             return new Response('Unsupported game: ' . $game->getSlug(), 500);
