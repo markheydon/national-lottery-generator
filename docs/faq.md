@@ -38,7 +38,9 @@ No. The app uses local file storage for cached draw-history CSVs rather than a d
 
 ## What if a game or page is not loading?
 
-Try refreshing the page and checking that you are visiting the current public site. If the issue continues, please open an issue on [GitHub](https://github.com/markheydon/national-lottery-generator/issues).
+If a game page says draw history is not available, the National Lottery data feed may be temporarily unreachable, or the server has not yet stored a successful download for that game. Wait a few minutes and refresh the page.
+
+For other errors, try refreshing and checking that you are visiting the current public site. If the issue continues, please open an issue on [GitHub](https://github.com/markheydon/national-lottery-generator/issues).
 
 ## Is my data safe?
 

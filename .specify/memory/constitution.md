@@ -86,6 +86,7 @@ User-facing features MUST include or preserve the entertainment-only disclaimer.
 | Variable | Purpose |
 |----------|---------|
 | `LOTTERY_DOWNLOAD_TIMEOUT` | HTTP timeout for CSV downloads (default 30) |
+| `LOTTERY_BACKUP_MAX` | Timestamped CSV backups kept per game on refresh (default 5) |
 | `LOTTERY_DOWNLOAD_URL_*` | Test overrides for CSV download URLs |
 
 ## Governance

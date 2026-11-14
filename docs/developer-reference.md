@@ -19,8 +19,11 @@ When updating public docs, align wording with:
 - [config/games.php](../config/games.php)
 - [public/index.php](../public/index.php)
 - [src/Http/GameController.php](../src/Http/GameController.php)
+- [src/Services/Lottery/GameGenerateRegistry.php](../src/Services/Lottery/GameGenerateRegistry.php)
+- [src/Services/Lottery/DrawHistoryService.php](../src/Services/Lottery/DrawHistoryService.php)
 - [templates/games/index.php](../templates/games/index.php)
 - [templates/games/generate.php](../templates/games/generate.php)
+- [templates/games/unavailable.php](../templates/games/unavailable.php)
 - [deploy/README.md](../deploy/README.md) — local Apache/nginx and Azure notes
 - [deploy/nginx-default](../deploy/nginx-default) (nginx helper for Azure or local)
 - [README.md](../README.md)

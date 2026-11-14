@@ -69,7 +69,7 @@ Anyone can run the app on their own machine or a VPS with PHP 8.3+:
 1. `composer install --no-dev` (or `composer install` for a full checkout)
 2. Serve the `public/` directory (built-in server, Apache, or nginx)
 3. Ensure `storage/app/lottery/` is writable
-4. Optional: set `LOTTERY_DOWNLOAD_TIMEOUT` in `.env`
+4. Optional: set `LOTTERY_DOWNLOAD_TIMEOUT` or `LOTTERY_BACKUP_MAX` in `.env` (see `.env.example`)
 
 PHPUnit seeds draw history from `tests/fixtures/lottery/` (see `tests/bootstrap.php`). Live download smoke tests are in the `integration` group (`vendor/bin/phpunit --group integration`).
 
@@ -80,6 +80,7 @@ See [deploy/README.md](../deploy/README.md) for Apache/nginx notes.
 The application is deployed to Azure App Service with file-based storage. Production does not require Laravel environment variables (`APP_KEY`, `CACHE_DRIVER`, etc.). Optional:
 
 - `LOTTERY_DOWNLOAD_TIMEOUT` (default 30)
+- `LOTTERY_BACKUP_MAX` (default 5 timestamped CSV backups per game)
 
 A simple startup command for the web server can be based on the repository's [deploy/nginx-default](../deploy/nginx-default) file:
 

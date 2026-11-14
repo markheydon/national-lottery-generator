@@ -34,6 +34,8 @@ Each game page shows:
 - Additional suggestions to compare
 - The latest draw date that the app has loaded
 
+If draw history cannot be loaded yet, the page explains that the data feed may be temporarily unavailable and asks you to try again shortly (see [FAQ](faq.md)).
+
 ## 4. Switch games if you want to compare options
 
 Use the "Other Games" menu at the top of the page to move to another game without returning to the home page.
