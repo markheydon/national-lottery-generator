@@ -20,6 +20,7 @@ npm-debug.log
 !/storage/app/lottery/.gitkeep
 
 # Build artifacts
+deploy/bicep/main.json
 *.LICENSE.txt
 /website/public/
 /website/_vendor/

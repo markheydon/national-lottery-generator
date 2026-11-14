@@ -1,0 +1,21 @@
+using 'main.bicep'
+
+// Copy to main.bicepparam and customise for your own Azure subscription.
+
+param location = 'uksouth'
+param appServicePlanName = 'asp-lottery-example'
+param appServicePlanSku = {
+  name: 'B1'
+  tier: 'Basic'
+  size: 'B1'
+  capacity: 1
+}
+param webAppName = 'lottery-generator-example' // must be globally unique
+param phpVersion = 'PHP|8.5'
+param oidcIdentityName = 'oidc-lottery-deploy'
+param federatedCredentialName = 'github-main'
+param githubOidcSubject = 'repo:YOUR-ORG/national-lottery-generator:ref:refs/heads/main'
+param enableMonitoring = false
+param manageAppSettings = true
+param appSettings = {}
+param adoptExistingOidcIdentity = false

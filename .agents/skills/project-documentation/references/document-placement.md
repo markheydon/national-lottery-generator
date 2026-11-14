@@ -60,7 +60,9 @@ When refreshing documentation, read relevant files before editing:
 - `composer.json` — PHP version, description
 - `.github/workflows/ci.yml` — CI PHP matrix
 - `.github/workflows/hugo.yml` — public site deploy
-- `.github/workflows/deploy-azure-webapp.yml` — deployment target
+- `.github/workflows/deploy-azure-webapp.yml` — application deployment
+- `.github/workflows/deploy-azure-infrastructure.yml` and `deploy/bicep/` — Azure infrastructure (Bicep)
+- `docs/azure-infrastructure.md` — maintainer Azure/OIDC notes
 - `config/games.php` — supported lottery games
 - `public/index.php` — routes
 - `templates/games/` — user-facing UI and disclaimers
