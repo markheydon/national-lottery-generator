@@ -20,12 +20,15 @@ The front controller and `GameController` orchestrate requests and delegate to s
 
 ### II. Per-Game Service Pattern
 
-Each lottery game is implemented as a pair of service classes:
+Each lottery game provides number generation via a dedicated `*Generate` service class that analyses cached draw data and produces suggested lines.
 
-- `*Download` — fetches and caches historical draw CSV data
-- `*Generate` — analyses cached data and produces suggested number lines
+Draw history is fetched and cached using `*Download` URL and filename constants, wired through `Game::getDownloader()` in `src/Game.php`. Most games map one slug to one download configuration.
 
-Shared behaviour belongs in `Downloader`, `Utils`, or `CsvDownloadService`. New games MUST follow this pattern.
+Hotpicks and other variant games MAY share a parent game's download when draw history is the same. For example, `lotto-hotpicks` shares `LottoDownload` with `lotto`, and `euromillions-hotpicks` shares `EuromillionsDownload` with `euromillions`. That sharing MUST be explicit in the `Game::getDownloader()` slug `match`; variants MUST NOT duplicate CSV fetches or storage paths for the same underlying draw data.
+
+New games MUST provide a config entry in `config/games.php`, a `*Generate` class registered in `GameGenerateRegistry`, and either a dedicated `*Download` or an explicit parent-game mapping in `getDownloader()`.
+
+Shared behaviour belongs in `Downloader`, `Utils`, or `CsvDownloadService`.
 
 ### III. Config-Driven Games
 
@@ -91,4 +94,6 @@ User-facing features MUST include or preserve the entertainment-only disclaimer.
 
 ## Governance
 
-This constitution supersedes conflicting guidance in outdated docs. When principles change, update this file and dependent templates/docs in the same change.
+This constitution supersedes conflicting guidance in outdated docs. When principles change, update this file and dependent templates/docs in the same change. Amendments use semantic versioning on this document (MAJOR: breaking principle changes; MINOR: new or materially expanded principles; PATCH: clarifications only). Pull requests that alter lottery architecture or SDD governance MUST verify compliance with the principles above.
+
+**Version**: 1.1.0 | **Ratified**: 2026-07-18 | **Last Amended**: 2026-11-14
