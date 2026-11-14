@@ -7,6 +7,9 @@ param oidcIdentityName string
 @description('When true, reference an existing identity (brown-field). When false, create a new identity.')
 param adoptExistingOidcIdentity bool = true
 
+@description('When false, skip Website Contributor role assignment (brown-field when RBAC already exists).')
+param assignWebsiteContributor bool = true
+
 @description('Federated credential resource name.')
 param federatedCredentialName string = 'github-main'
 
@@ -59,7 +62,7 @@ resource webApp 'Microsoft.Web/sites@2024-11-01' existing = {
   name: webAppName
 }
 
-resource websiteContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource websiteContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (assignWebsiteContributor) {
   name: guid(webApp.id, oidcResourceId, websiteContributorRoleDefinitionId)
   scope: webApp
   properties: {
