@@ -13,7 +13,7 @@ updates:
     assignees:
       - markheydon
     groups:
-      patch-and-minor:
+      composer:
         patterns:
           - "*"
         update-types:
@@ -33,7 +33,7 @@ updates:
     assignees:
       - markheydon
     groups:
-      patch-and-minor:
+      npm:
         patterns:
           - "*"
         update-types:
@@ -53,10 +53,11 @@ updates:
     assignees:
       - markheydon
     groups:
-      patch-and-minor:
+      github-actions:
         patterns:
           - "*"
         update-types:
+          - major
           - minor
           - patch
 
@@ -73,27 +74,7 @@ updates:
     assignees:
       - markheydon
     groups:
-      patch-and-minor:
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-
-  - package-ecosystem: gomod
-    directory: /website
-    schedule:
-      interval: weekly
-      day: monday
-      time: "04:00"
-      timezone: Europe/London
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies
-    assignees:
-      - markheydon
-    groups:
-      patch-and-minor:
+      devcontainers:
         patterns:
           - "*"
         update-types:
